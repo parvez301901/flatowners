@@ -179,6 +179,34 @@
         });
     });
 
+    /*Check user already assigned*/
+    $(document).on('change','.assign_unit',function(){
+        var user_id = $('#user_id').val();
+        var floor_id = $('#on_select_floor').val();
+        var unit_id = $('.assign_unit').val();
+        console.log(floor_id);
+        $.ajax({
+            url:"{{ route('byunit.getonwerid') }}",
+            type:"GET",
+            data:{floor_id:floor_id, user_id:user_id, unit_id:unit_id},
+            success:function(data){
+                console.log(data);
+                if ( data.length > 0 ) {
+                    $('.message').addClass('d-block').removeClass('d-none');
+                } else {
+                    $('.message').addClass('d-none').removeClass('d-block');
+                }
+                /*
+                var html = '<option value="">Select Unit</option>';
+                $.each( data, function(key, v) {
+                    html += '<option value="'+v.id+'">'+v.name+'</option>';
+                });
+                $('#assign_subject_id').html(html);
+                */
+            }
+        });
+    });
+
 </script>
 
 </body>

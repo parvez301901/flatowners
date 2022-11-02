@@ -49,6 +49,9 @@ Route::group(['middleware' => 'auth'],function() {
         Route::get('/detail/{id}', [UserController::class, 'UserDetail'])->name('user.detail');
         Route::post('/updateunit/{id}', [UserController::class, 'UserUnit'])->name('user.unit');
 
+        Route::get('/assign_flat', [UserController::class, 'UserAssign'])->name('user.assign_flat');
+        Route::post('/assign/store', [UserController::class, 'AssignStore'])->name('assign.store');
+
     });
 
     Route::prefix('employee')->group(function () {
@@ -129,7 +132,7 @@ Route::group(['middleware' => 'auth'],function() {
     });
 
     Route::get('byfloor/getunit', [DefaultController::class, 'GetUnit'])->name('byfloor.getunit');
-
+    Route::get('byunit/getownerid', [DefaultController::class, 'GetOwnerIdByUnit'])->name('byunit.getonwerid');
 
 });
 

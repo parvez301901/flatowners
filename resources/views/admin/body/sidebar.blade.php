@@ -40,6 +40,7 @@ $route = Route::current()->getName();
                 <ul class="treeview-menu">
                     <li><a href="{{route('user.view')}}"><i class="ti-more"></i>Owner List</a></li>
                     <li><a href="{{route('user.add')}}"><i class="ti-more"></i>Add Owner</a></li>
+                    <li><a href="{{route('user.assign_flat')}}"><i class="ti-more"></i>Assign Flat to Owner</a></li>
                 </ul>
             </li>
             @endif

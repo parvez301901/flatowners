@@ -55,6 +55,7 @@
                     </div>
                     <!-- /.box -->
                 </div>
+
                 <div class="col-lg-6 col-12">
                     <!-- Basic Forms -->
                     <div class="box">
@@ -91,6 +92,7 @@
                     </div>
                     <!-- /.box -->
                 </div>
+
             </div>
 
         </section>

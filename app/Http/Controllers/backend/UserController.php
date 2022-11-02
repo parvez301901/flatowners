@@ -7,6 +7,7 @@ use App\Models\backend\Floor;
 use App\Models\backend\Unit;
 use App\Models\User;
 use App\Models\backend\UserModel;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -56,10 +57,6 @@ class UserController extends Controller
         }
 
         $data->save();
-
-        $insert_in_unit = new Unit();
-        $insert_in_unit->user_id = $data->id;
-        $insert_in_unit->save();
 
         $notification = array(
             'message' => 'User Inserted Successfully',
@@ -119,5 +116,30 @@ class UserController extends Controller
         $data['allFloorlist'] = Floor::all();
         return view('backend.user.detail_user', $data );
     }
+
+    public function UserAssign() {
+        $data['allUserData'] = User::where('usertype','flatowner')->get();
+        $data['allUnitData'] = Unit::all();
+        $data['allFloorlist'] = Floor::all();
+        return view('backend.user.assign_user', $data );
+    }
+
+    public function AssignStore( Request $request ) {
+        $id = $request->unit;
+        $data = Unit::find($id);
+        $data->user_id = $request->user;
+
+        $data->save();
+
+        $notification = array(
+            'message' => 'Flat Assigned Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('user.assign_flat')->with($notification);
+    }
+
+
+
 
 }
