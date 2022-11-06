@@ -13,7 +13,6 @@ class EmployeeController extends Controller {
         return view('backend.employee.add_employee');
     }
 
-
     public function EmployeeStore( Request $request) {
 
         $validation = $request->validate([
@@ -60,5 +59,54 @@ class EmployeeController extends Controller {
         return redirect()->route('employee.add')->with($notification);
 
     }
+    public function EmployeeView() {
+        //$data['alluserdarta'] = User::where('usertype','flatowner')->with(['units.floor'])->get();
+        $data['allEmployee'] = User::where('usertype','employee')->get();
+        return view('backend.employee.view_employee' , $data);
+    }
+
+    public function EmployeeDetail($id) {
+        $data['detailData'] = User::find($id);
+        return view('backend.employee.detail_employee', $data );
+    }
+
+    public function EmployeeUpdate(Request $request, $id){
+
+        $data = User::find($id);
+        $data->name = $request->name;
+        $data->email = $request->email;
+        $data->password = bcrypt($request->password);
+        $data->phone = $request->phone;
+        $data->presentaddress = $request->presentaddress;
+        $data->permanentaddress = $request->permanentaddress;
+        $data->nid = $request->nid;
+        $data->email_nofication = $request->email_nofication;
+        $data->sms_nofication = $request->sms_nofication;
+        $data->phone_nofication = $request->phone_nofication;
+        $data->religion = $request->religion;
+        $data->gender = $request->gender;
+        $data->salary = $request->salary;
+        $data->usertype = 'employee';
+
+        if ($request->file('image')) {
+            $file = $request->file('image');
+            @unlink(public_path('upload/user_images/'.$data->image));
+            $filename = date('YmdHi').$file->getClientOriginalName();
+            $file->move(public_path('upload/user_images'),$filename);
+            $data['profile_photo_path'] = $filename;
+        }
+
+        $data->save();
+
+        $notification = array(
+            'message' => 'Employee Updated Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('employee.detail' , $id)->with($notification);
+
+    }
+
+
 
 }

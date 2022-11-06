@@ -23,99 +23,104 @@ $route = Route::current()->getName();
         <ul class="sidebar-menu" data-widget="tree">
 
             <li class="{{ ($route == 'dashboard')? 'active' : '' }}">
-                <a href="">
+                <a href="{{route('dashboard')}}">
                     <i data-feather="pie-chart"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
+
             <li class="header nav-small-cap">Entry Basic Information</li>
 
-            @if(Auth::user()->usertype == 'admin')
-            <li class="treeview {{ ($prefix == '/users')? 'active' : '' }}">
-                <a href="{{route('user.view')}}">
-                    <i data-feather="user"></i>
-                    <span>Owner Information</span>
-                    <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="{{route('user.view')}}"><i class="ti-more"></i>Owner List</a></li>
-                    <li><a href="{{route('user.add')}}"><i class="ti-more"></i>Add Owner</a></li>
-                    <li><a href="{{route('user.assign_flat')}}"><i class="ti-more"></i>Assign Flat to Owner</a></li>
-                </ul>
-            </li>
-            @endif
-
-            <li class="treeview {{ ($prefix == '/profile')?'active':'' }}">
-                <a href="#">
-                    <i data-feather="grid"></i> <span>Manage Profile</span>
-                    <span class="pull-right-container">
-              <i class="fa fa-angle-right pull-right"></i>
-            </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="{{ route('profile.view') }}"><i class="ti-more"></i>Your Profile</a></li>
-                    <li><a href="{{ route('password.view') }}"><i class="ti-more"></i>Change Password</a></li>
-
-                </ul>
-            </li>
-
-            <li class="treeview {{( $prefix == '/floor' )? 'active' : '' }}">
-                <a href="#">
-                    <i data-feather="home"></i>
-                    <span>Floor Information</span>
-                    <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="{{ route('floor.view') }}"><i class="ti-more"></i>Floor List</a></li>
-                    <li><a href="{{ route('floor.add') }}"><i class="ti-more"></i>Add Floor</a></li>
-                </ul>
-            </li>
-
-            <li class="treeview {{( $prefix == '/unit' )? 'active' : '' }}">
-                <a href="#">
-                    <i data-feather="home"></i>
-                    <span>Unit Information</span>
-                    <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="{{ route('unit.view') }}"><i class="ti-more"></i>Unit List</a></li>
-                    <li><a href="{{ route('unit.add') }}"><i class="ti-more"></i>Add Unit</a></li>
-                </ul>
-            </li>
-            <li class="treeview {{($prefix == '/utility')? 'active' : ''}}">
-                <a href="#">
-                    <i data-feather="users"></i>
-                    <span>Owner Utility</span>
-                    <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="{{ route('utility.view')}}"><i class="ti-more"></i>Utility List</a></li>
-                    <li><a href="{{ route('utility.add')}}"><i class="ti-more"></i>Add Utility</a></li>
-                </ul>
-            </li>
 
             <li class="treeview">
-                <a href="#">
-                    <i data-feather="users"></i>
-                    <span>Tenants Information</span>
-                    <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href=""><i class="ti-more"></i>Tenants List</a></li>
-                    <li><a href=""><i class="ti-more"></i>Add Tenant</a></li>
-                </ul>
-            </li>
+                <a href="#"><i data-feather="layers"></i><span>Basic Setting</span><span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span></a>
 
-            <li class="treeview {{ ($prefix == '/employee')? 'active' : '' }}">
-                <a href="#">
-                    <i data-feather="users"></i>
-                    <span>Employee Information</span>
-                    <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
-                </a>
                 <ul class="treeview-menu">
-                    <li><a href=""><i class="ti-more"></i>Employee List</a></li>
-                    <li class="{{ ($route == 'employee.add')?'active':'' }}"><a href="{{route('employee.add')}}"><i class="ti-more"></i>Add Employee</a></li>
+                @if(Auth::user()->usertype == 'admin')
+                    <li class="treeview {{ ($prefix == '/users')? 'active' : '' }}">
+                        <a href="{{route('user.view')}}">
+                            <i data-feather="user"></i>
+                            <span>Owner Information</span>
+                            <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="{{route('user.view')}}"><i class="ti-more"></i>Owner List</a></li>
+                            <li><a href="{{route('user.add')}}"><i class="ti-more"></i>Add Owner</a></li>
+                            <li><a href="{{route('user.assign_flat')}}"><i class="ti-more"></i>Assign Flat to Owner</a></li>
+                        </ul>
+                    </li>
+                @endif
+                    <li class="treeview {{ ($prefix == '/profile')?'active':'' }}">
+                        <a href="#">
+                            <i data-feather="grid"></i> <span>Manage Profile</span>
+                            <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="{{ route('profile.view') }}"><i class="ti-more"></i>Your Profile</a></li>
+                            <li><a href="{{ route('password.view') }}"><i class="ti-more"></i>Change Password</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="treeview {{( $prefix == '/floor' )? 'active' : '' }}">
+                        <a href="#">
+                            <i data-feather="home"></i>
+                            <span>Floor Information</span>
+                            <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="{{ route('floor.view') }}"><i class="ti-more"></i>Floor List</a></li>
+                            <li><a href="{{ route('floor.add') }}"><i class="ti-more"></i>Add Floor</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview {{( $prefix == '/unit' )? 'active' : '' }}">
+                        <a href="#">
+                            <i data-feather="home"></i>
+                            <span>Unit Information</span>
+                            <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="{{ route('unit.view') }}"><i class="ti-more"></i>Unit List</a></li>
+                            <li><a href="{{ route('unit.add') }}"><i class="ti-more"></i>Add Unit</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview {{($prefix == '/utility')? 'active' : ''}}">
+                        <a href="#">
+                            <i data-feather="users"></i>
+                            <span>Owner Utility</span>
+                            <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="{{ route('utility.view')}}"><i class="ti-more"></i>Utility List</a></li>
+                            <li><a href="{{ route('utility.add')}}"><i class="ti-more"></i>Add Utility</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i data-feather="users"></i>
+                            <span>Tenants Information</span>
+                            <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href=""><i class="ti-more"></i>Tenants List</a></li>
+                            <li><a href=""><i class="ti-more"></i>Add Tenant</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="treeview {{ ($prefix == '/employee')? 'active' : '' }}">
+                        <a href="#">
+                            <i data-feather="users"></i>
+                            <span>Employee Information</span>
+                            <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="{{ ($route == 'employee.view')?'active':'' }}"><a href="{{route('employee.view')}}"><i class="ti-more"></i>Employee List</a></li>
+                            <li class="{{ ($route == 'employee.add')?'active':'' }}"><a href="{{route('employee.add')}}"><i class="ti-more"></i>Add Employee</a></li>
+                        </ul>
+                    </li>
+
                 </ul>
+
+
             </li>
 
             <li class="header nav-small-cap">Accounting Information</li>
@@ -143,31 +148,29 @@ $route = Route::current()->getName();
                     <li class="{{ ($route == 'maintenance.add')?'active':'' }}"><a href="{{route('maintenance.add')}}"><i class="ti-more"></i>Add Maintenance Cost</a></li>
                 </ul>
             </li>
-<!--
-            <li class="header nav-small-cap">Projects</li>
+
+
+            <li class="header nav-small-cap">Project/Programme Management</li>
+
             <li class="treeview">
-                <a href="#">
-                    <i data-feather="dollar-sign"></i>
-                    <span>Project</span>
-                    <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
-                </a>
+                <a href="#"><i data-feather="layers"></i><span>Project/Programme Setting</span><span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span></a>
+
                 <ul class="treeview-menu">
-                    <li><a href=""><i class="ti-more"></i>Project Detail</a></li>
-                    <li><a href=""><i class="ti-more"></i>Add Project</a></li>
+
+                    <li class="treeview {{ ($prefix == '/project')?'active':'' }}">
+                        <a href="#">
+                            <i data-feather="grid"></i> <span>Project</span>
+                            <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="{{ route('project.view') }}"><i class="ti-more"></i>All Project</a></li>
+                            <li><a href="{{ route('project.add') }}"><i class="ti-more"></i>Add New Project</a></li>
+                        </ul>
+                    </li>
+
                 </ul>
             </li>
-            <li class="treeview">
-                <a href="#">
-                    <i data-feather="dollar-sign"></i>
-                    <span>Bill Deposit</span>
-                    <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href=""><i class="ti-more"></i>Bill List</a></li>
-                    <li><a href=""><i class="ti-more"></i>Add Bill Deposit</a></li>
-                </ul>
-            </li>
--->
+
             <li class="header nav-small-cap">Results and Reports</li>
 
             <li class="treeview" {{ ($prefix == '/report')? 'active' : '' }}>
@@ -204,24 +207,6 @@ $route = Route::current()->getName();
                 <ul class="treeview-menu">
                     <li><a href=""><i class="ti-more"></i>Email/SMS List</a></li>
                     <li><a href=""><i class="ti-more"></i>Add Email/SMS</a></li>
-                </ul>
-            </li>
-
-
-            <li class="treeview">
-                <a href="#">
-                    <i data-feather="file"></i>
-                    <span>Pages</span>
-                    <span class="pull-right-container">
-              <i class="fa fa-angle-right pull-right"></i>
-            </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="profile.html"><i class="ti-more"></i>Profile</a></li>
-                    <li><a href="invoice.html"><i class="ti-more"></i>Invoice</a></li>
-                    <li><a href="gallery.html"><i class="ti-more"></i>Gallery</a></li>
-                    <li><a href="faq.html"><i class="ti-more"></i>FAQs</a></li>
-                    <li><a href="timeline.html"><i class="ti-more"></i>Timeline</a></li>
                 </ul>
             </li>
 

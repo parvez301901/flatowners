@@ -3,6 +3,8 @@
 use App\Http\Controllers\backend\DefaultController;
 use App\Http\Controllers\backend\EmployeeController;
 use App\Http\Controllers\backend\NoticeController;
+use App\Http\Controllers\backend\Project_ExpenseController;
+use App\Http\Controllers\backend\ProjectController;
 use App\Http\Controllers\backend\Report;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
@@ -57,14 +59,9 @@ Route::group(['middleware' => 'auth'],function() {
     Route::prefix('employee')->group(function () {
         Route::get('/add', [EmployeeController::class, 'EmployeeAdd'])->name('employee.add');
         Route::post('/store', [EmployeeController::class, 'EmployeeStore'])->name('employee.store');
-        /*
-
-        Route::get('/view', [UserController::class, 'UserView'])->name('user.view');
-        Route::get('/edit/{id}', [UserController::class, 'UserEdit'])->name('user.edit');
-        Route::post('/update/{id}', [UserController::class, 'UserUpdate'])->name('user.update');
-        Route::get('/detail/{id}', [UserController::class, 'UserDetail'])->name('user.detail');
-        Route::post('/updateunit/{id}', [UserController::class, 'UserUnit'])->name('user.unit');
-        */
+        Route::get('/view', [EmployeeController::class, 'EmployeeView'])->name('employee.view');
+        Route::get('/detail/{id}', [EmployeeController::class, 'EmployeeDetail'])->name('employee.detail');
+        Route::post('/update/{id}', [EmployeeController::class, 'EmployeeUpdate'])->name('employee.update');
     });
 
 // User Profile and Change Password
@@ -100,7 +97,6 @@ Route::group(['middleware' => 'auth'],function() {
         Route::get('/detail/{id}', [UtilityController::class, 'UtilityDetail'])->name('utility.detail');
         Route::post('/update/{id}', [UtilityController::class, 'UtilityUpdate'])->name('utility.update');
         Route::get('/delete/{id}', [UtilityController::class, 'UtilityDelete'])->name('utility.delete');
-
     });
 
     Route::prefix('servicecharge')->group( function(){
@@ -129,6 +125,20 @@ Route::group(['middleware' => 'auth'],function() {
     Route::prefix('report')->group( function(){
         Route::get('/monthly/balancesheet', [Report::class, 'reportMonthlyBalancesheetView'])->name('report.monthly.balancesheet');
         Route::get('/monthly/balancesheet/search', [Report::class, 'reportMonthlyBalancesheetSearch'])->name('report.monthly.balancesheet.search');
+    });
+
+    Route::prefix('project')->group(function (){
+        Route::get('/add', [ProjectController::class, 'ProjectAdd'])->name('project.add');
+        Route::post('/store', [ProjectController::class, 'ProjectStore'])->name('project.store');
+        Route::get('/view', [ProjectController::class, 'ProjectView'])->name('project.view');
+        Route::get('/detail/{id}', [ProjectController::class, 'ProjectDetail'])->name('project.detail');
+        /*
+        Route::post('/update/{id}', [UnitController::class, 'UnitUpdate'])->name('unit.update');
+        */
+    });
+
+    Route::prefix('project_cost')->group(function (){
+        Route::post('/store', [Project_ExpenseController::class, 'ProjectCostStore'])->name('project_cost.store');
     });
 
     Route::get('byfloor/getunit', [DefaultController::class, 'GetUnit'])->name('byfloor.getunit');

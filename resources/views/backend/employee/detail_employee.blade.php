@@ -10,12 +10,12 @@
         <div class="content-header">
             <div class="d-flex align-items-center">
                 <div class="mr-auto">
-                    <h3 class="page-title">User Detail</h3>
+                    <h3 class="page-title">Employee Detail</h3>
                     <div class="d-inline-block align-items-center">
                         <nav>
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{route('dashboard')}}"><i class="mdi mdi-home-outline"></i> Dashboard</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">User Detail</li>
+                                <li class="breadcrumb-item active" aria-current="page">Employee Detail</li>
                             </ol>
                         </nav>
                     </div>
@@ -31,11 +31,11 @@
                     <!-- Basic Forms -->
                     <div class="box">
                         <div class="box-header with-border">
-                            <h4 class="box-title">User Detail information of <i>{{ $detailData->name }}</i></h4>
+                            <h4 class="box-title">Employee Detail information of <i>{{ $detailData->name }}</i></h4>
                         </div>
                         <!-- /.box-header -->
 
-                        <form class="form-horizontal" method="POST" action="{{ route('user.update', $detailData->id ) }}"  enctype="multipart/form-data">
+                        <form class="form-horizontal" method="POST" action="{{ route('employee.update', $detailData->id ) }}"  enctype="multipart/form-data">
                             @csrf
                             <div class="box-body">
                                 <h4 class="mt-0 mb-20">1. User Info:</h4>
@@ -139,12 +139,8 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>User Role</label>
-                                            <select name="usertype" required="required" class="form-control select2">
-                                                <option value="admin" {{ ($detailData->usertype == "admin" ? "selected": "") }}>Admin</option>
-                                                <option value="flatowner" {{ ($detailData->usertype == "flatowner" ? "selected": "") }}>Flat Owner</option>
-                                                <option value="manger" {{ ($detailData->usertype == "manger" ? "selected": "") }}>Manager</option>
-                                            </select>
+                                            <label>Salary</label>
+                                            <input name="salary" type="text" value="{{ $detailData->salary }}" class="form-control" id="salary" placeholder="Salary">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -154,7 +150,7 @@
                                         </div>
                                         <div class="form-group">
                                             <div class="controls">
-                                                <img id="showImage" src="{{ (!empty($detailData->profile_photo_path))? url('upload/user_images/'.$detailData->profile_photo_path):url('upload/no_image.jpg') }}" style="width: 100px; width: 100px; border: 1px solid #000000;">
+                                                <img id="showImage" src="{{ (!empty($detailData->profile_photo_path))? url('upload/employee_images/'.$detailData->profile_photo_path):url('upload/no_image.jpg') }}" style="width: 100px; width: 100px; border: 1px solid #000000;">
                                             </div>
                                         </div>
                                     </div>
@@ -164,14 +160,13 @@
                             <!-- /.box-body -->
                             <div class="box-footer d-flex justify-content-between">
                                 <button type="submit" class="btn btn-rounded btn-danger">Reset</button>
-                                <input type="submit" class="btn btn-rounded btn-info" value="Update User">
+                                <input type="submit" class="btn btn-rounded btn-info" value="Update Employee">
                             </div>
                         </form>
                     </div>
                     <!-- /.box -->
                 </div>
                 <div class="col-lg-4 col-12">
-                    <!-- Basic Forms -->
                     <div class="box">
                         <div class="box-header with-border">
                             <h4 class="box-title">Notification</h4>
@@ -182,23 +177,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <ul>
-                                        <li>01. Bill Pending</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="box">
-                        <div class="box-header with-border">
-                            <h4 class="box-title">Notification</h4>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <h4 class="mt-0 mb-20">1. Important Notification:</h4>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <ul>
-                                        <li>01. Bill Pending</li>
+                                        <li>No Notice Yet</li>
                                     </ul>
                                 </div>
                             </div>
