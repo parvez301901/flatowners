@@ -161,6 +161,28 @@
         });
     });
 
+    /*Search Service Charge*/
+    $(document).on('click','#show_project_balance_btn',function(){
+        var project_id = $('.project_id').val();
+        $('#show_project_balance_btn').addClass('disabled');
+        console.log(project_id);
+        $.ajax({
+            url: "{{ route('project.balance')}}",
+            type: "get",
+            data: {'project_id':project_id},
+            beforeSend: function() {
+            },
+            success: function (data) {
+                $('#show_project_balance_btn').removeClass('disabled');
+                var source = $("#document-template-project").html();
+                var template = Handlebars.compile(source);
+                var html = template(data);
+                $('#projectDetail').html(html);
+                //$('[data-toggle="tooltip"]').tooltip();
+            }
+        });
+    });
+
     /*on change - add user*/
     $(document).on('change','#on_select_floor',function(){
         var floor_id = $('#on_select_floor').val();
