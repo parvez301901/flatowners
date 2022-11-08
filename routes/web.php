@@ -114,6 +114,7 @@ Route::group(['middleware' => 'auth'],function() {
         Route::get('/view', [MaintenanceController::class, 'MaintenanceView'])->name('maintenance.view');
         Route::get('/search/maintenance', [MaintenanceController::class, 'MaintenanceSearch'])->name('maintenance.search');
         //////////////------------------------------  Baki ache ------------ Edit - Update - Delete ------   /////////////////
+        Route::get('/salary', [MaintenanceController::class, 'MaintenanceSalary'])->name('maintenance.salary');
     });
 
     Route::prefix('notice')->group(function (){

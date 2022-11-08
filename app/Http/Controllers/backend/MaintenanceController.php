@@ -59,7 +59,6 @@ class MaintenanceController extends Controller
 
     }
 
-
     public function MaintenanceSearch(Request $request){
 
         $year_id = $request->year_id . '-01';
@@ -119,4 +118,11 @@ class MaintenanceController extends Controller
         return response()->json(@$html);
 
     }// end method
+
+    public function MaintenanceSalary() {
+        $data['allEmployee'] = User::where('usertype','employee')->get();
+        $data['total_salary'] = User::where('usertype','employee')->sum('salary');
+        return view('backend.maintenance.salary_maintenance' , $data);
+    }
+
 }

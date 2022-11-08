@@ -14,7 +14,7 @@ class ProjectAddAmountController extends Controller
         $data->amount = $request->amount;
         $data->user_id = $request->user_id;
         $data->project_id = $request->project_id;
-        $data->project_add_date = $request->project_add_date;
+        $data->project_add_date = $request->project_cost_date;
         $data->project_cost_note = $request->project_cost_note;
 
         $data->save();

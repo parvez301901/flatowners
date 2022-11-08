@@ -60,6 +60,7 @@ class ProjectController extends Controller
         /*Project Added Amount*/
         $projectAddedAmounts = ProjectAddAmount::where('project_id',$project_id)->get();
 
+
         $incomes = array();
 
         $html['thsource'] = '<th>SL</th>';
@@ -68,11 +69,11 @@ class ProjectController extends Controller
 
         foreach ($projectAddedAmounts as $key => $projectAddedAmount) {
 
-            $flat_owner_name = User::find($empsalarie->flatownerId);
+            $flat_owner_name = User::find($projectAddedAmount->user_id);
             $html[$key]['tdsource'] = '<td>' . ($key + 1) . '</td>';
             $html[$key]['tdsource'] .= '<td>'. $flat_owner_name->name .'</td>';
-            $html[$key]['tdsource'] .= '<td>' . $empsalarie->serviceChargeAmount . '</td>';
-            $incomes[] = (int)$empsalarie->serviceChargeAmount;
+            $html[$key]['tdsource'] .= '<td>' . $projectAddedAmount->amount . '</td>';
+            $incomes[] = (int)$projectAddedAmount->amount;
 
         }
         if ( 0 != (array_sum($incomes)) ) {
@@ -83,10 +84,11 @@ class ProjectController extends Controller
             $html['tfsource'] = '<td colspan="3" class="text-center"><b>No Data Found</b></td>';
         }
 
+
         /*Expense Listing*/
-        $expenses = MaintenanceModel::whereMonth('maintenanceCostDate', $date->month)
-            ->whereYear('maintenanceCostDate', $date->year)
-            ->get();
+
+
+        $expenses = ProjectExpense::where('project_id',$project_id)->get();
 
         $outcomes = array();
 
@@ -96,7 +98,7 @@ class ProjectController extends Controller
 
         foreach ($expenses as $key => $expense) {
 
-            $utility = Utility::find($expense->utilityId);
+            $utility = Utility::find($expense->utility_id);
 
             $html[$key]['td2source'] = '<td>' . ($key + 1) . '</td>';
             $html[$key]['td2source'] .= '<td>' . $utility->name . '</td>';
@@ -114,6 +116,8 @@ class ProjectController extends Controller
 
         $html['balance'] = ((int) $income) - ((int) $outcome);
 
+
+        //$html = $projectAddedAmounts;
         return response()->json(@$html);
 
     }

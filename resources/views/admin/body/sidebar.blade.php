@@ -146,6 +146,7 @@ $route = Route::current()->getName();
                 <ul class="treeview-menu">
                     <li class="{{ ($route == 'maintenance.view')?'active':'' }}"><a href="{{route('maintenance.view')}}"><i class="ti-more"></i>Maintenance Cost Search</a></li>
                     <li class="{{ ($route == 'maintenance.add')?'active':'' }}"><a href="{{route('maintenance.add')}}"><i class="ti-more"></i>Add Maintenance Cost</a></li>
+                    <li class="{{ ($route == 'maintenance.salary')?'active':'' }}"><a href="{{route('maintenance.salary')}}"><i class="ti-more"></i>Salary Disbursement</a></li>
                 </ul>
             </li>
 
