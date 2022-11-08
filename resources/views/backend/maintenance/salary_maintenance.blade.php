@@ -26,7 +26,6 @@
         <section class="content">
             <div class="row">
                 <div class="col-12">
-
                     <div class="box">
                         <div class="box-header with-border d-flex justify-content-between align-items-center">
                             <h3 class="box-title">Employee List</h3>
@@ -42,40 +41,36 @@
                                         <th>Position</th>
                                         <th>Name</th>
                                         <th>Phone</th>
-                                        <th>Salary</th>
+                                        <th>Basic Salary</th>
+                                        <th>Bonus / Deduction</th>
+                                        <th>Final Salary</th>
                                         <th width="20%">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     @foreach( $allEmployee as $key => $employee)
-                                        <tr>
-                                            <td>{{ $key+1 }}</td>
-                                            <td>{{ $employee->usertype }}</td>
-                                            <td>{{ $employee->name }}</td>
-                                            <td>{{ $employee->phone }}</td>
-                                            <td>{{ $employee->salary }}</td>
-                                            <td>
-                                                <a href="{{ route('employee.detail' , $employee->id) }}" class="btn btn-success mr-2">Details</a>
-                                                <a href="{{ route('employee.detail' , $employee->id) }}" class="btn btn-info mr-2">Edit</a>
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td>{{ $key+1 }}</td>
+                                        <td>{{ $employee->usertype }}</td>
+                                        <td>{{ $employee->name }}</td>
+                                        <td>{{ $employee->phone }}</td>
+                                        <td><span class="basic_salary">{{ $employee->salary }}</span></td>
+                                        <td><input name="bonus_or_deduction" type="number" class="form-control bonus_or_deduction" value="0" /></td>
+                                        <td><input name="final_salary" type="number" disabled class="form-control total" value="{{ $employee->salary }}" /></td>
+                                        <td>
+                                            <a href="{{ route('employee.detail' , $employee->id) }}" class="btn btn-success mr-2">Details</a>
+                                            <a href="{{ route('employee.detail' , $employee->id) }}" class="btn btn-info mr-2">Edit</a>
+                                        </td>
+                                    </tr>
                                     @endforeach
-                                        <tr>
-                                            <td colspan="4" class="text-right"><b>Total</b></td>
-                                            <td>{{$total_salary}}</td>
-                                            <td>
-                                                <a href="#" class="btn btn-success mr-2 insert-expend">Disbur</a>
-                                            </td>
-                                        </tr>
                                     </tbody>
                                 </table>
-
+                                <div class="text-center"><h1>Total Salary: <Span class="final-salary"></Span></h1></div>
+                                <div class="text-center"><a href="#" class="btn btn-success mr-2 insert-salary-expense">Disburse Salary</a></div>
+                                <p class="message d-none">Salary Disbursed Successfully</p>
                             </div>
                         </div>
-                        <!-- /.box-body -->
                     </div>
-                    <!-- /.box -->
-
                 </div>
             </div>
         </section>

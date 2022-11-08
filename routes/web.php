@@ -115,6 +115,7 @@ Route::group(['middleware' => 'auth'],function() {
         Route::get('/search/maintenance', [MaintenanceController::class, 'MaintenanceSearch'])->name('maintenance.search');
         //////////////------------------------------  Baki ache ------------ Edit - Update - Delete ------   /////////////////
         Route::get('/salary', [MaintenanceController::class, 'MaintenanceSalary'])->name('maintenance.salary');
+        Route::get('/salary/disburse', [MaintenanceController::class, 'MaintenanceSalaryDisburse'])->name('salary.disburse');
     });
 
     Route::prefix('notice')->group(function (){
@@ -150,6 +151,7 @@ Route::group(['middleware' => 'auth'],function() {
         Route::post('/store', [ProjectAddAmountController::class, 'ProjectAddStore'])->name('project_deposit.store');
     });
 
+    /*Ajax actions*/
     Route::get('byfloor/getunit', [DefaultController::class, 'GetUnit'])->name('byfloor.getunit');
     Route::get('byunit/getownerid', [DefaultController::class, 'GetOwnerIdByUnit'])->name('byunit.getonwerid');
 

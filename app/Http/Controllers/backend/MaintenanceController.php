@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use http\Url;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MaintenanceController extends Controller
 {
@@ -51,7 +52,7 @@ class MaintenanceController extends Controller
         $data->save();
 
         $notification = array(
-            'message' => 'User Inserted Successfully',
+            'message' => 'Expense Added Successfully',
             'alert-type' => 'success'
         );
 
@@ -123,6 +124,31 @@ class MaintenanceController extends Controller
         $data['allEmployee'] = User::where('usertype','employee')->get();
         $data['total_salary'] = User::where('usertype','employee')->sum('salary');
         return view('backend.maintenance.salary_maintenance' , $data);
+    }
+
+    public function MaintenanceSalaryDisburse(Request $request){
+        $total_salary = $request->total_salary;
+        // build date
+        $date = Carbon::now()->format('Y-m-d');
+        $monthyear = Carbon::now()->format('m-Y');
+        $data = new MaintenanceModel();
+        $data->amount = $total_salary;
+        $data->userId = Auth::user()->id;
+        $data->unitId = 1;
+        $data->floorId = 1;
+        $data->utilityId = 1;
+        $data->maintenanceCostDate = $date;
+        $data->maintenanceNote = 'Salary For ' . $monthyear;
+
+        $data->save();
+
+        if (true == ($data->save())) {
+            $html = 'Salary Disbursed Successfully ';
+        } else {
+            $html = 'Some Problem Happend';
+        }
+        return response()->json(@$html);
+
     }
 
 }

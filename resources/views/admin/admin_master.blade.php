@@ -229,6 +229,51 @@
         });
     });
 
+    /*salary total*/
+    function calc_total(){
+        var sum = 0;
+        $(".total").each(function(){
+            sum += parseFloat($(this).val());
+        });
+        $('.final-salary').text(sum);
+    }
+
+    calc_total();
+
+    $(".bonus_or_deduction").on('keyup', function(){
+        var parent = $(this).closest('tr');
+        var price  = parseFloat($('.basic_salary',parent).text());
+        console.log(price);
+        var choose = parseFloat($('.bonus_or_deduction',parent).val());
+        console.log(choose);
+        $('.total',parent).val(choose+price);
+
+        calc_total();
+    });
+
+    $(document).on('click','.insert-salary-expense',function(e){
+        e.preventDefault();
+        var total_salary = $('.final-salary').text();
+        console.log(total_salary);
+
+        $.ajax({
+            url:"{{ route('salary.disburse') }}",
+            type:"GET",
+            data:{total_salary:total_salary},
+            success:function(data){
+                console.log(data);
+                if ( data.length > 0 ) {
+                    $('.message').addClass('d-block').removeClass('d-none');
+                } else {
+                    $('.message').addClass('d-none').removeClass('d-block');
+                }
+            }
+        });
+
+
+    });
+
+
 </script>
 
 </body>
