@@ -24,7 +24,8 @@ class UnitController extends Controller {
     public function UnitStore(Request $request) {
 
         $data = new Unit();
-        $data->floorId = $request->floorId;
+        $data->user_id = 0;
+        $data->floor_id = $request->floorId;
         $data->name = $request->name;
         $data->rent = $request->rent;
         $data->serviceCharge = $request->serviceCharge;

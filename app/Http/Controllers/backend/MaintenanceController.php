@@ -5,6 +5,7 @@ namespace App\Http\Controllers\backend;
 use App\Http\Controllers\Controller;
 use App\Models\backend\Floor;
 use App\Models\backend\MaintenanceModel;
+use App\Models\backend\RemainingBalance;
 use App\Models\backend\Unit;
 use App\Models\User;
 use App\Models\Utility;
@@ -51,6 +52,23 @@ class MaintenanceController extends Controller
 
         $data->save();
 
+        $date = Carbon::createFromFormat('m/Y', Carbon::parse($request->maintenanceCostDate)->format('m/Y'));
+        $is_in_month_year = RemainingBalance::whereMonth('month_year', $date->month)
+            ->whereYear('month_year', $date->year)
+            ->first();
+
+        if (empty($is_in_month_year)) {
+            $data2 = new RemainingBalance();
+            $data2->balance = -($request->amount);
+            $data2->month_year = $request->maintenanceCostDate;
+            $data2->save();
+        } else {
+            $data2 = RemainingBalance::find($is_in_month_year->id);
+            $data2->balance = ($is_in_month_year->balance) - ($request->amount);
+            $data2->month_year = $request->maintenanceCostDate;
+            $data2->save();
+        }
+
         $notification = array(
             'message' => 'Expense Added Successfully',
             'alert-type' => 'success'
@@ -63,7 +81,6 @@ class MaintenanceController extends Controller
     public function MaintenanceSearch(Request $request){
 
         $year_id = $request->year_id . '-01';
-
         $date = Carbon::createFromFormat('m/Y', Carbon::parse($year_id)->format('m/Y'));
 
         $expenses = MaintenanceModel::whereMonth('maintenanceCostDate', $date->month)

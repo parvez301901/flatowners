@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\backend\RemainingBalance;
 use App\Models\ServiceCharge;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
@@ -28,7 +29,46 @@ class ServiceChargeController extends Controller
         $data->flatownerId = $request->flatownerId;
         $data->serviceChargeDate = $request->serviceChargeDate;
         $data->save();
-        return redirect()->route('servicecharge.add');
+
+
+        $f = date('Y-m-d', strtotime($request->serviceChargeDate." -1 month"));
+        $prev_date = Carbon::createFromFormat('m/Y', Carbon::parse($f)->format('m/Y'));
+        $prev_is_in_month_year = RemainingBalance::whereMonth('month_year', $prev_date->month)
+            ->whereYear('month_year', $prev_date->year)
+            ->first();
+
+        $date = Carbon::createFromFormat('m/Y', Carbon::parse($request->serviceChargeDate)->format('m/Y'));
+        $is_in_month_year = RemainingBalance::whereMonth('month_year', $date->month)
+            ->whereYear('month_year', $date->year)
+            ->first();
+
+
+        if (empty($is_in_month_year)) {
+            if (!empty($prev_is_in_month_year)) {
+                $data2 = new RemainingBalance();
+                $data2->balance = ($request->serviceChargeAmount) + ($prev_is_in_month_year->balance);
+                $data2->month_year = $request->serviceChargeDate;
+                $data2->save();
+            } else {
+                $data2 = new RemainingBalance();
+                $data2->balance = ($request->serviceChargeAmount);
+                $data2->month_year = $request->serviceChargeDate;
+                $data2->save();
+            }
+        } else {
+            $data2 = RemainingBalance::find($is_in_month_year->id);
+            $data2->balance = ($request->serviceChargeAmount) + ($is_in_month_year->balance) ;
+            $data2->month_year = $request->serviceChargeDate;
+            $data2->save();
+        }
+
+        // fire SMS here
+        $notification = array(
+            'message' => 'Service Charge Added Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('servicecharge.add')->with($notification);
     }
 
     public function ServiceChargeSearch(Request $request){

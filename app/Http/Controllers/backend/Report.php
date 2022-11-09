@@ -4,6 +4,7 @@ namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\backend\MaintenanceModel;
+use App\Models\backend\RemainingBalance;
 use App\Models\ServiceCharge;
 use App\Models\User;
 use App\Models\Utility;
@@ -26,20 +27,29 @@ class Report extends Controller
         $empsalaries = ServiceCharge::whereMonth('serviceChargeMonthYear', $date->month)
             ->whereYear('serviceChargeMonthYear', $date->year)
             ->get();
-
+        $f = date('Y-m-d', strtotime($year_id." -1 month"));
+        $prev_date = Carbon::createFromFormat('m/Y', Carbon::parse($f)->format('m/Y'));
+        $is_in_month_year = RemainingBalance::whereMonth('month_year', $prev_date->month)
+            ->whereYear('month_year', $prev_date->year)
+            ->first();
 
         $incomes = array();
 
         $html['thsource'] = '<th>SL</th>';
         $html['thsource'] .= '<th>Flat Owner Name</th>';
         $html['thsource'] .= '<th>Amount</th>';
-
+        if (!empty( $is_in_month_year ) ) {
+            $html[0]['tdsource'] = '<td>1</td>';
+            $html[0]['tdsource'] .= '<td>Previous Month Balance</td>';
+            $html[0]['tdsource'] .= '<td>' . $is_in_month_year->balance . '</td>';
+            $incomes[] = (int)$is_in_month_year->balance;
+        }
         foreach ($empsalaries as $key => $empsalarie) {
 
             $flat_owner_name = User::find($empsalarie->flatownerId);
-            $html[$key]['tdsource'] = '<td>' . ($key + 1) . '</td>';
-            $html[$key]['tdsource'] .= '<td>'. $flat_owner_name->name .'</td>';
-            $html[$key]['tdsource'] .= '<td>' . $empsalarie->serviceChargeAmount . '</td>';
+            $html[$key + 1]['tdsource'] = '<td>' . ($key + 2) . '</td>';
+            $html[$key + 1]['tdsource'] .= '<td>'. $flat_owner_name->name .'</td>';
+            $html[$key + 1]['tdsource'] .= '<td>' . $empsalarie->serviceChargeAmount . '</td>';
             $incomes[] = (int)$empsalarie->serviceChargeAmount;
 
         }
@@ -48,6 +58,7 @@ class Report extends Controller
             $html['tfsource'] = '<td colspan="2" class="text-right"><b>Total</b></td>';
             $html['tfsource'] .= '<td>' . $income . '</td>';
         } else {
+            $income = 0;
             $html['tfsource'] = '<td colspan="3" class="text-center"><b>No Data Found</b></td>';
         }
 
@@ -77,10 +88,11 @@ class Report extends Controller
             $html['tf2source'] = '<td colspan="2" class="text-right"><b>Total</b></td>';
             $html['tf2source'] .= '<td>' . $outcome . '</td>';
         } else {
+            $outcome = 0;
             $html['tf2source'] = '<td colspan="3" class="text-center"><b>No Data Found</b></td>';
         }
 
-        $html['balance'] = ((int) $income) - ((int) $outcome);
+        $html['balance'] = ((int)$income) - ((int)$outcome);
 
         return response()->json(@$html);
 

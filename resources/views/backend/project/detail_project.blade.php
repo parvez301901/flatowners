@@ -193,66 +193,63 @@
                     <!-- /.box -->
                 </div>
 
-                <div class="row">
-                    <div class="col-md-12" style="padding-top: 25px;">
-                        <input name="project_id" type="hidden" class="form-control project_id" value="{{$detailData->id}}" required="required">
-                        <a id="show_project_balance_btn" class="btn btn-primary" name="search">View Balance Sheet</a>
-                    </div> <!-- End Col md 3 -->
-                    <div class="col-md-12">
+                <div class="col-md-12 text-center" style="padding: 35px 0;">
+                    <input name="project_id" type="hidden" class="form-control project_id" value="{{$detailData->id}}" required="required">
+                    <a id="show_project_balance_btn" class="btn btn-primary" name="search">View Balance Sheet</a>
+                </div> <!-- End Col md 3 -->
 
-                        <script id="document-template-project" type="text/x-handlebars-template">
-                            <div class="col-md-6 border-danger">
-                                <div class="text-center"><h4><b>Deposit</b></h4></div>
-                                <table class="table table-bordered table-striped" style="width: 100%">
-                                    <thead>
-                                    <tr>
-                                        @{{{thsource}}}
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @{{#each this}}
-                                    <tr>
-                                        @{{{tdsource}}}
-                                    </tr>
-                                    @{{/each}}
-
-                                    </tbody>
-                                    <tfoot>
-                                    <tr>
-                                        @{{{tfsource}}}
-                                    </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="text-center"><h4><b>Expense</b></h4></div>
-                                <table class="table table-bordered table-striped" style="width: 100%">
-                                    <thead>
-                                    <tr>
-                                        @{{{th2source}}}
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @{{#each this}}
-                                    <tr>
-                                        @{{{td2source}}}
-                                    </tr>
-                                    @{{/each}}
-
-                                    </tbody>
-                                    <tfoot>
-                                    <tr>
-                                        @{{{tf2source}}}
-                                    </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            <div class="col-12 text-center"><h3>Total Balance Remaining : @{{{balance}}}</h3></div>
-                        </script>
-                        <div class="row" id="projectDetail">
+                <div class="col-md-12">
+                    <script id="document-template-project" type="text/x-handlebars-template">
+                        <div class="col-md-6 border-danger">
+                            <div class="text-center"><h4><b>Deposit</b></h4></div>
+                            <table class="table table-bordered table-striped" style="width: 100%">
+                                <thead>
+                                <tr>
+                                    @{{{thsource}}}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @{{#each this}}
+                                <tr>
+                                    @{{{tdsource}}}
+                                </tr>
+                                @{{/each}}
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    @{{{tfsource}}}
+                                </tr>
+                                </tfoot>
+                            </table>
                         </div>
+                        <div class="col-md-6">
+                            <div class="text-center"><h4><b>Expense</b></h4></div>
+                            <table class="table table-bordered table-striped" style="width: 100%">
+                                <thead>
+                                <tr>
+                                    @{{{th2source}}}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @{{#each this}}
+                                <tr>
+                                    @{{{td2source}}}
+                                </tr>
+                                @{{/each}}
+
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    @{{{tf2source}}}
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="col-12 text-center"><h3>Total Balance Remaining : @{{{balance}}}</h3></div>
+                    </script>
+                    <div class="row" id="projectDetail">
                     </div>
-                </div><!--  end row -->
+                </div>
 
                 <div class="col-lg-6 col-12">
                     <!-- Basic Forms -->

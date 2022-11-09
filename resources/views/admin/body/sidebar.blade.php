@@ -132,8 +132,8 @@ $route = Route::current()->getName();
                     <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="{{route('servicecharge.view')}}"><i class="ti-more"></i>All Service charge</a></li>
-                    <li><a href="{{route('servicecharge.add')}}"><i class="ti-more"></i>Add Service charge</a></li>
+                    <li class="{{ ($route == 'servicecharge.view')?'active':'' }}"><a href="{{route('servicecharge.view')}}"><i class="ti-more"></i>All Service charge</a></li>
+                    <li class="{{ ($route == 'servicecharge.add')?'active':'' }}"><a href="{{route('servicecharge.add')}}"><i class="ti-more"></i>Add Service charge</a></li>
                 </ul>
             </li>
 
