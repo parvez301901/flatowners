@@ -82,7 +82,7 @@
                                         </div>
                                         <div class="col-12 text-center"><h3>Total Balance Remaining : @{{{balance}}}</h3></div>
                                         </script>
-                                        <div class="row" id="DocumentResults">
+                                        <div class="row" id="DocumentResults" style="margin-top: 40px;">
                                         </div>
 
                                 </div>

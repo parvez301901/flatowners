@@ -7,6 +7,8 @@ use App\Http\Controllers\backend\Project_ExpenseController;
 use App\Http\Controllers\backend\ProjectAddAmountController;
 use App\Http\Controllers\backend\ProjectController;
 use App\Http\Controllers\backend\Report;
+use App\Models\backend\Project;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\backend\UserController;
@@ -28,11 +30,15 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+
     return view('admin.index');
 })->name('dashboard');
 
 Route::get('/dashboard', function () {
-    return view('admin.index');
+    $data['total_flat_owner'] = User::where('usertype','flatowner')->get()->count();
+    $data['total_project_running'] = Project::all()->count();
+    $data['total_employee'] = User::where('usertype','employee')->get()->count();
+    return view('admin.index' , $data);
 })->middleware(['auth'])->name('dashboard');
 
 Route::get('/admin/logout', [AdminController::class, 'Logout'])->name('admin.logout');

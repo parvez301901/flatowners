@@ -7,12 +7,12 @@
         <div class="content-header">
             <div class="d-flex align-items-center">
                 <div class="mr-auto">
-                    <h3 class="page-title">Add New Unit</h3>
+                    <h3 class="page-title">Add New Flat</h3>
                     <div class="d-inline-block align-items-center">
                         <nav>
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{route('dashboard')}}"><i class="mdi mdi-home-outline"></i> Dashboard</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Add New Unit</li>
+                                <li class="breadcrumb-item active" aria-current="page">Add New Flat</li>
                             </ol>
                         </nav>
                     </div>
@@ -28,14 +28,14 @@
                     <!-- Basic Forms -->
                     <div class="box">
                         <div class="box-header with-border">
-                            <h4 class="box-title">Entry Unit information</h4>
+                            <h4 class="box-title">Entry Flat information</h4>
                         </div>
                         <!-- /.box-header -->
 
                         <form class="form-horizontal" method="POST" action="{{ route('unit.store') }}">
                             @csrf
                             <div class="box-body">
-                                <h4 class="mt-0 mb-20">1. Unit Info:</h4>
+                                <h4 class="mt-0 mb-20">1. Flat Info:</h4>
                                 <div class="row">
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
@@ -50,8 +50,8 @@
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label>Unit No.</label>
-                                            <input name="name" type="text" class="form-control" required="required" placeholder="Unit Name">
+                                            <label>Flat No.</label>
+                                            <input name="name" type="text" class="form-control" required="required" placeholder="Flat Name">
                                         </div>
                                     </div>
                                 </div>
@@ -74,7 +74,7 @@
                             <!-- /.box-body -->
                             <div class="box-footer d-flex justify-content-between">
                                 <button type="submit" class="btn btn-rounded btn-danger">Reset</button>
-                                <input type="submit" class="btn btn-rounded btn-info" value="Add Unit">
+                                <input type="submit" class="btn btn-rounded btn-info" value="Add Flat">
                             </div>
                         </form>
                     </div>

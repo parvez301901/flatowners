@@ -37,10 +37,11 @@ class Report extends Controller
 
         $html['thsource'] = '<th>SL</th>';
         $html['thsource'] .= '<th>Flat Owner Name</th>';
+        $html['thsource'] .= '<th>Date</th>';
         $html['thsource'] .= '<th>Amount</th>';
         if (!empty( $is_in_month_year ) ) {
             $html[0]['tdsource'] = '<td>1</td>';
-            $html[0]['tdsource'] .= '<td>Previous Month Balance</td>';
+            $html[0]['tdsource'] .= '<td colspan="2">Previous Month Balance</td>';
             $html[0]['tdsource'] .= '<td>' . $is_in_month_year->balance . '</td>';
             $incomes[] = (int)$is_in_month_year->balance;
         }
@@ -49,13 +50,14 @@ class Report extends Controller
             $flat_owner_name = User::find($empsalarie->flatownerId);
             $html[$key + 1]['tdsource'] = '<td>' . ($key + 2) . '</td>';
             $html[$key + 1]['tdsource'] .= '<td>'. $flat_owner_name->name .'</td>';
+            $html[$key + 1]['tdsource'] .= '<td>'. $empsalarie->serviceChargeDate .'</td>';
             $html[$key + 1]['tdsource'] .= '<td>' . $empsalarie->serviceChargeAmount . '</td>';
             $incomes[] = (int)$empsalarie->serviceChargeAmount;
 
         }
         if ( 0 != (array_sum($incomes)) ) {
             $income = array_sum($incomes);
-            $html['tfsource'] = '<td colspan="2" class="text-right"><b>Total</b></td>';
+            $html['tfsource'] = '<td colspan="3" class="text-right"><b>Total</b></td>';
             $html['tfsource'] .= '<td>' . $income . '</td>';
         } else {
             $income = 0;
@@ -71,6 +73,7 @@ class Report extends Controller
 
         $html['th2source'] = '<th>SL</th>';
         $html['th2source'] .= '<th>Utility</th>';
+        $html['th2source'] .= '<th>Date</th>';
         $html['th2source'] .= '<th>Amount</th>';
 
         foreach ($expenses as $key => $expense) {
@@ -79,13 +82,14 @@ class Report extends Controller
 
             $html[$key]['td2source'] = '<td>' . ($key + 1) . '</td>';
             $html[$key]['td2source'] .= '<td>' . $utility->name . '</td>';
+            $html[$key]['td2source'] .= '<td>' . $expense->maintenanceCostDate . '</td>';
             $html[$key]['td2source'] .= '<td>' . $expense->amount . '</td>';
             $outcomes[] = (int)$expense->amount;
         }
 
         if ( 0 != (array_sum($outcomes)) ) {
             $outcome = array_sum($outcomes);
-            $html['tf2source'] = '<td colspan="2" class="text-right"><b>Total</b></td>';
+            $html['tf2source'] = '<td colspan="3" class="text-right"><b>Total</b></td>';
             $html['tf2source'] .= '<td>' . $outcome . '</td>';
         } else {
             $outcome = 0;

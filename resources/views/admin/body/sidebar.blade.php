@@ -75,12 +75,12 @@ $route = Route::current()->getName();
                     <li class="treeview {{( $prefix == '/unit' )? 'active' : '' }}">
                         <a href="#">
                             <i data-feather="home"></i>
-                            <span>Unit Information</span>
+                            <span>Flat Information</span>
                             <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="{{ route('unit.view') }}"><i class="ti-more"></i>Unit List</a></li>
-                            <li><a href="{{ route('unit.add') }}"><i class="ti-more"></i>Add Unit</a></li>
+                            <li><a href="{{ route('unit.view') }}"><i class="ti-more"></i>Flat List</a></li>
+                            <li><a href="{{ route('unit.add') }}"><i class="ti-more"></i>Add Flat</a></li>
                         </ul>
                     </li>
                     <li class="treeview {{($prefix == '/utility')? 'active' : ''}}">
@@ -207,7 +207,7 @@ $route = Route::current()->getName();
                 </a>
                 <ul class="treeview-menu">
                     <li><a href=""><i class="ti-more"></i>Email/SMS List</a></li>
-                    <li><a href=""><i class="ti-more"></i>Add Email/SMS</a></li>
+                    <li class="{{ ($route == 'notice.add')? 'active' : '' }}"><a href=""><i class="ti-more"></i>Add Email/SMS</a></li>
                 </ul>
             </li>
 

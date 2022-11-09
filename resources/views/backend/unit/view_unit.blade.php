@@ -9,12 +9,12 @@
         <div class="content-header">
             <div class="d-flex align-items-center">
                 <div class="mr-auto">
-                    <h3 class="page-title">All Unit View</h3>
+                    <h3 class="page-title">All Flat View</h3>
                     <div class="d-inline-block align-items-center">
                         <nav>
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{route('dashboard')}}"><i class="mdi mdi-home-outline"></i> Dashboard</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">All Unit List</li>
+                                <li class="breadcrumb-item active" aria-current="page">All Flat List</li>
                             </ol>
                         </nav>
                     </div>
@@ -29,8 +29,8 @@
 
                     <div class="box">
                         <div class="box-header with-border d-flex justify-content-between align-items-center">
-                            <h3 class="box-title">Unit List</h3>
-                            <a href="{{ route('unit.add') }}" class="btn btn-rounded btn-success mb-5">Add Unit</a>
+                            <h3 class="box-title">Flat List</h3>
+                            <a href="{{ route('unit.add') }}" class="btn btn-rounded btn-success mb-5">Add Flat</a>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
@@ -40,9 +40,9 @@
                                         <tr>
                                             <th>SL</th>
                                             <th>Floor No</th>
-                                            <th>Unit No</th>
-                                            <th>Unit Rent(Base Amount)</th>
-                                            <th>Unit Service Charge</th>
+                                            <th>Flat No</th>
+                                            <th>Flat Rent(Base Amount)</th>
+                                            <th>Flat Service Charge</th>
                                             <th width="20%">Action</th>
                                         </tr>
                                     </thead>
