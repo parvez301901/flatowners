@@ -7,6 +7,7 @@ use App\Http\Controllers\backend\Project_ExpenseController;
 use App\Http\Controllers\backend\ProjectAddAmountController;
 use App\Http\Controllers\backend\ProjectController;
 use App\Http\Controllers\backend\Report;
+use App\Http\Controllers\backend\SmsSystemController;
 use App\Models\backend\Project;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -155,6 +156,18 @@ Route::group(['middleware' => 'auth'],function() {
 
     Route::prefix('project_deposit')->group(function (){
         Route::post('/store', [ProjectAddAmountController::class, 'ProjectAddStore'])->name('project_deposit.store');
+    });
+
+
+    Route::prefix('sms')->group(function (){
+        Route::get('/add', [SmsSystemController::class, 'SmsAdd'])->name('sms.add');
+       /*
+        Route::post('/store', [ProjectController::class, 'ProjectStore'])->name('project.store');
+        Route::get('/view', [ProjectController::class, 'ProjectView'])->name('project.view');
+        Route::get('/detail/{id}', [ProjectController::class, 'ProjectDetail'])->name('project.detail');
+        Route::get('/balance', [ProjectController::class, 'ProjectBalance'])->name('project.balance');
+        Route::post('/update/{id}', [UnitController::class, 'UnitUpdate'])->name('unit.update');
+        */
     });
 
     /*Ajax actions*/

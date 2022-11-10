@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="872f21d4-445e-4247-a5f1-3fb467fe9b5f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/Report.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/Report.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/body/sidebar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/body/sidebar.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/report/view_monthly_report.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/report/view_monthly_report.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/unit/add_unit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/unit/add_unit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/unit/detail_unit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/unit/detail_unit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/unit/view_unit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/unit/view_unit.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -179,6 +173,7 @@
       <workItem from="1667931252919" duration="9636000" />
       <workItem from="1667962017500" duration="15657000" />
       <workItem from="1667994062253" duration="3885000" />
+      <workItem from="1668048240870" duration="5242000" />
     </task>
     <servers />
   </component>
