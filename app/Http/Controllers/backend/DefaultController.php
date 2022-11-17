@@ -39,7 +39,7 @@ class DefaultController extends Controller
         $url = "http://66.45.237.70/api.php";
         $text="Thank You";
         $data= array(
-            'username'=>"0167950496",
+            'username'=>"01673950496",
             'password'=>"7RWNC9T8",
             'number'=>"$number",
             'message'=>"$text"
