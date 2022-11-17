@@ -47,7 +47,7 @@
                             </div>
                             <div>
                                 <p class="text-mute mt-20 mb-0 font-size-16">Total Collected</p>
-                                <h3 class="text-white mb-0 font-weight-500">BDT ??? </h3>
+                                <h3 class="text-white mb-0 font-weight-500">BDT {{$total_deposit}}</h3>
                             </div>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                             </div>
                             <div>
                                 <p class="text-mute mt-20 mb-0 font-size-16">Balance Remaining</p>
-                                <h3 class="text-white mb-0 font-weight-500">????</h3>
+                                <h3 class="text-white mb-0 font-weight-500">{{$total_deposit - $total_expense}}</h3>
                             </div>
                         </div>
                     </div>

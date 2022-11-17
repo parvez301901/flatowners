@@ -203,9 +203,9 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Unit</label>
+                                        <label>Flat</label>
                                         <select name="unit" id="assign_subject_id"  required="" class="form-control select2">
-                                            <option selected="selected" value="">Select Unit</option>
+                                            <option selected="selected" value="">Select Flat</option>
                                         </select>
                                     </div>
                                 </div>

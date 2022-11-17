@@ -160,6 +160,8 @@ Route::group(['middleware' => 'auth'],function() {
     /*Ajax actions*/
     Route::get('byfloor/getunit', [DefaultController::class, 'GetUnit'])->name('byfloor.getunit');
     Route::get('byunit/getownerid', [DefaultController::class, 'GetOwnerIdByUnit'])->name('byunit.getonwerid');
+    Route::get('byunit/findownerid', [DefaultController::class, 'FindOwnerIdByUnit'])->name('byunit.findonwerid');
+    Route::get('sms/smsthankyou', [DefaultController::class, 'SMSThankYou'])->name('sms.thankyou');
 
 });
 

@@ -49,6 +49,8 @@ class ProjectController extends Controller
         $data['allUtilitylist'] = Utility::all();
         $data['allexpensedata'] = ProjectExpense::where('project_id',$id)->get();
         $data['alldepoasitdata'] = ProjectAddAmount::where('project_id',$id)->get();
+        $data['total_deposit'] = ProjectAddAmount::where('project_id',$id)->sum('amount');
+        $data['total_expense'] = ProjectExpense::where('project_id',$id)->sum('amount');
 
         return view('backend.project.detail_project', $data );
     }

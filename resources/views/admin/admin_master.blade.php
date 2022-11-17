@@ -81,7 +81,6 @@
             break;
     }
     @endif
-    /*Common js*/
     /*for select2 active */
     jQuery('.select2').select2();
     /*image upload*/
@@ -140,6 +139,29 @@
     });
 
     /*Search Service Charge*/
+    $(document).on('click','#search_serviceCharge',function(){
+        var year_id = $('#serviceChargeMonthYear').val();
+        $('#search_serviceCharge').addClass('disabled');
+        console.log(year_id);
+        $.ajax({
+            url: "{{ route('servicecharge.search')}}",
+            type: "get",
+            data: {'year_id':year_id},
+            beforeSend: function() {
+            },
+            success: function (data) {
+                console.log(data);
+                $('#search_serviceCharge').removeClass('disabled');
+                var source = $("#document-template").html();
+                var template = Handlebars.compile(source);
+                var html = template(data);
+                $('#DocumentResults').html(html);
+                //$('[data-toggle="tooltip"]').tooltip();
+            }
+        });
+    });
+
+    /*Search Service Charge*/
     $(document).on('click','#search_balance_btn',function(){
         var year_id = $('#reportMonthYear').val();
         $('#search_balance_btn').addClass('disabled');
@@ -162,22 +184,22 @@
     });
 
     /*Search Service Charge*/
-    $(document).on('click','#show_project_balance_btn',function(){
-        var project_id = $('.project_id').val();
-        $('#show_project_balance_btn').addClass('disabled');
-        console.log(project_id);
+    $(document).on('change','input[name="serviceChargeMonthYear"]',function(){
+        var year_id = $(this).val();
+        console.log(year_id);
         $.ajax({
-            url: "{{ route('project.balance')}}",
+            url: "{{ route('servicecharge.search')}}",
             type: "get",
-            data: {'project_id':project_id},
+            data: {'year_id':year_id},
             beforeSend: function() {
             },
             success: function (data) {
-                $('#show_project_balance_btn').removeClass('disabled');
-                var source = $("#document-template-project").html();
+                console.log(data);
+                $('#search_serviceCharge').removeClass('disabled');
+                var source = $("#document-template").html();
                 var template = Handlebars.compile(source);
                 var html = template(data);
-                $('#projectDetail').html(html);
+                $('#DocumentResults').html(html);
                 //$('[data-toggle="tooltip"]').tooltip();
             }
         });
@@ -192,7 +214,7 @@
             type:"GET",
             data:{floor_id:floor_id},
             success:function(data){
-                var html = '<option value="">Select Unit</option>';
+                var html = '<option value="">Select Flat</option>';
                 $.each( data, function(key, v) {
                     html += '<option value="'+v.id+'">'+v.name+'</option>';
                 });
@@ -218,16 +240,27 @@
                 } else {
                     $('.message').addClass('d-none').removeClass('d-block');
                 }
-                /*
-                var html = '<option value="">Select Unit</option>';
-                $.each( data, function(key, v) {
-                    html += '<option value="'+v.id+'">'+v.name+'</option>';
-                });
-                $('#assign_subject_id').html(html);
-                */
             }
         });
     });
+
+    /*Check user already assigned*/
+    $(document).on('change','.find_user_by_unit',function(){
+        var floor_id = $('#on_select_floor').val();
+        var unit_id = $('.find_user_by_unit').val();
+        console.log(floor_id);
+        $.ajax({
+            url:"{{ route('byunit.findonwerid') }}",
+            type:"GET",
+            data:{floor_id:floor_id, unit_id:unit_id},
+            success:function(data){
+                console.log(data);
+                let html = '<option value="' + data.id + '">' + data.name + '</option>';
+                $('#flatowner_info').html(html);
+            }
+        });
+    });
+
 
     /*salary total*/
     function calc_total(){
@@ -269,10 +302,30 @@
                 }
             }
         });
-
-
     });
 
+    $(document).on('click','.thank-you',function(e){
+        e.preventDefault();
+        var phone = $(this).data( "phone" );
+        var user_id = $(this).data( "id" );
+        console.log(phone);
+        $.ajax({
+            url:"{{ route('sms.thankyou') }}",
+            type:"GET",
+            data:{phone:phone},
+            success:function(data){
+                console.log(data);
+                /*
+                if ( data.length > 0 ) {
+                    $('.message').addClass('d-block').removeClass('d-none');
+                } else {
+                    $('.message').addClass('d-none').removeClass('d-block');
+                }
+                */
+            }
+        });
+
+    });
 
 </script>
 

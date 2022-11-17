@@ -17,7 +17,9 @@ class CreateServiceChargesTable extends Migration
             $table->id();
             $table->date('serviceChargeMonthYear')->nullable();
             $table->integer('serviceChargeAmount')->nullable();
-            $table->integer('flatownerId')->nullable();
+            $table->integer('user_id')->nullable();
+            $table->integer('unit_id')->nullable();
+            $table->integer('floor_id')->nullable();
             $table->date('serviceChargeDate')->nullable();
             $table->timestamps();
         });

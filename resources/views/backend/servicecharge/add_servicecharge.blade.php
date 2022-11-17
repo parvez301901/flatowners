@@ -3,29 +3,9 @@
 @section('admin');
 <div class="content-wrapper">
     <div class="container-full">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="d-flex align-items-center">
-                <div class="mr-auto">
-                    <h3 class="page-title">Add Service Charge</h3>
-                    <div class="d-inline-block align-items-center">
-                        <nav>
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{route('dashboard')}}"><i class="mdi mdi-home-outline"></i> Dashboard</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Add New Service Charge</li>
-                            </ol>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Main content -->
         <section class="content">
-
             <div class="row">
-                <div class="col-lg-8 col-12">
-                    <!-- Basic Forms -->
+                <div class="col-12">
                     <div class="box">
                         <div class="box-header with-border">
                             <h4 class="box-title">Deposit Service Charge</h4>
@@ -35,52 +15,118 @@
                             <div class="box-body">
                                 <h4 class="mt-0 mb-20">1. Service Charge Info:</h4>
                                 <div class="row">
-                                    <div class="col-md-6 col-12">
+                                    <div class="col-md-2 col-12">
                                         <div class="form-group">
                                             <label>Name of the month</label>
                                             <input class="form-control" name="serviceChargeMonthYear" type="month" value="">
                                         </div>
                                     </div>
-                                    <div class="col-md-6 col-12">
+                                    <div class="col-md-1 col-12">
                                         <div class="form-group">
                                             <label>Deposit Money</label>
                                             <input name="serviceChargeAmount" class="form-control" type="number" value="">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 col-12">
+                                    <div class="col-md-2 col-12">
                                         <div class="form-group">
-                                            <label>Flat Owner Name</label>
+                                            <label>Floor</label>
                                             <div class="form-group">
-                                                <select name="flatownerId" class="form-control select2" style="width: 100%;">
-                                                    @foreach($allFlatOwnerlist as $owners)
-                                                    <option value="{{$owners->id}}">{{$owners->name}}</option>
+                                                <select name="floor_id" id="on_select_floor" required="" class="form-control select2">
+                                                    @foreach($allFloorlist as $floor)
+                                                        <option value="{{$floor->id}}" selected="">{{$floor->name}}</option>
                                                     @endforeach
+                                                        <option selected="selected" disabled="" value="">Select Floor</option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 col-12">
+                                    <div class="col-md-2 col-12">
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label>Flat</label>
+                                                <select name="unit_id" id="assign_subject_id"  required="" class="form-control select2 find_user_by_unit">
+                                                    <option selected="selected" value="">Select Floor First?</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-12">
+                                        <div class="form-group">
+                                            <label>Flat Owner Name</label>
+                                            <div class="form-group">
+                                                <select name="user_id" id="flatowner_info" class="form-control select2" style="width: 100%;">
+                                                    <option selected="selected" value=""></option>
+                                                </select>
+                                            </div>
+                                            <p class="message d-none">No Flat User Found</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-12">
                                         <div class="form-group">
                                             <label>Deposit Date</label>
                                             <input class="form-control" name="serviceChargeDate" type="date" value="" id="example-date-input">
                                         </div>
                                     </div>
+                                    <div class="col-md-1 col-12">
+                                        <div class="form-group">
+                                            <input type="submit" class="btn btn-rounded btn-info mt-4" value="Add">
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <!-- /.box-body -->
-                            <div class="box-footer d-flex justify-content-between">
-                                <button type="submit" class="btn btn-rounded btn-danger">Reset</button>
-                                <input type="submit" class="btn btn-rounded btn-info" value="Add Service Charge Date">
                             </div>
                         </form>
                     </div>
-                    <!-- /.box -->
                 </div>
             </div>
-
         </section>
+
+        <section class="content">
+            <div class="row">
+                <div class="col-12">
+                    <div class="box bb-3 border-warning">
+                        <div class="box-header">
+                            <h4 class="box-title">Service Charge List</h4>
+                        </div>
+
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <script id="document-template" type="text/x-handlebars-template">
+
+                                        <table class="table table-bordered table-striped" style="width: 100%">
+                                            <thead>
+                                            <tr>
+                                                @{{{thsource}}}
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @{{#each this}}
+                                            <tr>
+                                                @{{{tdsource}}}
+                                            </tr>
+                                            @{{/each}}
+
+                                            </tbody>
+                                            <tfoot>
+                                            <tr>
+                                                @{{{tfsource}}}
+                                            </tr>
+                                            </tfoot>
+                                        </table>
+                                    </script>
+                                    <div id="DocumentResults">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
     </div>
 </div>
 

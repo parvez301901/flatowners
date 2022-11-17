@@ -52,7 +52,7 @@
 
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label>Floor</label>
+                                                <label>Flat Owner Name</label>
                                                 <select name="floor" id="on_select_floor" required="" class="form-control select2">
                                                     @foreach($allFloorlist as $floor)
                                                         <option value="{{$floor->id}}" selected="">{{$floor->name}}</option>

@@ -3,13 +3,18 @@
   <component name="ChangeListManager">
     <list default="true" id="872f21d4-445e-4247-a5f1-3fb467fe9b5f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/Report.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/Report.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/body/sidebar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/body/sidebar.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/report/view_monthly_report.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/report/view_monthly_report.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/unit/add_unit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/unit/add_unit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/unit/detail_unit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/unit/detail_unit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/unit/view_unit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/unit/view_unit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/DefaultController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/DefaultController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/MaintenanceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/MaintenanceController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/ServiceChargeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/ServiceChargeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/ServiceCharge.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/ServiceCharge.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2022_10_12_152317_create_service_charges_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2022_10_12_152317_create_service_charges_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/admin_master.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/admin_master.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/backend/project/detail_project.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/project/detail_project.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/backend/servicecharge/add_servicecharge.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/servicecharge/add_servicecharge.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/backend/servicecharge/view_servicecharge.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/servicecharge/view_servicecharge.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/backend/user/add_user.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/user/add_user.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/backend/user/assign_user.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/user/assign_user.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -179,6 +184,13 @@
       <workItem from="1667931252919" duration="9636000" />
       <workItem from="1667962017500" duration="15657000" />
       <workItem from="1667994062253" duration="3885000" />
+      <workItem from="1668225581059" duration="594000" />
+      <workItem from="1668309024444" duration="1813000" />
+      <workItem from="1668442620845" duration="595000" />
+      <workItem from="1668600336984" duration="789000" />
+      <workItem from="1668623680945" duration="324000" />
+      <workItem from="1668671013672" duration="1136000" />
+      <workItem from="1668701852345" duration="15331000" />
     </task>
     <servers />
   </component>

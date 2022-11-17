@@ -144,26 +144,38 @@ class MaintenanceController extends Controller
     }
 
     public function MaintenanceSalaryDisburse(Request $request){
-        $total_salary = $request->total_salary;
-        // build date
+
         $date = Carbon::now()->format('Y-m-d');
         $monthyear = Carbon::now()->format('m-Y');
-        $data = new MaintenanceModel();
-        $data->amount = $total_salary;
-        $data->userId = Auth::user()->id;
-        $data->unitId = 1;
-        $data->floorId = 1;
-        $data->utilityId = 1;
-        $data->maintenanceCostDate = $date;
-        $data->maintenanceNote = 'Salary For ' . $monthyear;
 
-        $data->save();
+        /*service charge listing*/
+        $find_previous_data = MaintenanceModel::whereMonth('maintenanceCostDate', $monthyear->month)
+            ->whereYear('maintenanceCostDate', $monthyear->year)
+            ->first();
+        if (!empty($find_previous_data)) {
+            $total_salary = $request->total_salary;
+            // build date
+            $data = new MaintenanceModel();
+            $data->amount = $total_salary;
+            $data->userId = Auth::user()->id;
+            $data->unitId = 1;
+            $data->floorId = 1;
+            $data->utilityId = 12;
+            $data->maintenanceCostDate = $date;
+            $data->maintenanceNote = 'Salary For ' . $monthyear;
 
-        if (true == ($data->save())) {
-            $html = 'Salary Disbursed Successfully ';
+            $data->save();
+
+            if (true == ($data->save())) {
+                $html = 'Salary Disbursed Successfully ';
+            } else {
+                $html = 'Some Problem Happened';
+            }
         } else {
-            $html = 'Some Problem Happend';
+            $html = 'Salary already disbursed for ' . $monthyear;
         }
+
+
         return response()->json(@$html);
 
     }

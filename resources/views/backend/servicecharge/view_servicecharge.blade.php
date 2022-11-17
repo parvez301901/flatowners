@@ -10,15 +10,6 @@
                             <div class="box-header">
                                 <h4 class="box-title">Service Charge List</h4>
                             </div>
-
-                            @php
-                            /*
-                            echo '<pre>';
-                            print_r($empsalaries);
-                            echo '</pre>';
- */
-                            @endphp
-
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-3">
@@ -38,9 +29,7 @@
                                     </div> <!-- End Col md 3 -->
                                 </div><!--  end row -->
 
-
                                 <!--  ////////////////// Registration Fee table /////////////  -->
-
 
                                 <div class="row">
                                     <div class="col-md-12">
