@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="872f21d4-445e-4247-a5f1-3fb467fe9b5f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/DefaultController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/DefaultController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/MaintenanceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/MaintenanceController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectController.php" afterDir="false" />
@@ -15,6 +17,8 @@
       <change beforePath="$PROJECT_DIR$/resources/views/backend/servicecharge/view_servicecharge.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/servicecharge/view_servicecharge.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/backend/user/add_user.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/user/add_user.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/backend/user/assign_user.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/user/assign_user.blade.php" afterDir="false" />
+=======
+>>>>>>> b45cc4ab672ba619ada0dfdcb56c595d79f8f63d
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -184,6 +188,7 @@
       <workItem from="1667931252919" duration="9636000" />
       <workItem from="1667962017500" duration="15657000" />
       <workItem from="1667994062253" duration="3885000" />
+<<<<<<< HEAD
       <workItem from="1668225581059" duration="594000" />
       <workItem from="1668309024444" duration="1813000" />
       <workItem from="1668442620845" duration="595000" />
@@ -191,6 +196,9 @@
       <workItem from="1668623680945" duration="324000" />
       <workItem from="1668671013672" duration="1136000" />
       <workItem from="1668701852345" duration="15331000" />
+=======
+      <workItem from="1668048240870" duration="5242000" />
+>>>>>>> b45cc4ab672ba619ada0dfdcb56c595d79f8f63d
     </task>
     <servers />
   </component>
