@@ -21,12 +21,6 @@
                                             <input class="form-control" name="serviceChargeMonthYear" type="month" value="">
                                         </div>
                                     </div>
-                                    <div class="col-md-1 col-12">
-                                        <div class="form-group">
-                                            <label>Deposit Money</label>
-                                            <input name="serviceChargeAmount" class="form-control" type="number" value="">
-                                        </div>
-                                    </div>
                                     <div class="col-md-2 col-12">
                                         <div class="form-group">
                                             <label>Floor</label>
@@ -59,6 +53,12 @@
                                                 </select>
                                             </div>
                                             <p class="message d-none">No Flat User Found</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 col-12">
+                                        <div class="form-group">
+                                            <label>Deposit Money</label>
+                                            <input name="serviceChargeAmount" class="form-control" type="number" value="">
                                         </div>
                                     </div>
                                     <div class="col-md-2 col-12">

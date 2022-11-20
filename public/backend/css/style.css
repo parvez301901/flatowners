@@ -21462,66 +21462,6 @@ ul.flexbox {
   margin-left: -10px;
   margin-bottom: 14px;
   color: #7792b1; }
-
-/*---todo-list---*/
-.todo-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  overflow: auto; }
-  .todo-list > li {
-    border-radius: 2px;
-    padding: 1.5rem 2.2rem;
-    margin-bottom: 2px;
-    color: #475f7b; }
-    .todo-list > li:last-of-type {
-      margin-bottom: 0; }
-    .todo-list > li > input[type=checkbox] {
-      margin: 0 10px 0 5px; }
-    .todo-list > li .text {
-      display: inline-block;
-      margin-left: 30px;
-      font-weight: 600; }
-    .todo-list > li .label {
-      margin-left: 10px;
-      font-size: 10px; }
-    .todo-list > li .tools {
-      display: none;
-      float: right;
-      color: #EF3737; }
-      .todo-list > li .tools > i {
-        margin-right: 5px;
-        cursor: pointer; }
-    .todo-list > li:hover .tools {
-      display: inline-block; }
-    .todo-list > li.done {
-      color: #737373; }
-      .todo-list > li.done .text {
-        text-decoration: line-through;
-        font-weight: 500; }
-      .todo-list > li.done .text-line {
-        text-decoration: line-through;
-        font-weight: 500; }
-      .todo-list > li.done label {
-        background: #d5dfea; }
-  .todo-list .done .text-line {
-    text-decoration: line-through;
-    font-weight: 500; }
-  .todo-list .handle {
-    display: inline-block;
-    cursor: move;
-    margin: 0 5px; }
-  .todo-list .handle2 {
-    border-left: 3px dotted #b3b3b3;
-    border-right: 3px dotted #b3b3b3;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 10px;
-    margin: 0; }
-
 .control {
   margin-bottom: 0;
   display: inline;
@@ -24032,4 +23972,116 @@ a.disabled {
 }
 .select2-container--default .select2-results__option[aria-selected=true]:hover {
     color: #fdfeff;
+}
+.receipt-body {
+    padding: 15px;
+}
+.receipt-heading {
+    padding: 0;
+}
+.second-heading { font-size: 22px; }
+.first-heading, .second-heading, .receipt-body {
+    color: #000000 !important;
+}
+.name-space, .address-space, .address-space {
+    border-bottom: 1px dotted #000;
+    display: block;
+    height: 26px;
+}
+.name-space {
+    width: 90%;
+}
+.student-name {
+    margin-bottom: 15px;
+}
+.receipt-data {
+    color: #000000;
+    font-size: 18px;
+}
+.receipt-heading .first-heading {
+    font-size: 23px;
+    font-weight: 900;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+.receipt-heading .second-heading {
+    font-size: 23px;
+    font-weight: 900;
+    margin-bottom: 10px;
+}
+.receipt-body {}
+.receipt-body .student-name {
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+}
+.receipt-body .student-address {
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+}
+.receipt-body .two-sections {
+    margin-bottom: 25px;
+    display: flex;
+}
+.receipt-body .two-sections .first-section {
+    flex-grow: 1;
+}
+.receipt-body .two-sections .second-section {
+    flex-grow: 1;
+}
+.receipt-body .student-name .name-space {
+    border-bottom: 1px dotted #656464;
+    width: 92%;
+    display: block;
+}
+.receipt-body .student-address .address-space {
+    border-bottom: 1px dotted #656464;
+    width: 88%;
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+}
+.receipt-body .second-section,
+.receipt-body .first-section {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+}
+.receipt-body .first-section {
+    margin-right: 5%;
+}
+.receipt-body .first-section .first-space {
+    border-bottom: 1px dotted #656464;
+    width: 65%;
+    display: block;
+}
+.receipt-body .second-section .second-space {
+    border-bottom: 1px dotted #656464;
+    width: 75%;
+    display: block;
+}
+.receipt-body .first-section.amount .first-space {
+    border: 1px dotted #656464;
+    width: 50%;
+    display: block;
+    padding: 6px 0 6px 10px;
+}
+.receipt-body .two-sections .amount {
+    align-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+.receipt-body .two-sections .amount-word {
+    align-content: center;
+    align-items: center;
+    flex-grow: 3;
+}
+.receipt-body .two-sections .amount-word .second-space {
+    padding: 0 0 0 10px;
+    width: 81%;
+}
+.disabled-link {
+    pointer-events: none;
 }

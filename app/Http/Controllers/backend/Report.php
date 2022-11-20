@@ -24,14 +24,14 @@ class Report extends Controller
         $date = Carbon::createFromFormat('m/Y', Carbon::parse($year_id)->format('m/Y'));
 
         /*service charge listing*/
+
         $empsalaries = ServiceCharge::whereMonth('serviceChargeMonthYear', $date->month)
             ->whereYear('serviceChargeMonthYear', $date->year)
             ->get();
+
         $f = date('Y-m-d', strtotime($year_id." -1 month"));
         $prev_date = Carbon::createFromFormat('m/Y', Carbon::parse($f)->format('m/Y'));
-        $is_in_month_year = RemainingBalance::whereMonth('month_year', $prev_date->month)
-            ->whereYear('month_year', $prev_date->year)
-            ->first();
+        $is_in_month_year = RemainingBalance::get()->first();
 
         $incomes = array();
 
@@ -47,9 +47,8 @@ class Report extends Controller
         }
         foreach ($empsalaries as $key => $empsalarie) {
 
-            $flat_owner_name = User::find($empsalarie->flatownerId);
             $html[$key + 1]['tdsource'] = '<td>' . ($key + 2) . '</td>';
-            $html[$key + 1]['tdsource'] .= '<td>'. $flat_owner_name->name .'</td>';
+            $html[$key + 1]['tdsource'] .= '<td>'. $empsalarie['get_user']['name'] .'</td>';
             $html[$key + 1]['tdsource'] .= '<td>'. $empsalarie->serviceChargeDate .'</td>';
             $html[$key + 1]['tdsource'] .= '<td>' . $empsalarie->serviceChargeAmount . '</td>';
             $incomes[] = (int)$empsalarie->serviceChargeAmount;
@@ -65,6 +64,7 @@ class Report extends Controller
         }
 
         /*Expense Listing*/
+
         $expenses = MaintenanceModel::whereMonth('maintenanceCostDate', $date->month)
             ->whereYear('maintenanceCostDate', $date->year)
             ->get();
@@ -97,6 +97,7 @@ class Report extends Controller
         }
 
         $html['balance'] = ((int)$income) - ((int)$outcome);
+
 
         return response()->json(@$html);
 

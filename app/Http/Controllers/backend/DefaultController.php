@@ -35,9 +35,31 @@ class DefaultController extends Controller
     }
     public function SMSThankYou(Request $request) {
         $number = $request->phone;
+        $text = $request->text;
 
         $url = "http://66.45.237.70/api.php";
-        $text="Thank You";
+        $data= array(
+            'username'=>"01673950496",
+            'password'=>"7RWNC9T8",
+            'number'=>"$number",
+            'message'=>"$text"
+        );
+
+        $ch = curl_init(); // Initialize cURL
+        curl_setopt($ch, CURLOPT_URL,$url);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $smsresult = curl_exec($ch);
+        $p = explode("|",$smsresult);
+        $sendstatus = $p[0];
+        return response()->json($sendstatus);
+    }
+
+    public function SMSDueRemind(Request $request) {
+        $number = $request->phone;
+        $text = $request->text;
+
+        $url = "http://66.45.237.70/api.php";
         $data= array(
             'username'=>"01673950496",
             'password'=>"7RWNC9T8",

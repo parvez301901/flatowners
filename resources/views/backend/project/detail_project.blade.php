@@ -94,7 +94,7 @@
                         </div>
                     </div>
                 </div>
-
+<!--
                 <div class="col-xl-2 col-6">
                     <div class="box overflow-hidden pull-up">
                         <div class="box-body">
@@ -108,7 +108,7 @@
                         </div>
                     </div>
                 </div>
-
+-->
                 <div class="col-lg-6 col-12">
                     <!-- Basic Forms -->
                     <div class="box">
@@ -195,7 +195,8 @@
 
                 <div class="col-md-12 text-center" style="padding: 35px 0;">
                     <input name="project_id" type="hidden" class="form-control project_id" value="{{$detailData->id}}" required="required">
-                    <a id="show_project_balance_btn" class="btn btn-primary" name="search">View Balance Sheet</a>
+                    <input id="show_project_balance_btn" type="submit" class="btn btn-primary" value="View Balance Sheet" />
+                    <div class="kiholo">ki holo</div>
                 </div> <!-- End Col md 3 -->
 
                 <div class="col-md-12">

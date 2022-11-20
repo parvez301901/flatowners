@@ -112,6 +112,8 @@ Route::group(['middleware' => 'auth'],function() {
         Route::get('/view', [ServiceChargeController::class, 'ServiceChargeView'])->name('servicecharge.view');
         Route::get('/add', [ServiceChargeController::class, 'ServiceChargeAdd'])->name('servicecharge.add');
         Route::post('/store', [ServiceChargeController::class, 'ServiceChargeStore'])->name('servicecharge.store');
+        Route::get('/receipt', [ServiceChargeController::class, 'ServiceChargeReceipt'])->name('servicecharge.receipt');
+
         //////////////------------------------------  Baki ache ------------ Edit - Update - Delete ------   /////////////////
     });
 
@@ -175,6 +177,7 @@ Route::group(['middleware' => 'auth'],function() {
     Route::get('byunit/getownerid', [DefaultController::class, 'GetOwnerIdByUnit'])->name('byunit.getonwerid');
     Route::get('byunit/findownerid', [DefaultController::class, 'FindOwnerIdByUnit'])->name('byunit.findonwerid');
     Route::get('sms/smsthankyou', [DefaultController::class, 'SMSThankYou'])->name('sms.thankyou');
+    Route::get('sms/due_remind', [DefaultController::class, 'SMSDueRemind'])->name('sms.due_remind');
 
 });
 

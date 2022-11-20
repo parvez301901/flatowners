@@ -22,14 +22,14 @@
 
                                     </div> <!-- End Col md 3 -->
 
-                                    <div class="col-md-3" style="padding-top: 25px;">
-
-                                        <a id="search_serviceCharge" class="btn btn-primary" name="search"> Search</a>
-
-                                    </div> <!-- End Col md 3 -->
                                 </div><!--  end row -->
 
-                                <!--  ////////////////// Registration Fee table /////////////  -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="receipt-holder"></div>
+                                    </div>
+                                </div>
+
 
                                 <div class="row">
                                     <div class="col-md-12">

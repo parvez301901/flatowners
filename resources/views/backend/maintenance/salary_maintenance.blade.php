@@ -66,7 +66,17 @@
                                     </tbody>
                                 </table>
                                 <div class="text-center"><h1>Total Salary: <Span class="final-salary"></Span></h1></div>
-                                <div class="text-center"><a href="#" class="btn btn-success mr-2 insert-salary-expense">Disburse Salary</a></div>
+                                <div class="container mt-5">
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            @if($all_matched)
+                                                <a href="#" data-salary="" class="btn btn-success mr-2 ">Salary for This Month already Disbursed</a>
+                                            @else
+                                                <a href="#" data-salary="" class="btn btn-success mr-2 insert-salary-expense">Disburse Salary</a>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
                                 <p class="message d-none">Salary Disbursed Successfully</p>
                             </div>
                         </div>

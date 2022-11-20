@@ -138,8 +138,15 @@ class MaintenanceController extends Controller
     }// end method
 
     public function MaintenanceSalary() {
+
+        $now_monthyear = date("Y-m");
+        $date = Carbon::createFromFormat('m/Y', Carbon::parse($now_monthyear)->format('m/Y'));
         $data['allEmployee'] = User::where('usertype','employee')->get();
         $data['total_salary'] = User::where('usertype','employee')->sum('salary');
+        $data['all_matched'] = MaintenanceModel::whereMonth('maintenanceCostDate', $date->month)
+            ->whereYear('maintenanceCostDate', $date->year)
+            ->where('utilityId','12')
+            ->get();
         return view('backend.maintenance.salary_maintenance' , $data);
     }
 
@@ -148,11 +155,11 @@ class MaintenanceController extends Controller
         $date = Carbon::now()->format('Y-m-d');
         $monthyear = Carbon::now()->format('m-Y');
 
-        /*service charge listing*/
-        $find_previous_data = MaintenanceModel::whereMonth('maintenanceCostDate', $monthyear->month)
+        /*$find_previous_data = MaintenanceModel::whereMonth('maintenanceCostDate', $monthyear->month)
             ->whereYear('maintenanceCostDate', $monthyear->year)
             ->first();
-        if (!empty($find_previous_data)) {
+        if (empty($find_previous_data)) {*/
+
             $total_salary = $request->total_salary;
             // build date
             $data = new MaintenanceModel();
@@ -171,9 +178,9 @@ class MaintenanceController extends Controller
             } else {
                 $html = 'Some Problem Happened';
             }
-        } else {
+        /*} else {
             $html = 'Salary already disbursed for ' . $monthyear;
-        }
+        }*/
 
 
         return response()->json(@$html);

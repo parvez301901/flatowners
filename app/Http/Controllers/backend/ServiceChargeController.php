@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
+use Rakibhstu\Banglanumber\NumberToBangla;
+
 class ServiceChargeController extends Controller
 {
     public function ServiceChargeView() {
@@ -27,14 +29,49 @@ class ServiceChargeController extends Controller
     }
 
     public function ServiceChargeStore( Request $request ) {
+
+        $service_charges_to_pay = Unit::where('id', $request->unit_id)->first();
+
+        $find_due = ($service_charges_to_pay->serviceCharge) - ($request->serviceChargeAmount);
+        $month_year = Carbon::parse($request->serviceChargeMonthYear)->format('M Y');
         $data = new ServiceCharge();
         $data->serviceChargeMonthYear = $request->serviceChargeMonthYear . '-02';
         $data->serviceChargeAmount = $request->serviceChargeAmount;
+        $data->serviceChargeDue =  $find_due;
         $data->user_id = $request->user_id;
         $data->unit_id = $request->unit_id;
         $data->floor_id = $request->floor_id;
         $data->serviceChargeDate = $request->serviceChargeDate;
-        $data->save();
+        $saved = $data->save();
+
+        if($saved == 1){
+            $get_user = User::find($request->user_id);
+            $get_unit = Unit::find($request->unit_id);
+            $number = $get_user->phone;
+            if ($find_due > 0){
+                $text = "Dear $get_user->name, Received Service Charge TK $request->serviceChargeAmount Total due TK $find_due of $month_year, for Flat $get_unit->name. Thank You.";
+            } else {
+
+            }
+
+
+            $url = "http://66.45.237.70/api.php";
+            $data= array(
+                'username'=>"01673950496",
+                'password'=>"7RWNC9T8",
+                'number'=>"$number",
+                'message'=>"$text"
+            );
+
+            $ch = curl_init(); // Initialize cURL
+            curl_setopt($ch, CURLOPT_URL,$url);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $smsresult = curl_exec($ch);
+            $p = explode("|",$smsresult);
+            $sendstatus = $p[0];
+
+        }
 
         $f = date('Y-m-d', strtotime($request->serviceChargeDate." -1 month"));
         $prev_date = Carbon::createFromFormat('m/Y', Carbon::parse($f)->format('m/Y'));
@@ -82,12 +119,14 @@ class ServiceChargeController extends Controller
 
         $date = Carbon::createFromFormat('m/Y', Carbon::parse($year_id)->format('m/Y'));
 
+        $month_year = Carbon::parse($year_id)->format('M Y');
+
         $empsalaries = ServiceCharge::whereMonth('serviceChargeMonthYear', $date->month)
             ->whereYear('serviceChargeMonthYear', $date->year)
             ->get();
 
-
         $charges = array();
+        $due_count = array();
 
         $html['thsource'] = '<th>SL</th>';
         $html['thsource'] .= '<th>Flat Owner Name</th>';
@@ -97,16 +136,16 @@ class ServiceChargeController extends Controller
         $html['thsource'] .= '<th>Amount to Pay</th>';
         $html['thsource'] .= '<th>Paid Amount</th>';
         $html['thsource'] .= '<th>Due</th>';
-        $html['thsource'] .= '<th>Reminder</th>';
+        $html['thsource'] .= '<th>Action</th>';
 
         foreach ($empsalaries as $key => $empsalarie) {
 
-            $due = ($empsalarie->serviceChargeAmount) - ($empsalarie['get_unit']['serviceCharge']);
+            $due = ($empsalarie['get_unit']['serviceCharge']) - ($empsalarie->serviceChargeAmount);
 
-            if ($due > 0 ){
-                $reminder_button = '<a class="btn btn-rounded btn-info due-money" data-user-id="' . $empsalarie['get_user']['id'] . '" data-phone="' . $empsalarie['get_user']['phone'] . '" id="">Remind</a>';
+            if ($empsalarie->serviceChargeDue > 0 ){
+                $reminder_button = '<a class="btn btn-rounded btn-info d-inline-flex due-money" data-text="Dear ' . $empsalarie['get_user']['name'] . ', Total due TK'. $empsalarie->serviceChargeDue .' as Service Charge for '. $month_year .', for Flat '. $empsalarie['get_unit']['name'] .'. Please pay." data-phone="' . $empsalarie['get_user']['phone'] . '" id=""><i class="d-none ti-check"></i>Remind</a>';
             } else {
-                $reminder_button = '<a class="btn btn-rounded btn-info thank-you" data-user-id="' . $empsalarie['get_user']['id'] . '" data-phone="' . $empsalarie['get_user']['phone'] . '" id="">Remind</a>';
+                $reminder_button = '';
             }
 
             $html[$key]['tdsource'] = '<td>' . ($key + 1) . '</td>';
@@ -116,22 +155,89 @@ class ServiceChargeController extends Controller
             $html[$key]['tdsource'] .= '<td>' . $empsalarie->serviceChargeDate . '</td>';
             $html[$key]['tdsource'] .= '<td>' . $empsalarie['get_unit']['serviceCharge'] . '</td>';
             $html[$key]['tdsource'] .= '<td>' . $empsalarie->serviceChargeAmount . '</td>';
-            $html[$key]['tdsource'] .= '<td>' . $due . '</td>';
-            $html[$key]['tdsource'] .= '<td>' . $reminder_button . '</td>';
+            $html[$key]['tdsource'] .= '<td>' . $empsalarie->serviceChargeDue . '</td>';
+            $html[$key]['tdsource'] .= '<td>' . $reminder_button . '<a class="btn btn-rounded btn-primary show_receipt ml-2" data-servicechargeId="'. $empsalarie->id .'">Show Recipt</a><a class="btn btn-rounded btn-success ml-2 edit-servicecharge"><i class="ti-pencil-alt"></i></a> <p class="smsmessage d-none">Message Sent</p></td>';
 
             $charges[] = (int)$empsalarie->serviceChargeAmount;
+            $due_count[] = (int)$empsalarie->serviceChargeDue;
 
         }
         if ( 0 != (array_sum($charges)) ) {
             //$other_cost = AccountOtherCost::whereBetween('date',[$sdate,$edate])->sum('amount');
             $html['tfsource'] = '<td colspan="6" class="text-right"><b>Total</b></td>';
             $html['tfsource'] .= '<td>' . array_sum($charges) . '</td>';
+            $html['tfsource'] .= '<td colspan="2">Total Due: ' . array_sum($due_count) . '</td>';
         } else {
             $html['tfsource'] = '<td colspan="9" class="text-center"><b>No Data Found</b></td>';
         }
 
-
         return response()->json(@$html);
 
     }// end method
+
+    public function ServiceChargeReceipt(Request $request){
+
+        $serviceChargeId = $request->serviceChargeId;
+        $serviceCharges = ServiceCharge::where('id', $serviceChargeId)->first();
+        $date = date('Y');
+
+        $numto = new NumberToBangla();
+
+        $text = $numto->bnMoney($serviceCharges->serviceChargeAmount);
+        //print_r($serviceCharges);
+
+        $receipt_html = '<div class="col-xs-12">
+                            <div id="printableArea" style="background-color: #ffffff; padding: 15px;">
+                                <div style="border: 2px solid #000000; padding: 15px">
+                                    <div class="media receipt-heading">
+                                        <div class="media-body">
+                                            <div style="display: flex; justify-content: space-between">
+                                                <div>
+                                                    <h3 class="media-heading first-heading">Krishnochura Height Flat Malik Kallayan Somity</h3>
+                                                    <h3 class="media-heading second-heading">কৃষ্ণচূড়া হাইটস ফ্লাট মালিক কল্যাণ সমিতি</h3>
+                                                </div>
+                                                <div class="receipt-data">
+                                                    <div class="receipt-id"><b>Receipt No / ক্রমিক নং: '. $date.$serviceChargeId .' </b></div>
+                                                    <div class="receipt-date"><b>Date / তারিখ: '. $serviceCharges->serviceChargeDate .'</b></div>
+                                                    <div class="receipt-status"><b>Paid</b></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="receipt-body">
+                                        <div class="student-name">নাম/Name:<span class="name-space">'.$serviceCharges['get_user']['name'].'</span></div>
+                                        <div class="two-sections">
+                                            <div class="first-section">ফ্লাট নং/Flat No:<span class="first-space"><b>'. $serviceCharges['get_unit']['name']. '</b></span></div>
+                                            <div class="second-section">ফ্লোর নং/Floor No:<span class="second-space"><b>'. $serviceCharges['get_floor']['name']. '</b></span></div>
+                                        </div>
+                                        <div class="two-sections">
+                                            <div class="first-section">মোবাইল নং/Mobile Number:<span class="first-space"><b>'. $serviceCharges['get_user']['phone']. '</b></span></div>
+                                            <div class="second-section">বাবদ/Purpose:<span class="second-space"><b>Service Charge</b></span></div>
+                                        </div>
+                                        <div class="two-sections amount">
+                                            <div class="first-section amount">পরিমান/Amount: <span class="first-space"><b>' . $serviceCharges->serviceChargeAmount . '</b>/=</span></div>
+                                            <div class="second-section amount-word">কথায় / In Words: <span class="second-space"><b>'. $text .' মাত্র</b></span></div>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; margin-top: 55px;">
+                                            <div style="border-top: 1px dotted #797979; padding-top: 10px"><b>প্রদানকারী/Payee name</b></div>
+                                            <div style="border-top: 1px dotted #797979; padding-top: 10px"><b>আদায়কারী/Receiver</b></div>
+                                        </div>
+                                        <hr>
+                                        <h5 style="text-align: center; color:#000000;">প্লট নংঃ ৬৪, এভিনিউঃ৫, ব্লকঃ এ, সেকশনঃ ৬, মিরপুর, ঢাকা - ১২১৬ </h5>
+                                    </div>
+                                </div>
+                            </div>
+                         </div>
+
+<div class="col-xs-12">
+    <button target="_blank"  onclick="printDiv()"   value="print a div!" class="btn btn-rounded btn-primary show_receipt my-3"><i class="fa fa-print"></i> Print</button>
+</div>';
+
+
+
+        return response()->json($receipt_html);
+
+    }
+
 }

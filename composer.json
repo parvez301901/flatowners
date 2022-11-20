@@ -17,7 +17,8 @@
         "laravel/jetstream": "^2.9",
         "laravel/sanctum": "^2.15",
         "laravel/tinker": "^2.0",
-        "livewire/livewire": "^2.5"
+        "livewire/livewire": "^2.5",
+        "rakibhstu/number-to-bangla": "^1.4"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",

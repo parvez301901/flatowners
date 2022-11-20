@@ -138,6 +138,26 @@
         });
     });
 
+    /*Show Service Charge - RECEIPT*/
+    $(document).on('click','.show_receipt',function(e) {
+        e.preventDefault();
+        var serviceChargeId = $(this).data( "servicechargeid" );
+
+        console.log(serviceChargeId);
+        $.ajax({
+            url: "{{ route('servicecharge.receipt')}}",
+            type: "get",
+            data: {'serviceChargeId':serviceChargeId},
+            beforeSend: function() {
+            },
+            success: function (data) {
+                console.log(data);
+                $('.receipt-holder').html(data);
+            }
+        });
+
+    });
+
     /*Search Service Charge*/
     $(document).on('click','#search_serviceCharge',function(){
         var year_id = $('#serviceChargeMonthYear').val();
@@ -261,7 +281,6 @@
         });
     });
 
-
     /*salary total*/
     function calc_total(){
         var sum = 0;
@@ -286,6 +305,7 @@
 
     $(document).on('click','.insert-salary-expense',function(e){
         e.preventDefault();
+        $(this).addClass('disabled-link ');
         var total_salary = $('.final-salary').text();
         console.log(total_salary);
 
@@ -304,28 +324,89 @@
         });
     });
 
+    $(document).on('click','.due-money',function(e){
+        e.preventDefault();
+        var catch_element = $(this);
+        catch_element.addClass('disabled-link');
+        var phone = $(this).data( "phone" );
+        var text = $(this).data( "text" );
+        console.log(phone);
+        $.ajax({
+            url:"{{ route('sms.due_remind') }}",
+            type:"GET",
+            data:{phone:phone,text:text},
+            success:function(data){
+                console.log(data);
+                if ( data === '1101' ) {
+                    catch_element.children('i.ti-check').addClass('d-block').removeClass('d-none');
+                    catch_element.siblings('p').addClass('d-block').removeClass('d-none');
+                } else {
+                    $('.smsmessage').addClass('d-none').removeClass('d-block');
+                }
+
+            }
+        });
+    });
+
     $(document).on('click','.thank-you',function(e){
         e.preventDefault();
+        var catch_element = $(this);
+        catch_element.addClass('disabled-link');
         var phone = $(this).data( "phone" );
-        var user_id = $(this).data( "id" );
+        var text = $(this).data( "text" );
         console.log(phone);
         $.ajax({
             url:"{{ route('sms.thankyou') }}",
             type:"GET",
-            data:{phone:phone},
+            data:{phone:phone,text:text},
+            //context: this,
             success:function(data){
                 console.log(data);
-                /*
-                if ( data.length > 0 ) {
-                    $('.message').addClass('d-block').removeClass('d-none');
+                if ( data == '1101' ) {
+                    catch_element.children('i.ti-check').addClass('d-block').removeClass('d-none');
+                    catch_element.siblings('p').addClass('d-block').removeClass('d-none');
                 } else {
-                    $('.message').addClass('d-none').removeClass('d-block');
+                    //$('.smsmessage').addClass('d-none').removeClass('d-block');
+                    //$(this).siblings('smsmessage').addClass('d-block').removeClass('d-none');
                 }
-                */
+                catch_element.removeClass('disabled-link');
+
             }
         });
 
     });
+
+
+    /*Search Service Charge*/
+    $(document).on('click','#show_project_balance_btn',function(){
+
+        var project_id = $('.project_id').val();
+        $('#show_project_balance_btn').addClass('disabled');
+        console.log(project_id);
+        $.ajax({
+            url: "{{ route('project.balance')}}",
+            type: "get",
+            data: {'project_id':project_id},
+            beforeSend: function() {
+            },
+            success: function (data) {
+                $('#show_project_balance_btn').removeClass('disabled');
+                var source = $("#document-template-project").html();
+                var template = Handlebars.compile(source);
+                var html = template(data);
+                $('#projectDetail').html(html);
+                //$('[data-toggle="tooltip"]').tooltip();
+            }
+        });
+    });
+
+    function printDiv() {
+        var printContents = document.getElementById('printableArea').innerHTML;
+        var originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    }
 
 </script>
 
