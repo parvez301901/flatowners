@@ -16,7 +16,10 @@ class CreateProjectAddAmountsTable extends Migration
         Schema::create('project_add_amounts', function (Blueprint $table) {
             $table->id();
             $table->integer('amount');
+            $table->integer('due');
             $table->integer('user_id')->nullable();
+            $table->integer('unit_id')->nullable();
+            $table->integer('floor_id')->nullable();
             $table->integer('project_id')->nullable();
             $table->date('project_add_date')->nullable();
             $table->string('project_cost_note')->nullable();

@@ -158,6 +158,7 @@ Route::group(['middleware' => 'auth'],function() {
 
     Route::prefix('project_deposit')->group(function (){
         Route::post('/store', [ProjectAddAmountController::class, 'ProjectAddStore'])->name('project_deposit.store');
+        Route::post('/update/{id}', [ProjectAddAmountController::class, 'ProjectAddUpdate'])->name('project_deposit.update');
     });
 
 

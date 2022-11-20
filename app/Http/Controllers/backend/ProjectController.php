@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\backend\Floor;
 use App\Models\backend\Project;
 use App\Models\backend\ProjectAddAmount;
 use App\Models\backend\ProjectExpense;
+use App\Models\backend\Unit;
 use App\Models\User;
 use App\Models\Utility;
 use Illuminate\Database\Eloquent\Model;
@@ -27,14 +29,32 @@ class ProjectController extends Controller
         $data->project_end_date = $request->project_end_date;
         $data->project_status = $request->status;
 
-        $data->save();
+        $saved_project = $data->save();
+
+        $all_units = Unit::all();
+        $all_units_count = Unit::all()->count();
+
+        foreach ($all_units as $single_unit) {
+
+            $data2 = new ProjectAddAmount();
+            $data2->amount = 0;
+            $data2->due = ( $request->budget / $all_units_count );
+            $data2->user_id = $single_unit->user_id;
+            $data2->unit_id = $single_unit->id;
+            $data2->floor_id = $single_unit->floor_id;
+            $data2->project_id = $data->id;
+            $data2->project_add_date = $request->project_start_date;
+            $data2->project_cost_note = 'Not Paid Yet';
+            $data2->save();
+        }
+
 
         $notification = array(
             'message' => 'Project Inserted Successfully',
             'alert-type' => 'success'
         );
 
-        return redirect()->route('project.add')->with($notification);
+        return redirect()->route('project.detail' , $data->id)->with($notification);
 
     }
 
@@ -47,10 +67,11 @@ class ProjectController extends Controller
         $data['users'] = User::where('usertype','flatowner')->get();
         $data['detailData'] = Project::find($id);
         $data['allUtilitylist'] = Utility::all();
+        $data['allFloorlist'] = Floor::all();
         $data['allexpensedata'] = ProjectExpense::where('project_id',$id)->get();
+        $data['total_expense'] = ProjectExpense::where('project_id',$id)->sum('amount');
         $data['alldepoasitdata'] = ProjectAddAmount::where('project_id',$id)->get();
         $data['total_deposit'] = ProjectAddAmount::where('project_id',$id)->sum('amount');
-        $data['total_expense'] = ProjectExpense::where('project_id',$id)->sum('amount');
 
         return view('backend.project.detail_project', $data );
     }

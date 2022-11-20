@@ -235,7 +235,6 @@ class ServiceChargeController extends Controller
 </div>';
 
 
-
         return response()->json($receipt_html);
 
     }

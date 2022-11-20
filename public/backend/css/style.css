@@ -24085,3 +24085,6 @@ a.disabled {
 .disabled-link {
     pointer-events: none;
 }
+.big-padding {
+    padding: 50px 0;
+}

@@ -394,7 +394,7 @@
                 var source = $("#document-template-project").html();
                 var template = Handlebars.compile(source);
                 var html = template(data);
-                $('#projectDetail').html(html);
+                $('#projectDetail').addClass('big-padding').html(html);
                 //$('[data-toggle="tooltip"]').tooltip();
             }
         });

@@ -31,6 +31,8 @@ class Project_ExpenseController extends Controller
 
         $data->save();
 
+
+
         $notification = array(
             'message' => 'Expenses Inserted Successfully',
             'alert-type' => 'success'

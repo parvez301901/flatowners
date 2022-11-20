@@ -2,25 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f269716a-cbf7-4370-9369-ffe3fe0a21a6" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/flatowners.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/flatowners.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_Feature_To_update.txt" beforeDir="false" afterPath="$PROJECT_DIR$/_Feature_To_update.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/DefaultController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/DefaultController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/MaintenanceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/MaintenanceController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/Report.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/Report.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectAddAmountController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectAddAmountController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/Project_ExpenseController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/Project_ExpenseController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/ServiceChargeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/ServiceChargeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2022_10_12_152317_create_service_charges_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2022_10_12_152317_create_service_charges_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2022_11_07_210058_create_project_add_amounts_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2022_11_07_210058_create_project_add_amounts_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/backend/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/backend/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/backend/js/pages/data-table.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/backend/js/pages/data-table.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/admin/admin_master.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/admin_master.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/maintenance/salary_maintenance.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/maintenance/salary_maintenance.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/backend/project/detail_project.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/project/detail_project.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/servicecharge/add_servicecharge.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/servicecharge/add_servicecharge.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/servicecharge/view_servicecharge.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/servicecharge/view_servicecharge.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -187,7 +179,7 @@
       <updated>1668773136577</updated>
       <workItem from="1668773138049" duration="3805000" />
       <workItem from="1668810337852" duration="4116000" />
-      <workItem from="1668844944731" duration="32103000" />
+      <workItem from="1668844944731" duration="39315000" />
     </task>
     <servers />
   </component>

@@ -182,7 +182,6 @@ class MaintenanceController extends Controller
             $html = 'Salary already disbursed for ' . $monthyear;
         }*/
 
-
         return response()->json(@$html);
 
     }

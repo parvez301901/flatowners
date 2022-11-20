@@ -74,8 +74,8 @@
                                 <i class="text-warning mr-0 font-size-24 mdi mdi-car"></i>
                             </div>
                             <div>
-                                <p class="text-mute mt-20 mb-0 font-size-16">Last Date of Deposit</p>
-                                <h3 class="text-white mb-0 font-weight-500">????</h3>
+                                <p class="text-mute mt-20 mb-0 font-size-16">Finish Date of Project</p>
+                                <h3 class="text-white mb-0 font-weight-500">@php $date = new DateTime( $detailData->project_end_date);$result = $date->format('jS M Y');echo $result; @endphp</h3>
                             </div>
                         </div>
                     </div>
@@ -84,31 +84,17 @@
                 <div class="col-xl-2 col-6">
                     <div class="box overflow-hidden pull-up">
                         <div class="box-body">
-                            <div class="icon bg-warning-light rounded w-60 h-60">
-                                <i class="text-warning mr-0 font-size-24 mdi mdi-car"></i>
-                            </div>
-                            <div>
-                                <p class="text-mute mt-20 mb-0 font-size-16">Finish Date of Project</p>
-                                <h3 class="text-white mb-0 font-weight-500">????</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-<!--
-                <div class="col-xl-2 col-6">
-                    <div class="box overflow-hidden pull-up">
-                        <div class="box-body">
                             <div class="icon bg-info-light rounded w-60 h-60">
                                 <i class="text-info mr-0 font-size-24 mdi mdi-sale"></i>
                             </div>
                             <div>
-                                <p class="text-mute mt-20 mb-0 font-size-16">Did Not Deposited</p>
-                                <h3 class="text-white mb-0 font-weight-500">?????</h3>
+                                <p class="text-mute mt-20 mb-0 font-size-16">Project Status</p>
+                                <h3 class="text-white mb-0 font-weight-500 text-capitalize">{{$detailData->project_status}}</h3>
                             </div>
                         </div>
                     </div>
                 </div>
--->
+
                 <div class="col-lg-6 col-12">
                     <!-- Basic Forms -->
                     <div class="box">
@@ -141,12 +127,10 @@
                                             </td>
                                         </tr>
                                     @endforeach
-
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-
                     </div>
                     <!-- /.box -->
                 </div>
@@ -157,16 +141,15 @@
                         <div class="box-header with-border">
                             <h4 class="box-title">Recent Deposit Money</h4>
                         </div>
-
                         <div class="box-body">
                             <div class="table-responsive">
-                                <table id="example1" class="table table-bordered table-striped">
+                                <table id="example_project_deposit" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
                                         <th>SL</th>
                                         <th>Name</th>
                                         <th>Amount</th>
-                                        <th>Date</th>
+                                        <th>Due</th>
                                         <th width="30%">Action</th>
                                     </tr>
                                     </thead>
@@ -176,10 +159,10 @@
                                             <td>{{ $key+1 }}</td>
                                             <td>{{ $deposit['get_user_name']['name'] }}</td>
                                             <td>{{ $deposit->amount }}</td>
-                                            <td>{{ $deposit->project_add_date }}</td>
+                                            <td>{{ $deposit->due }}</td>
                                             <td>
-                                                <a href="{{ route('project_cost.detail' , $expense->id) }}" class="btn btn-success mr-2">Details</a>
-                                                <a href="{{ route('project_cost.detail' , $expense->id) }}" class="btn btn-info mr-2">Edit</a>
+                                                <a href="{{ route('project_cost.detail' , $deposit->id) }}" class="btn btn-success mr-2">Details</a>
+                                                <a href="{{ route('project_cost.detail' , $deposit->id) }}" class="btn btn-info mr-2">Edit</a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -196,7 +179,6 @@
                 <div class="col-md-12 text-center" style="padding: 35px 0;">
                     <input name="project_id" type="hidden" class="form-control project_id" value="{{$detailData->id}}" required="required">
                     <input id="show_project_balance_btn" type="submit" class="btn btn-primary" value="View Balance Sheet" />
-                    <div class="kiholo">ki holo</div>
                 </div> <!-- End Col md 3 -->
 
                 <div class="col-md-12">
@@ -327,7 +309,7 @@
                             <!-- /.box-body -->
                             <div class="box-footer d-flex justify-content-between">
                                 <button type="submit" class="btn btn-rounded btn-danger">Reset</button>
-                                <input type="submit" class="btn btn-rounded btn-info" value="Add Maintenance">
+                                <input type="submit" class="btn btn-rounded btn-info" value="Add Project Expense">
                             </div>
                         </form>
                     </div>
@@ -342,7 +324,7 @@
                         </div>
                         <!-- /.box-header -->
 
-                        <form class="form-horizontal" method="POST" action="{{route('project_deposit.store')}}">
+                        <form class="form-horizontal" method="POST" action="{{route('project_deposit.update', $detailData->id)}}">
                             @csrf
                             <input name="project_id" type="hidden" class="form-control" value="{{$detailData->id}}" required="required" placeholder="Cost">
 
@@ -357,12 +339,28 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>User Name</label>
-                                            <select name="user_id" class="form-control select2">
-                                                <option value="">Select User</option>
-                                                @foreach( $users as $user )
-                                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                            <label>Select Floor</label>
+                                            <select name="floor_id" id="on_select_floor" required="" class="form-control select2">
+                                                @foreach($allFloorlist as $floor)
+                                                    <option value="{{$floor->id}}" selected="">{{$floor->name}}</option>
                                                 @endforeach
+                                                <option selected="selected" disabled="" value="">Select Floor</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Select Flat</label>
+                                            <select name="unit_id" id="assign_subject_id"  required="" class="form-control select2 find_user_by_unit">
+                                                <option selected="selected" value="">Select Floor First?</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>User Name</label>
+                                            <select name="user_id" id="flatowner_info" class="form-control select2" style="width: 100%;">
+                                                <option selected="selected" value=""></option>
                                             </select>
                                         </div>
                                     </div>
