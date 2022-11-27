@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\backend\Bank;
+use App\Models\backend\PettyCash;
 use App\Models\backend\Unit;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -75,6 +77,26 @@ class DefaultController extends Controller
         $p = explode("|",$smsresult);
         $sendstatus = $p[0];
         return response()->json($sendstatus);
+    }
+
+    public function PettyBalanceCheck(Request $request) {
+        $amount_to_check = $request->amount_to_check;
+        $find_petty_cash = PettyCash::first()->balance;
+
+        if ( ($find_petty_cash - $amount_to_check) >= 0 ) {
+            $result = 'ok';
+        } else {
+            $result = 'notok';
+        }
+
+        return response()->json($result);
+    }
+
+    public function ByBankIdFindBankInfo(Request $request) {
+
+        $find_bank_cash = Bank::find($request->bank_id)->amount;
+
+        return response()->json($find_bank_cash);
     }
 
 }

@@ -161,8 +161,10 @@
                                             <td>{{ $deposit->amount }}</td>
                                             <td>{{ $deposit->due }}</td>
                                             <td>
-                                                <a href="{{ route('project_cost.detail' , $deposit->id) }}" class="btn btn-success mr-2">Details</a>
-                                                <a href="{{ route('project_cost.detail' , $deposit->id) }}" class="btn btn-info mr-2">Edit</a>
+                                                <!--<a href="{{ route('project_cost.detail' , $deposit->id) }}" class="btn btn-success mr-2">Details</a>-->
+                                                @if($deposit->due > 0)
+                                                    <a data-phone="{{ $deposit['get_user_name']['phone'] }}" data-text="Dear {{ $deposit['get_user_name']['name'] }} please pay due {{ $deposit->due }} for {{$detailData->name}}. Thank You" href="{{ route('project_deposit.sms' , $deposit['get_user_name']['id']) }}" class="btn btn-info d-inline-flex project_due_alert  mr-2"><i class="ti-check d-none"></i>Reminder</a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

@@ -118,6 +118,18 @@ $route = Route::current()->getName();
                         </ul>
                     </li>
 
+                    <li class="treeview {{ ($prefix == '/bank')? 'active' : '' }}">
+                        <a href="#">
+                            <i data-feather="users"></i>
+                            <span>Bank Information</span>
+                            <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="{{ ($route == 'bank.view')?'active':'' }}"><a href="{{route('bank.view')}}"><i class="ti-more"></i>Bank List</a></li>
+                            <li class="{{ ($route == 'bank.add')?'active':'' }}"><a href="{{route('bank.add')}}"><i class="ti-more"></i>Add Bank</a></li>
+                        </ul>
+                    </li>
+
                 </ul>
 
 
@@ -134,6 +146,7 @@ $route = Route::current()->getName();
                 <ul class="treeview-menu">
                     <li class="{{ ($route == 'servicecharge.view')?'active':'' }}"><a href="{{route('servicecharge.view')}}"><i class="ti-more"></i>All Service charge</a></li>
                     <li class="{{ ($route == 'servicecharge.add')?'active':'' }}"><a href="{{route('servicecharge.add')}}"><i class="ti-more"></i>Add Service charge</a></li>
+                    <li class="{{ ($route == 'servicecharge.tobank')?'active':'' }}"><a href="{{route('servicecharge.tobank')}}"><i class="ti-more"></i>Deposit To Bank</a></li>
                 </ul>
             </li>
 

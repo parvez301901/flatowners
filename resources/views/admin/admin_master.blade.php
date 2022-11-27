@@ -281,6 +281,22 @@
         });
     });
 
+    /*Check user already assigned*/
+    $(document).on('change','.withdrawd-bank-select',function(){
+        var bank_id = $('.withdrawd-bank-select').val();
+        console.log(bank_id);
+        $.ajax({
+            url:"{{ route('bybankid.findbankinfo') }}",
+            type:"GET",
+            data:{bank_id:bank_id},
+            success:function(data){
+                console.log(data);
+                $('.cash-to-withdraw').val(data);
+            }
+        });
+    });
+
+
     /*salary total*/
     function calc_total(){
         var sum = 0;
@@ -301,6 +317,19 @@
         $('.total',parent).val(choose+price);
 
         calc_total();
+    });
+
+    $(".amount-to-withdraw").on('keyup', function(){
+        $('.withdraw-button').removeClass('disabled');
+        var cash_to_withdraw = parseFloat($('.cash-to-withdraw').val());
+        var amount_to_withdraw = parseFloat($(this).val());
+        if ( (cash_to_withdraw - amount_to_withdraw) < 0 ) {
+            $('.message-withdraw').addClass('d-block').removeClass('d-none');
+            $('.withdraw-button').addClass('disabled');
+        } else {
+            $('.message-withdraw').addClass('d-none').removeClass('d-block');
+            $('.withdraw-button').removeClass('disabled');
+        }
     });
 
     $(document).on('click','.insert-salary-expense',function(e){
@@ -376,10 +405,36 @@
 
     });
 
+    $(document).on('click','.project_due_alert',function(e){
+        e.preventDefault();
+        var catch_element = $(this);
+        catch_element.addClass('disabled-link');
+        var phone = $(this).data( "phone" );
+        var text = $(this).data( "text" );
+        console.log(phone);
+        $.ajax({
+            url:"{{ route('project_deposit.sms') }}",
+            type:"GET",
+            data:{phone:phone,text:text},
+            //context: this,
+            success:function(data){
+                console.log(data);
+                if ( data == '1101' ) {
+                    catch_element.children('i.ti-check').addClass('d-block').removeClass('d-none');
+                    catch_element.siblings('p').addClass('d-block').removeClass('d-none');
+                } else {
+                    //$('.smsmessage').addClass('d-none').removeClass('d-block');
+                    //$(this).siblings('smsmessage').addClass('d-block').removeClass('d-none');
+                }
+                catch_element.removeClass('disabled-link');
+
+            }
+        });
+
+    });
 
     /*Search Service Charge*/
     $(document).on('click','#show_project_balance_btn',function(){
-
         var project_id = $('.project_id').val();
         $('#show_project_balance_btn').addClass('disabled');
         console.log(project_id);
@@ -396,6 +451,39 @@
                 var html = template(data);
                 $('#projectDetail').addClass('big-padding').html(html);
                 //$('[data-toggle="tooltip"]').tooltip();
+            }
+        });
+    });
+
+    /*Search Service Charge*/
+    $(document).on('keyup','.amount-to-deposit',function(){
+        var amount_to_check = $(this).val();
+        $('.deposit-button').addClass('disabled');
+        var cash_in_hand = $('.cash-in-hand').val();
+        /*
+        if ((cash_in_hand - amount_to_check) >= 0 ) {
+            $('.cash-in-hand-balance').val(cash_in_hand - amount_to_check);
+            $('.message').addClass('d-none').removeClass('d-block');
+        } else {
+            $('.message').addClass('d-block').removeClass('d-none');
+        }
+        */
+
+        console.log(amount_to_check);
+        $.ajax({
+            url: "{{ route('petty.balance')}}",
+            type: "get",
+            data: {'amount_to_check':amount_to_check},
+            beforeSend: function() {
+            },
+            success: function (data) {
+                if ( data == 'ok' ) {
+                    $('.cash-in-hand-balance').val(cash_in_hand - amount_to_check);
+                    $('.message').addClass('d-none').removeClass('d-block');
+                    $('.deposit-button').removeClass('disabled');
+                } else {
+                    $('.message').addClass('d-block').removeClass('d-none');
+                }
             }
         });
     });

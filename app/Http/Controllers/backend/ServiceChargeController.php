@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\backend\Bank;
 use App\Models\backend\Floor;
+use App\Models\backend\PettyCash;
 use App\Models\backend\RemainingBalance;
 use App\Models\backend\Unit;
 use App\Models\ServiceCharge;
@@ -51,9 +53,8 @@ class ServiceChargeController extends Controller
             if ($find_due > 0){
                 $text = "Dear $get_user->name, Received Service Charge TK $request->serviceChargeAmount Total due TK $find_due of $month_year, for Flat $get_unit->name. Thank You.";
             } else {
-
+                $text = "Dear $get_user->name, Received Service Charge TK $request->serviceChargeAmount of $month_year, for Flat $get_unit->name. Thank You.";
             }
-
 
             $url = "http://66.45.237.70/api.php";
             $data= array(
@@ -73,6 +74,40 @@ class ServiceChargeController extends Controller
 
         }
 
+        //Add balance to the PETTY CASH
+        // Checking -- if Petty Cash is Blank
+        $f = date('Y-m-d', strtotime($request->serviceChargeDate." -1 month"));
+        $prev_date_petty_cash = Carbon::createFromFormat('m/Y', Carbon::parse($f)->format('m/Y'));
+        $prev_is_in_month_year_petty_cash = PettyCash::whereMonth('month_year', $prev_date_petty_cash->month)
+            ->whereYear('month_year', $prev_date_petty_cash->year)
+            ->first();
+
+        $date = Carbon::createFromFormat('m/Y', Carbon::parse($request->serviceChargeDate)->format('m/Y'));
+        $is_in_month_year_petty_cash = PettyCash::whereMonth('month_year', $date->month)
+            ->whereYear('month_year', $date->year)
+            ->first();
+
+        if (empty($is_in_month_year_petty_cash)) {
+            if (!empty($prev_date_petty_cash)) {
+                $data3 = new PettyCash();
+                $data3->balance = ($request->serviceChargeAmount) + ($prev_is_in_month_year_petty_cash->balance);
+                $data3->month_year = $request->serviceChargeDate;
+                $data3->save();
+            } else {
+                $data3 = new PettyCash();
+                $data3->balance = ($request->serviceChargeAmount);
+                $data3->month_year = $request->serviceChargeDate;
+                $data3->save();
+            }
+        } else {
+            $data3 = PettyCash::find($is_in_month_year_petty_cash->id);
+            $data3->balance = ($request->serviceChargeAmount) + ($is_in_month_year_petty_cash->balance) ;
+            $data3->month_year = $request->serviceChargeDate;
+            $data3->save();
+        }
+
+
+        // Checking -- if remaining balance is Blank
         $f = date('Y-m-d', strtotime($request->serviceChargeDate." -1 month"));
         $prev_date = Carbon::createFromFormat('m/Y', Carbon::parse($f)->format('m/Y'));
         $prev_is_in_month_year = RemainingBalance::whereMonth('month_year', $prev_date->month)
@@ -83,7 +118,6 @@ class ServiceChargeController extends Controller
         $is_in_month_year = RemainingBalance::whereMonth('month_year', $date->month)
             ->whereYear('month_year', $date->year)
             ->first();
-
 
         if (empty($is_in_month_year)) {
             if (!empty($prev_is_in_month_year)) {
@@ -238,5 +272,53 @@ class ServiceChargeController extends Controller
         return response()->json($receipt_html);
 
     }
+
+    public function ServiceChargeToBank() {
+        $data['allBank'] = Bank::all();
+        $data['find_petty_cash'] = PettyCash::first()->balance;
+        return view('backend.servicecharge.tobank_servicecharge', $data );
+    }
+
+    public function DepositToBank( Request $request) {
+
+        $data = Bank::find($request->bank_id);
+        $preveious_balance = $data->amount;
+        $data->amount = $request->amount_to_deposit + $preveious_balance;
+        $data->save();
+
+
+        $cash_n_handle = PettyCash::all()->first();
+        $cash_in_handle = PettyCash::first()->balance;
+        $cash_n_handle->balance = ($cash_in_handle) - ($request->amount_to_deposit) ;
+        $cash_n_handle->save();
+
+        $notification = array(
+            'message' => 'Deposited to The Bank Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('servicecharge.tobank')->with($notification);
+    }
+
+    public function WithdrawFromBank( Request $request) {
+
+        $data = Bank::find($request->bank_id);
+        $preveious_balance = $data->amount;
+        $data->amount = $preveious_balance - $request->amount_to_withdraw;
+        $data->save();
+
+        $cash_n_handle = PettyCash::all()->first();
+        $cash_in_handle = PettyCash::first()->balance;
+        $cash_n_handle->balance = ($cash_in_handle) + ($request->amount_to_withdraw) ;
+        $cash_n_handle->save();
+
+        $notification = array(
+            'message' => 'Withdraw Successfully and Added to Petty Cash',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('servicecharge.tobank')->with($notification);
+    }
+
 
 }

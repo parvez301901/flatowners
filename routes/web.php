@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\backend\BankController;
 use App\Http\Controllers\backend\DefaultController;
 use App\Http\Controllers\backend\EmployeeController;
 use App\Http\Controllers\backend\NoticeController;
@@ -113,6 +114,9 @@ Route::group(['middleware' => 'auth'],function() {
         Route::get('/add', [ServiceChargeController::class, 'ServiceChargeAdd'])->name('servicecharge.add');
         Route::post('/store', [ServiceChargeController::class, 'ServiceChargeStore'])->name('servicecharge.store');
         Route::get('/receipt', [ServiceChargeController::class, 'ServiceChargeReceipt'])->name('servicecharge.receipt');
+        Route::get('/tobank', [ServiceChargeController::class, 'ServiceChargeToBank'])->name('servicecharge.tobank');
+        Route::post('/deposittobank', [ServiceChargeController::class, 'DepositToBank'])->name('servicecharge.deposittobank');
+        Route::post('/withdrawfromBank', [ServiceChargeController::class, 'WithdrawFromBank'])->name('servicecharge.withdrawfrombank');
 
         //////////////------------------------------  Baki ache ------------ Edit - Update - Delete ------   /////////////////
     });
@@ -159,6 +163,7 @@ Route::group(['middleware' => 'auth'],function() {
     Route::prefix('project_deposit')->group(function (){
         Route::post('/store', [ProjectAddAmountController::class, 'ProjectAddStore'])->name('project_deposit.store');
         Route::post('/update/{id}', [ProjectAddAmountController::class, 'ProjectAddUpdate'])->name('project_deposit.update');
+        Route::get('sms/project_due', [ProjectAddAmountController::class, 'SMSProjectDue'])->name('project_deposit.sms');
     });
 
 
@@ -173,12 +178,22 @@ Route::group(['middleware' => 'auth'],function() {
         */
     });
 
+    Route::prefix('bank')->group(function (){
+        Route::get('/view', [BankController::class, 'BankView'])->name('bank.view');
+        Route::get('/add', [BankController::class, 'BankAdd'])->name('bank.add');
+        Route::post('/store', [BankController::class, 'BankStore'])->name('bank.store');
+        Route::get('/detail/{id}', [BankController::class, 'BankDetail'])->name('bank.detail');
+        Route::post('/update/{id}', [BankController::class, 'BankUpdate'])->name('bank.update');
+    });
+
     /*Ajax actions*/
     Route::get('byfloor/getunit', [DefaultController::class, 'GetUnit'])->name('byfloor.getunit');
     Route::get('byunit/getownerid', [DefaultController::class, 'GetOwnerIdByUnit'])->name('byunit.getonwerid');
     Route::get('byunit/findownerid', [DefaultController::class, 'FindOwnerIdByUnit'])->name('byunit.findonwerid');
     Route::get('sms/smsthankyou', [DefaultController::class, 'SMSThankYou'])->name('sms.thankyou');
     Route::get('sms/due_remind', [DefaultController::class, 'SMSDueRemind'])->name('sms.due_remind');
+    Route::get('pettybalance', [DefaultController::class, 'PettyBalanceCheck'])->name('petty.balance');
+    Route::get('bybankid/findbankinfo', [DefaultController::class, 'ByBankIdFindBankInfo'])->name('bybankid.findbankinfo');
 
 });
 
