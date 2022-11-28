@@ -150,6 +150,8 @@ Route::group(['middleware' => 'auth'],function() {
         Route::get('/view', [ProjectController::class, 'ProjectView'])->name('project.view');
         Route::get('/detail/{id}', [ProjectController::class, 'ProjectDetail'])->name('project.detail');
         Route::get('/balance', [ProjectController::class, 'ProjectBalance'])->name('project.balance');
+        Route::get('/depositmoney', [ProjectController::class, 'ProjectDepositMoney'])->name('project.depositmoney');
+
         /*
         Route::post('/update/{id}', [UnitController::class, 'UnitUpdate'])->name('unit.update');
         */
@@ -163,8 +165,8 @@ Route::group(['middleware' => 'auth'],function() {
 
     Route::prefix('project_deposit')->group(function (){
         Route::post('/store', [ProjectAddAmountController::class, 'ProjectAddStore'])->name('project_deposit.store');
-        Route::post('/update/{id}', [ProjectAddAmountController::class, 'ProjectAddUpdate'])->name('project_deposit.update');
         Route::get('sms/project_due', [ProjectAddAmountController::class, 'SMSProjectDue'])->name('project_deposit.sms');
+        Route::post('/addmoneytoproject', [ProjectAddAmountController::class, 'ProjectAddMoney'])->name('project_deposit.money');
     });
 
 
@@ -191,6 +193,7 @@ Route::group(['middleware' => 'auth'],function() {
     Route::get('byfloor/getunit', [DefaultController::class, 'GetUnit'])->name('byfloor.getunit');
     Route::get('byunit/getownerid', [DefaultController::class, 'GetOwnerIdByUnit'])->name('byunit.getonwerid');
     Route::get('byunit/findownerid', [DefaultController::class, 'FindOwnerIdByUnit'])->name('byunit.findonwerid');
+    Route::get('byunit/findownerid/projectdue', [DefaultController::class, 'FindDueFindOwnerIdByUnit'])->name('byunit.findonwerid.project_due');
     Route::get('sms/smsthankyou', [DefaultController::class, 'SMSThankYou'])->name('sms.thankyou');
     Route::get('sms/due_remind', [DefaultController::class, 'SMSDueRemind'])->name('sms.due_remind');
     Route::get('pettybalance', [DefaultController::class, 'PettyBalanceCheck'])->name('petty.balance');

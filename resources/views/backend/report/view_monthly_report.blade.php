@@ -34,7 +34,8 @@
                                 <!--  ////////////////// Registration Fee table /////////////  -->
 
                                     <script id="document-template" type="text/x-handlebars-template">
-                                        <div class="col-md-6 border-danger">
+
+                                        <div class="col-md-5 col-12 border-danger">
                                             <div class="text-center"><h4><b>Deposit</b></h4></div>
                                             <table class="table table-bordered table-striped" style="width: 100%">
                                                 <thead>
@@ -54,10 +55,12 @@
                                                     <tr>
                                                         @{{{tfsource}}}
                                                     </tr>
+                                                    <tr><td colspan="2"><h5>Total Balance in @{{{bank_name}}} : @{{{balance_in_bank}}}</h5></td><td colspan="2"><h5>Remaining Balance in Hand : @{{{balance_in_hand}}}</h5></td></tr>
                                                 </tfoot>
                                             </table>
                                         </div>
-                                        <div class="col-md-6">
+
+                                        <div class="col-md-7 col-12">
                                             <div class="text-center"><h4><b>Expense</b></h4></div>
                                             <table class="table table-bordered table-striped" style="width: 100%">
                                                 <thead>

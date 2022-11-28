@@ -19,6 +19,14 @@ class ProjectController extends Controller
         return view('backend.project.add_project');
     }
 
+    public function ProjectDepositMoney() {
+        $data['users'] = User::where('usertype','flatowner')->get();
+        $data['allUtilitylist'] = Utility::all();
+        $data['allFloorlist'] = Floor::all();
+        $data['allProjectlist'] = Project::all();
+        return view('backend.project.deposit_money_project' , $data );
+    }
+
     public function ProjectStore( Request $request) {
 
         $data = new Project();

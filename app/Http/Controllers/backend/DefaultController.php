@@ -5,6 +5,7 @@ namespace App\Http\Controllers\backend;
 use App\Http\Controllers\Controller;
 use App\Models\backend\Bank;
 use App\Models\backend\PettyCash;
+use App\Models\backend\ProjectAddAmount;
 use App\Models\backend\Unit;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -34,6 +35,17 @@ class DefaultController extends Controller
         $allData = Unit::where($matchThese)->first();
         $findFlatowner = User::find($allData->user_id);
         return response()->json($findFlatowner);
+    }
+    public function FindDueFindOwnerIdByUnit(Request $request){
+        $floor_id = $request->floor_id;
+        $unit_id = $request->unit_id;
+        $project_id = $request->project_id;
+        $matchThese = ['floor_id' => $floor_id, 'id' => $unit_id ];
+        $allData = Unit::where($matchThese)->first();
+        $data['findFlatowner'] = User::find($allData->user_id);
+        $matchTheseForDue = ['floor_id' => $floor_id, 'unit_id' => $unit_id, 'user_id' => $allData->user_id, 'project_id' => $project_id ];
+        $data['findProjectDue'] = ProjectAddAmount::Where($matchTheseForDue)->first();
+        return response()->json($data);
     }
     public function SMSThankYou(Request $request) {
         $number = $request->phone;

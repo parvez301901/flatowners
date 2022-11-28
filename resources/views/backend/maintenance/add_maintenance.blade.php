@@ -38,16 +38,26 @@
                             <div class="box-body">
                                 <h4 class="mt-0 mb-20">1. Cost Information:</h4>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-2">
                                         <div class="form-group">
                                             <label>Amount</label>
                                             <input name="amount" type="number" class="form-control" required="required" placeholder="Cost">
                                         </div>
                                     </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>From which account to spend?</label>
+                                            <select name="from_where_to_spend" required class="form-control select2 from-where-to-spend">
+                                                <option value="petty_cash">From Petty Cash</option>
+                                                <option value="bank">From Bank</option>
+                                                <option value="petty_cash">From where to spend?</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Select Floor</label>
-                                            <select name="floorId" class="form-control select2">
+                                            <select name="floorId" class="form-control select2 required">
                                                 <option value="">Select Floor</option>
                                                 @foreach( $allFloorlist as $floor )
                                                     <option value="{{ $floor->id }}">{{ $floor->name }}</option>
@@ -55,7 +65,20 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="col-md-6 banklist d-none">
+                                        <div class="form-group">
+                                            <label>Select Bank</label>
+                                            <select name="bank_id" class="form-control select2" style="width:100%">
+                                                <option value="">Select Back</option>
+                                                @foreach( $allBanklist as $bank )
+                                                    <option value="{{ $bank->id }}">{{ $bank->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
                                 </div>
+
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">

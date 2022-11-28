@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\backend\Bank;
 use App\Models\backend\MaintenanceModel;
+use App\Models\backend\PettyCash;
 use App\Models\backend\RemainingBalance;
 use App\Models\ServiceCharge;
 use App\Models\User;
@@ -38,7 +40,7 @@ class Report extends Controller
         $html['thsource'] = '<th>SL</th>';
         $html['thsource'] .= '<th>Flat Owner Name</th>';
         $html['thsource'] .= '<th>Date</th>';
-        $html['thsource'] .= '<th>Amount</th>';
+        $html['thsource'] .= '<th>Amount(TK)</th>';
         if (!empty( $is_in_month_year ) ) {
             $html[0]['tdsource'] = '<td>1</td>';
             $html[0]['tdsource'] .= '<td colspan="2">Previous Month Balance</td>';
@@ -58,6 +60,7 @@ class Report extends Controller
             $income = array_sum($incomes);
             $html['tfsource'] = '<td colspan="3" class="text-right"><b>Total</b></td>';
             $html['tfsource'] .= '<td>' . $income . '</td>';
+
         } else {
             $income = 0;
             $html['tfsource'] = '<td colspan="3" class="text-center"><b>No Data Found</b></td>';
@@ -74,7 +77,8 @@ class Report extends Controller
         $html['th2source'] = '<th>SL</th>';
         $html['th2source'] .= '<th>Utility</th>';
         $html['th2source'] .= '<th>Date</th>';
-        $html['th2source'] .= '<th>Amount</th>';
+        $html['th2source'] .= '<th>Description</th>';
+        $html['th2source'] .= '<th>Amount(TK)</th>';
 
         foreach ($expenses as $key => $expense) {
 
@@ -83,6 +87,7 @@ class Report extends Controller
             $html[$key]['td2source'] = '<td>' . ($key + 1) . '</td>';
             $html[$key]['td2source'] .= '<td>' . $utility->name . '</td>';
             $html[$key]['td2source'] .= '<td>' . $expense->maintenanceCostDate . '</td>';
+            $html[$key]['td2source'] .= '<td>' . $expense->maintenanceNote . '</td>';
             $html[$key]['td2source'] .= '<td>' . $expense->amount . '</td>';
             $outcomes[] = (int)$expense->amount;
         }
@@ -97,7 +102,11 @@ class Report extends Controller
         }
 
         $html['balance'] = ((int)$income) - ((int)$outcome);
-
+        $get_bank = Bank::find(1);
+        $html['balance_in_bank'] = $get_bank->amount;
+        $html['bank_name'] = $get_bank->name;
+        $get_petty = PettyCash::find(1);
+        $html['balance_in_hand'] = $get_petty->balance;
 
         return response()->json(@$html);
 

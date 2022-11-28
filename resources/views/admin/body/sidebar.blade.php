@@ -178,8 +178,9 @@ $route = Route::current()->getName();
                             <span class="pull-right-container"><i class="fa fa-angle-right pull-right"></i></span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="{{ route('project.view') }}"><i class="ti-more"></i>All Project</a></li>
-                            <li><a href="{{ route('project.add') }}"><i class="ti-more"></i>Add New Project</a></li>
+                            <li class="{{ ($route == 'project.view')?'active':'' }}"><a href="{{ route('project.view') }}"><i class="ti-more"></i>All Project</a></li>
+                            <li class="{{ ($route == 'project.add')?'active':'' }}"><a href="{{ route('project.add') }}"><i class="ti-more"></i>Add New Project</a></li>
+                            <li class="{{ ($route == 'project.depositmoney')?'active':'' }}"><a href="{{ route('project.depositmoney') }}"><i class="ti-more"></i>Deposit Money</a></li>
                         </ul>
                     </li>
 

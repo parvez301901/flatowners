@@ -61,13 +61,13 @@ class ProjectAddAmountController extends Controller
         return redirect()->route('project.detail' , $request->project_id)->with($notification);
     }
 
-    public function ProjectAddUpdate(Request $request, $id) {
+    public function ProjectAddMoney(Request $request) {
 
-        $data = ProjectAddAmount::where('project_id' , $id)
+        $data = ProjectAddAmount::where('project_id' , $request->project_id)
         ->where('user_id' , $request->user_id)
         ->where('unit_id' , $request->unit_id)
         ->first();
-        $find_due = ($data->due - $request->amount);
+        $find_due = (($data->due) - ($request->amount));
         $data->amount = ($data->amount + $request->amount);
         $data->due = $find_due;
         $updated = $data->save();

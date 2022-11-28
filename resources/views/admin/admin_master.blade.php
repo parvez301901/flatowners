@@ -268,20 +268,37 @@
     $(document).on('change','.find_user_by_unit',function(){
         var floor_id = $('#on_select_floor').val();
         var unit_id = $('.find_user_by_unit').val();
-        console.log(floor_id);
-        $.ajax({
-            url:"{{ route('byunit.findonwerid') }}",
-            type:"GET",
-            data:{floor_id:floor_id, unit_id:unit_id},
-            success:function(data){
-                console.log(data);
-                let html = '<option value="' + data.id + '">' + data.name + '</option>';
-                $('#flatowner_info').html(html);
-            }
-        });
+        var get_project_due_amount =  $('input[name="project_due_amount"]').length;
+        if( get_project_due_amount > 0 ){
+            var project_id = $('.project_id').val();
+            console.log(project_id);
+            $.ajax({
+                url:"{{ route('byunit.findonwerid.project_due') }}",
+                type:"GET",
+                data:{floor_id:floor_id, unit_id:unit_id, project_id:project_id},
+                success:function(data){
+                    console.log(data);
+                    let html = '<option value="' + data.findFlatowner.id + '">' + data.findFlatowner.name + '</option>';
+                    $('#flatowner_info').html(html);
+                    $('.project_due_amount').val(data.findProjectDue.due);
+                    $('.project_amount_per_head').val((data.findProjectDue.due) + (data.findProjectDue.amount));
+                }
+            });
+        } else {
+            $.ajax({
+                url:"{{ route('byunit.findonwerid') }}",
+                type:"GET",
+                data:{floor_id:floor_id, unit_id:unit_id},
+                success:function(data){
+                    console.log(data);
+                    let html = '<option value="' + data.id + '">' + data.name + '</option>';
+                    $('#flatowner_info').html(html);
+                }
+            });
+        }
+
     });
 
-    /*Check user already assigned*/
     $(document).on('change','.withdrawd-bank-select',function(){
         var bank_id = $('.withdrawd-bank-select').val();
         console.log(bank_id);
@@ -486,6 +503,17 @@
                 }
             }
         });
+    });
+
+    $(document).on('change','.from-where-to-spend',function(){
+        var spend_from = $(this).val();
+        console.log(spend_from);
+        if (spend_from == 'bank') {
+            $('.banklist').addClass('d-block').removeClass('d-none');
+        } else {
+            $('.banklist').addClass('d-none').removeClass('d-block')
+        }
+
     });
 
     function printDiv() {

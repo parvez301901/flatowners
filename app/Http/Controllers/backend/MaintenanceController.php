@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\backend\Bank;
 use App\Models\backend\Floor;
 use App\Models\backend\MaintenanceModel;
+use App\Models\backend\PettyCash;
 use App\Models\backend\RemainingBalance;
 use App\Models\backend\Unit;
 use App\Models\User;
@@ -22,10 +24,11 @@ class MaintenanceController extends Controller
     }
 
     public function MaintenanceAdd() {
-        $data['users'] = User::where('usertype','flatowner')->get();
+        $data['users'] = User::where('usertype','employee')->get();
         $data['allFloorlist'] = Floor::all();
         $data['allUnitlist'] = Unit::all();
         $data['allUtilitylist'] = Utility::all();
+        $data['allBanklist'] = Bank::all();
 
         return view('backend.maintenance.add_maintenance' , $data);
     }
@@ -67,6 +70,20 @@ class MaintenanceController extends Controller
             $data2->balance = ($is_in_month_year->balance) - ($request->amount);
             $data2->month_year = $request->maintenanceCostDate;
             $data2->save();
+        }
+
+        // if bank - reduce from bank
+        if (!empty($request->bank_id)){
+            $data3 = Bank::find($request->bank_id);
+            $data3->amount = ($data3->amount) - ($request->amount);
+            $data3->save();
+        }
+
+        // if petty cash - reduce from petty cash
+        if (empty($request->bank_id)){
+            $data4 = PettyCash::find(1);
+            $data4->balance = ($data4->balance) - ($request->amount);
+            $data4->save();
         }
 
         $notification = array(
