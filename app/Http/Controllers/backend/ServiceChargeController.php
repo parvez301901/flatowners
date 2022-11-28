@@ -209,6 +209,30 @@ class ServiceChargeController extends Controller
 
     }// end method
 
+/*
+$c = Customer::leftJoin('orders', function($join) {
+      $join->on('customers.id', '=', 'orders.customer_id');
+    })
+    ->whereNull('orders.customer_id')
+    ->first([
+        'customers.id',
+        'customers.first_name',
+        'customers.last_name',
+        'customers.email',
+        'customers.phone',
+        'customers.address1',
+        'customers.address2',
+        'customers.city',
+        'customers.state',
+        'customers.county',
+        'customers.district',
+        'customers.postal_code',
+        'customers.country'
+    ]);
+*/
+
+
+
     public function ServiceChargeReceipt(Request $request){
 
         $serviceChargeId = $request->serviceChargeId;
@@ -227,7 +251,7 @@ class ServiceChargeController extends Controller
                                         <div class="media-body">
                                             <div style="display: flex; justify-content: space-between">
                                                 <div>
-                                                    <h3 class="media-heading first-heading">Krishnochura Height Flat Malik Kallayan Somity</h3>
+                                                    <h3 class="media-heading first-heading">Krishnochura Heights Flat Malik Kallayan Somity</h3>
                                                     <h3 class="media-heading second-heading">কৃষ্ণচূড়া হাইটস ফ্লাট মালিক কল্যাণ সমিতি</h3>
                                                 </div>
                                                 <div class="receipt-data">
@@ -286,7 +310,6 @@ class ServiceChargeController extends Controller
         $data->amount = $request->amount_to_deposit + $preveious_balance;
         $data->save();
 
-
         $cash_n_handle = PettyCash::all()->first();
         $cash_in_handle = PettyCash::first()->balance;
         $cash_n_handle->balance = ($cash_in_handle) - ($request->amount_to_deposit) ;
@@ -320,5 +343,10 @@ class ServiceChargeController extends Controller
         return redirect()->route('servicecharge.tobank')->with($notification);
     }
 
+    public function DueServiceCharge() {
+
+        return view('backend.servicecharge.due_servicecharge' );
+
+    }
 
 }

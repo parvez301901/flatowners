@@ -147,6 +147,7 @@ $route = Route::current()->getName();
                     <li class="{{ ($route == 'servicecharge.view')?'active':'' }}"><a href="{{route('servicecharge.view')}}"><i class="ti-more"></i>All Service charge</a></li>
                     <li class="{{ ($route == 'servicecharge.add')?'active':'' }}"><a href="{{route('servicecharge.add')}}"><i class="ti-more"></i>Add Service charge</a></li>
                     <li class="{{ ($route == 'servicecharge.tobank')?'active':'' }}"><a href="{{route('servicecharge.tobank')}}"><i class="ti-more"></i>Deposit To Bank</a></li>
+                    <li class="{{ ($route == 'servicecharge.dueservicecharge')?'active':'' }}"><a href="{{route('servicecharge.dueservicecharge')}}"><i class="ti-more"></i>Due Service Charge</a></li>
                 </ul>
             </li>
 
