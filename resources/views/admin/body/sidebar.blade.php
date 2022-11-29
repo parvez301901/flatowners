@@ -181,6 +181,7 @@ $route = Route::current()->getName();
                             <li class="{{ ($route == 'project.view')?'active':'' }}"><a href="{{ route('project.view') }}"><i class="ti-more"></i>All Project</a></li>
                             <li class="{{ ($route == 'project.add')?'active':'' }}"><a href="{{ route('project.add') }}"><i class="ti-more"></i>Add New Project</a></li>
                             <li class="{{ ($route == 'project.depositmoney')?'active':'' }}"><a href="{{ route('project.depositmoney') }}"><i class="ti-more"></i>Deposit Money</a></li>
+                            <li class="{{ ($route == 'project.banktransaction')?'active':'' }}"><a href="{{ route('project.banktransaction') }}"><i class="ti-more"></i>Bank Transaction</a></li>
                         </ul>
                     </li>
 

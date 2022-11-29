@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\backend\Bank;
 use App\Models\backend\Floor;
 use App\Models\backend\Project;
 use App\Models\backend\ProjectAddAmount;
@@ -25,6 +26,11 @@ class ProjectController extends Controller
         $data['allFloorlist'] = Floor::all();
         $data['allProjectlist'] = Project::all();
         return view('backend.project.deposit_money_project' , $data );
+    }
+    public function ProjectBankTransaction() {
+        $data['allBank'] = Bank::all();
+        $data['find_petty_cash'] = PettyCash::first()->balance;
+        return view('backend.servicecharge.tobank_servicecharge', $data );
     }
 
     public function ProjectStore( Request $request) {

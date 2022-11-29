@@ -151,6 +151,7 @@ Route::group(['middleware' => 'auth'],function() {
         Route::get('/detail/{id}', [ProjectController::class, 'ProjectDetail'])->name('project.detail');
         Route::get('/balance', [ProjectController::class, 'ProjectBalance'])->name('project.balance');
         Route::get('/depositmoney', [ProjectController::class, 'ProjectDepositMoney'])->name('project.depositmoney');
+        Route::get('/banktransaction', [ProjectController::class, 'ProjectBankTransaction'])->name('project.banktransaction');
 
         /*
         Route::post('/update/{id}', [UnitController::class, 'UnitUpdate'])->name('unit.update');

@@ -3,19 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="f269716a-cbf7-4370-9369-ffe3fe0a21a6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/DefaultController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/DefaultController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/MaintenanceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/MaintenanceController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectAddAmountController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectAddAmountController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/Report.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/Report.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/admin_master.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/admin_master.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/admin/body/sidebar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/body/sidebar.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/maintenance/add_maintenance.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/maintenance/add_maintenance.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/project/detail_project.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/project/detail_project.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/report/view_monthly_report.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/report/view_monthly_report.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_static.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_static.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -191,7 +181,9 @@
       <workItem from="1669575280195" duration="3245000" />
       <workItem from="1669601871911" duration="6768000" />
       <workItem from="1669645166396" duration="8000" />
-      <workItem from="1669645208794" duration="18238000" />
+      <workItem from="1669645208794" duration="18496000" />
+      <workItem from="1669745465794" duration="1190000" />
+      <workItem from="1669753226752" duration="1677000" />
     </task>
     <servers />
   </component>
