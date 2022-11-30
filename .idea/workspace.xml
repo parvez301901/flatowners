@@ -3,8 +3,19 @@
   <component name="ChangeListManager">
     <list default="true" id="f269716a-cbf7-4370-9369-ffe3fe0a21a6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ProjectPettyCashController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ProjectRemainingBalanceController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/SubProjectController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectAddAmountController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectAddAmountController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/ProjectPettyCash.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/ProjectRemainingBalance.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/SubProject.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2022_11_28_203002_create_sub_projects_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2022_11_28_203002_create_sub_projects_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/admin_master.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/admin_master.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/admin/body/sidebar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/body/sidebar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/backend/project/add_project.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/project/add_project.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -184,6 +195,7 @@
       <workItem from="1669645208794" duration="18496000" />
       <workItem from="1669745465794" duration="1190000" />
       <workItem from="1669753226752" duration="1677000" />
+      <workItem from="1669808482168" duration="12458000" />
     </task>
     <servers />
   </component>

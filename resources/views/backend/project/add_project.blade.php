@@ -71,6 +71,7 @@
                                             <label>Project End Date</label>
                                             <input name="project_end_date" type="date" class="form-control" required="required" placeholder="Project End Date">
                                         </div>
+                                        <p class="date-diff-message d-none text-danger"><i>End Date</i> must not be before <i>Start Date</i></p>
                                     </div>
 
                                     <div class="col-12">
@@ -90,7 +91,7 @@
                             <!-- /.box-body -->
                             <div class="box-footer d-flex justify-content-between">
                                 <button type="submit" class="btn btn-rounded btn-danger">Reset</button>
-                                <input type="submit" class="btn btn-rounded btn-info" value="Add Project">
+                                <input type="submit" class="btn btn-rounded btn-info add_project_button" value="Add Project">
                             </div>
                         </form>
                     </div>

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\backend;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProjectRemainingBalance extends Model
+class SubProject extends Model
 {
     use HasFactory;
 }

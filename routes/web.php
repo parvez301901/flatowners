@@ -146,7 +146,9 @@ Route::group(['middleware' => 'auth'],function() {
 
     Route::prefix('project')->group(function (){
         Route::get('/add', [ProjectController::class, 'ProjectAdd'])->name('project.add');
+        Route::get('/add/sub_project', [ProjectController::class, 'ProjectAddSubProject'])->name('project.add_sub_project');
         Route::post('/store', [ProjectController::class, 'ProjectStore'])->name('project.store');
+        Route::post('/store/sub_project', [ProjectController::class, 'ProjectStoreSubProject'])->name('project.sub_project_store');
         Route::get('/view', [ProjectController::class, 'ProjectView'])->name('project.view');
         Route::get('/detail/{id}', [ProjectController::class, 'ProjectDetail'])->name('project.detail');
         Route::get('/balance', [ProjectController::class, 'ProjectBalance'])->name('project.balance');

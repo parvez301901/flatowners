@@ -17,7 +17,11 @@ class CreateSubProjectsTable extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->integer('project_id')->nullable();
-            $table->string('project_cost_note')->nullable();
+            $table->integer('sub_project_budget')->nullable();
+            $table->string('sub_project_description')->nullable();
+            $table->date('sub_project_start_date')->nullable();
+            $table->date('sub_project_end_date')->nullable();
+            $table->string('sub_project_status')->nullable();
             $table->timestamps();
         });
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\backend;
 use App\Http\Controllers\Controller;
 use App\Models\backend\Project;
 use App\Models\backend\ProjectAddAmount;
+use App\Models\backend\ProjectPettyCash;
 use App\Models\backend\Unit;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
@@ -101,6 +102,12 @@ class ProjectAddAmountController extends Controller
 
         }
 
+        //add to project petty cash
+        $cash_n_handle = ProjectPettyCash::all()->first();
+        $cash_in_handle = ProjectPettyCash::first()->balance;
+        $cash_n_handle->project_id = $request->project_id;
+        $cash_n_handle->balance = ($cash_in_handle) - ($request->amount);
+        $cash_n_handle->save();
 
         $notification = array(
             'message' => 'Money Deposited Successfully',

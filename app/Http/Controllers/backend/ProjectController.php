@@ -8,7 +8,10 @@ use App\Models\backend\Floor;
 use App\Models\backend\Project;
 use App\Models\backend\ProjectAddAmount;
 use App\Models\backend\ProjectExpense;
+use App\Models\backend\ProjectRemainingBalance;
+use App\Models\backend\SubProject;
 use App\Models\backend\Unit;
+use App\Models\backend\ProjectPettyCash;
 use App\Models\User;
 use App\Models\Utility;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +23,11 @@ class ProjectController extends Controller
         return view('backend.project.add_project');
     }
 
+    public function ProjectAddSubProject() {
+        $data['allProjects'] = Project::all();
+        return view('backend.project.add_sub_project', $data);
+    }
+
     public function ProjectDepositMoney() {
         $data['users'] = User::where('usertype','flatowner')->get();
         $data['allUtilitylist'] = Utility::all();
@@ -29,8 +37,8 @@ class ProjectController extends Controller
     }
     public function ProjectBankTransaction() {
         $data['allBank'] = Bank::all();
-        $data['find_petty_cash'] = PettyCash::first()->balance;
-        return view('backend.servicecharge.tobank_servicecharge', $data );
+        $data['find_petty_cash'] = ProjectPettyCash::first()->balance;
+        return view('backend.project.tobank_servicecharge', $data );
     }
 
     public function ProjectStore( Request $request) {
@@ -43,7 +51,7 @@ class ProjectController extends Controller
         $data->project_end_date = $request->project_end_date;
         $data->project_status = $request->status;
 
-        $saved_project = $data->save();
+        $data->save();
 
         $all_units = Unit::all();
         $all_units_count = Unit::all()->count();
@@ -62,9 +70,40 @@ class ProjectController extends Controller
             $data2->save();
         }
 
+        $data3 = new ProjectPettyCash();
+        $data3->project_id = $data->id;
+        $data3->balance = 0;
+        $data3->save();
+
+        $data4 = new ProjectRemainingBalance();
+        $data4->project_id = $data->id;
+        $data4->balance = 0;
+        $data4->save();
 
         $notification = array(
             'message' => 'Project Inserted Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('project.detail' , $data->id)->with($notification);
+
+    }
+
+    public function ProjectStoreSubProject( Request $request) {
+
+        $data = new SubProject();
+        $data->name = $request->name;
+        $data->project_id = $request->project_id;
+        $data->sub_project_budget = $request->sub_project_budget;
+        $data->sub_project_description = $request->sub_project_description;
+        $data->sub_project_start_date = $request->project_start_date;
+        $data->sub_project_end_date = $request->project_end_date;
+        $data->sub_project_status = $request->sub_project_status;
+
+        $data->save();
+
+        $notification = array(
+            'message' => 'Sub Project Inserted Successfully',
             'alert-type' => 'success'
         );
 
@@ -90,13 +129,11 @@ class ProjectController extends Controller
         return view('backend.project.detail_project', $data );
     }
 
-
     public function ProjectBalance(Request $request) {
 
         $project_id = $request->project_id;
         /*Project Added Amount*/
         $projectAddedAmounts = ProjectAddAmount::where('project_id',$project_id)->get();
-
 
         $incomes = array();
 
@@ -121,10 +158,7 @@ class ProjectController extends Controller
             $html['tfsource'] = '<td colspan="3" class="text-center"><b>No Data Found</b></td>';
         }
 
-
         /*Expense Listing*/
-
-
         $expenses = ProjectExpense::where('project_id',$project_id)->get();
 
         $outcomes = array();

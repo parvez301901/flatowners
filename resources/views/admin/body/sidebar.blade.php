@@ -164,7 +164,6 @@ $route = Route::current()->getName();
                 </ul>
             </li>
 
-
             <li class="header nav-small-cap">Project/Programme Management</li>
 
             <li class="treeview">
@@ -180,6 +179,7 @@ $route = Route::current()->getName();
                         <ul class="treeview-menu">
                             <li class="{{ ($route == 'project.view')?'active':'' }}"><a href="{{ route('project.view') }}"><i class="ti-more"></i>All Project</a></li>
                             <li class="{{ ($route == 'project.add')?'active':'' }}"><a href="{{ route('project.add') }}"><i class="ti-more"></i>Add New Project</a></li>
+                            <li class="{{ ($route == 'project.add_sub-project')?'active':'' }}"><a href="{{ route('project.add_sub_project') }}"><i class="ti-more"></i>Add Sub Project</a></li>
                             <li class="{{ ($route == 'project.depositmoney')?'active':'' }}"><a href="{{ route('project.depositmoney') }}"><i class="ti-more"></i>Deposit Money</a></li>
                             <li class="{{ ($route == 'project.banktransaction')?'active':'' }}"><a href="{{ route('project.banktransaction') }}"><i class="ti-more"></i>Bank Transaction</a></li>
                         </ul>

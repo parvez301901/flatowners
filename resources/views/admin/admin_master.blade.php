@@ -516,6 +516,42 @@
 
     });
 
+    $(document).on('change','input[name="project_end_date"]',function(){
+        var date2 = $(this).val();
+        var date1 = $('input[name="project_start_date"]').val();
+
+        var day_start = new Date(date2);
+        var day_end = new Date(date1);
+        var total_days = Math.round(( day_start - day_end ) / (1000 * 60 * 60 * 24));
+
+        if ( total_days < 0 ) {
+            $('.add_project_button').prop('disabled', true);
+            $('p.date-diff-message').addClass('d-block').removeClass('d-none');
+        } else {
+            $('.add_project_button').prop('disabled', false);
+            $('p.date-diff-message').addClass('d-none').removeClass('d-block');
+        }
+        console.log(total_days);
+    });
+
+    $(document).on('change','input[name="project_start_date"]',function(){
+        var date2 = $(this).val();
+        var date1 = $('input[name="project_end_date"]').val();
+
+        var day_start = new Date(date2);
+        var day_end = new Date(date1);
+        var total_days = Math.round((day_end - day_start) / (1000 * 60 * 60 * 24));
+
+        if ( total_days < 0 ) {
+            $('.add_project_button').prop('disabled', true);
+            $('p.date-diff-message').addClass('d-block').removeClass('d-none');
+        } else {
+            $('.add_project_button').prop('disabled', false);
+            $('p.date-diff-message').addClass('d-none').removeClass('d-block');
+        }
+        console.log(total_days);
+    });
+
     function printDiv() {
         var printContents = document.getElementById('printableArea').innerHTML;
         var originalContents = document.body.innerHTML;
