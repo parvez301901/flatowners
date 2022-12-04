@@ -204,6 +204,32 @@
     });
 
     /*Search Service Charge*/
+    $(document).on('click','#search_yearly_balance_btn',function(){
+        var year_id = $('#reportYear').val();
+        $('#search_balance_btn').addClass('disabled');
+        console.log( 'get year: ' + year_id);
+        $.ajax({
+            url: "{{ route('report.yearly.balancesheet.search')}}",
+            type: "get",
+            data: {'year_id':year_id},
+            beforeSend: function() {
+            },
+            success: function (data) {
+                console.log(data);
+                $('#test_report').html(data.test);
+                /*
+                $('#search_balance_btn').removeClass('disabled');
+                var source = $("#document-template").html();
+                var template = Handlebars.compile(source);
+                var html = template(data);
+                $('#DocumentResults').html(html);
+                 */
+                //$('[data-toggle="tooltip"]').tooltip();
+            }
+        });
+    });
+
+    /*Search Service Charge*/
     $(document).on('change','input[name="serviceChargeMonthYear"]',function(){
         var year_id = $(this).val();
         console.log(year_id);
@@ -551,6 +577,17 @@
         }
         console.log(total_days);
     });
+
+
+    $(document).on('change','.expense_from',function() {
+        var date2from = $(this).val();
+        if ( date2from == 'from_bank' ){
+            $('.select-bank').removeClass('d-none').addClass('d-block');
+        } else {
+            $('.select-bank').removeClass('d-block').addClass('d-none');
+        }
+    });
+
 
     function printDiv() {
         var printContents = document.getElementById('printableArea').innerHTML;

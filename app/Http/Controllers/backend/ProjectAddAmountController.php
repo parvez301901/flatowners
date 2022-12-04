@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\backend\Bank;
 use App\Models\backend\Project;
 use App\Models\backend\ProjectAddAmount;
 use App\Models\backend\ProjectPettyCash;
+use App\Models\backend\ProjectRemainingBalance;
 use App\Models\backend\Unit;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
@@ -68,6 +70,7 @@ class ProjectAddAmountController extends Controller
         ->where('user_id' , $request->user_id)
         ->where('unit_id' , $request->unit_id)
         ->first();
+
         $find_due = (($data->due) - ($request->amount));
         $data->amount = ($data->amount + $request->amount);
         $data->due = $find_due;
@@ -106,8 +109,14 @@ class ProjectAddAmountController extends Controller
         $cash_n_handle = ProjectPettyCash::all()->first();
         $cash_in_handle = ProjectPettyCash::first()->balance;
         $cash_n_handle->project_id = $request->project_id;
-        $cash_n_handle->balance = ($cash_in_handle) - ($request->amount);
+        $cash_n_handle->balance = ($cash_in_handle) + ($request->amount);
         $cash_n_handle->save();
+
+        //add Money to Project Remaining Balance
+        $get_project_balance_row = ProjectRemainingBalance::where('project_id',$request->project_id )->first();
+        $previous_balance = ProjectRemainingBalance::where('project_id', $request->project_id)->value('balance');
+        $get_project_balance_row->balance = ($previous_balance) + ($request->amount);
+        $get_project_balance_row->save();
 
         $notification = array(
             'message' => 'Money Deposited Successfully',
@@ -116,7 +125,6 @@ class ProjectAddAmountController extends Controller
 
         return redirect()->route('project.detail' , $request->project_id)->with($notification);
     }
-
 
     public function SMSProjectDue(Request $request) {
         $number = $request->phone;

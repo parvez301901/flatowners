@@ -142,6 +142,8 @@ Route::group(['middleware' => 'auth'],function() {
     Route::prefix('report')->group( function(){
         Route::get('/monthly/balancesheet', [Report::class, 'reportMonthlyBalancesheetView'])->name('report.monthly.balancesheet');
         Route::get('/monthly/balancesheet/search', [Report::class, 'reportMonthlyBalancesheetSearch'])->name('report.monthly.balancesheet.search');
+        Route::get('/yearly/balancesheet', [Report::class, 'reportYearlyBalancesheetView'])->name('report.yearly.balancesheet');
+        Route::get('/yearly/balancesheet/search', [Report::class, 'reportYearlyBalancesheetSearch'])->name('report.yearly.balancesheet.search');
     });
 
     Route::prefix('project')->group(function (){
@@ -154,6 +156,8 @@ Route::group(['middleware' => 'auth'],function() {
         Route::get('/balance', [ProjectController::class, 'ProjectBalance'])->name('project.balance');
         Route::get('/depositmoney', [ProjectController::class, 'ProjectDepositMoney'])->name('project.depositmoney');
         Route::get('/banktransaction', [ProjectController::class, 'ProjectBankTransaction'])->name('project.banktransaction');
+        Route::post('/deposittobank', [ProjectController::class, 'ProjecDepositToBank'])->name('project.deposittobank');
+        Route::post('/withdrawfromBank', [ProjectController::class, 'WithdrawFromBank'])->name('project.withdrawfrombank');
 
         /*
         Route::post('/update/{id}', [UnitController::class, 'UnitUpdate'])->name('unit.update');

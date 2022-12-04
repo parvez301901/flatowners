@@ -198,6 +198,7 @@ $route = Route::current()->getName();
                 </a>
                 <ul class="treeview-menu">
                     <li class="{{ ($route == 'report.monthly.balancesheet')?'active':'' }}"><a href="{{route('report.monthly.balancesheet')}}"><i class="ti-more"></i>Monthly Report</a></li>
+                    <li class="{{ ($route == 'report.yearly.balancesheet')?'active':'' }}"><a href="{{route('report.yearly.balancesheet')}}"><i class="ti-more"></i>Yearly Report</a></li>
                 </ul>
             </li>
 

@@ -110,52 +110,46 @@
                     </div>
                     <!-- /.box -->
                 </div>
+                    <div class="col-md-6 col-12">
 
-                <section class="content">
-                    <div class="row">
-                        <div class="col-12">
-
-                            <div class="box">
-                                <div class="box-header with-border d-flex justify-content-between align-items-center">
-                                    <h3 class="box-title">Utility List</h3>
-                                </div>
-                                <!-- /.box-header -->
-                                <div class="box-body">
-                                    <div class="table-responsive">
-                                        <table id="example1" class="table table-bordered table-striped">
-                                            <thead>
-                                            <tr>
-                                                <th>SL</th>
-                                                <th>Utility Name</th>
-                                                <th width="20%">Action</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            @foreach( $allUtilityData as $key => $unit)
-                                                <tr>
-                                                    <td>{{ $key+1 }}</td>
-                                                    <td>{{ $unit->name }}</td>
-                                                    <td>
-                                                        <a href="{{ route('utility.detail' , $unit->id) }}" class="btn btn-success mr-2">Details</a>
-                                                        <a href="{{ route('utility.detail' , $unit->id) }}" class="btn btn-info mr-2">Edit</a>
-                                                        <a href="{{ route('utility.delete' , $unit->id) }}" class="btn btn-danger mr-2">delete</a>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <!-- /.box-body -->
+                        <div class="box">
+                            <div class="box-header with-border d-flex justify-content-between align-items-center">
+                                <h3 class="box-title">Utility List</h3>
                             </div>
-                            <!-- /.box -->
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <div class="table-responsive">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>SL</th>
+                                            <th>Utility Name</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
 
+                                        @foreach( $allSubProjects as $key => $subProject)
+                                            <tr>
+                                                <td>{{ $key+1 }}</td>
+                                                <td>{{ $subProject->name }}</td>
+                                                <td>
+                                                    <a href="{{ route('utility.detail' , $subProject->id) }}" class="btn btn-success mr-2">Details</a>
+                                                    <a href="{{ route('utility.detail' , $subProject->id) }}" class="btn btn-info mr-2">Edit</a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
                         </div>
-                    </div>
-                </section>
+                        <!-- /.box -->
 
+                    </div>
+                </div>
 
 
             </div>

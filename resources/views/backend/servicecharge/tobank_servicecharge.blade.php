@@ -136,7 +136,7 @@
                                             <h5>Enter Amount to Withdraw</h5>
                                             <div class="controls">
                                                 <input name="amount_to_withdraw" class="form-control amount-to-withdraw" type="number" >
-                                                <p class="message-withdraw bg-danger d-none">Cannot deposit More than from the bank</p>
+                                                <p class="message-withdraw bg-danger d-none">Cannot Withdraw More than from the bank</p>
                                             </div>
                                         </div>
                                     </div> <!-- End Col md 3 -->

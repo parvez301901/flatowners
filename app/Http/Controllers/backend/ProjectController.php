@@ -25,6 +25,7 @@ class ProjectController extends Controller
 
     public function ProjectAddSubProject() {
         $data['allProjects'] = Project::all();
+        $data['allSubProjects'] = SubProject::all();
         return view('backend.project.add_sub_project', $data);
     }
 
@@ -33,12 +34,13 @@ class ProjectController extends Controller
         $data['allUtilitylist'] = Utility::all();
         $data['allFloorlist'] = Floor::all();
         $data['allProjectlist'] = Project::all();
+        //$data['getBalance'] = ProjectRemainingBalance::where('project_id', 5)->value('balance');
         return view('backend.project.deposit_money_project' , $data );
     }
     public function ProjectBankTransaction() {
         $data['allBank'] = Bank::all();
         $data['find_petty_cash'] = ProjectPettyCash::first()->balance;
-        return view('backend.project.tobank_servicecharge', $data );
+        return view('backend.project.tobank_projectmoney', $data );
     }
 
     public function ProjectStore( Request $request) {
@@ -125,7 +127,10 @@ class ProjectController extends Controller
         $data['total_expense'] = ProjectExpense::where('project_id',$id)->sum('amount');
         $data['alldepoasitdata'] = ProjectAddAmount::where('project_id',$id)->get();
         $data['total_deposit'] = ProjectAddAmount::where('project_id',$id)->sum('amount');
+        $data['balanceInBank'] = Bank::where('id', 2)->value('amount');
+        $data['balanceInPettyCash'] = ProjectPettyCash::where('project_id',$id)->value('balance');
 
+        $data['allBank'] = Bank::all();
         return view('backend.project.detail_project', $data );
     }
 
@@ -139,13 +144,16 @@ class ProjectController extends Controller
 
         $html['thsource'] = '<th>SL</th>';
         $html['thsource'] .= '<th>Flat Owner Name</th>';
+        $html['thsource'] .= '<th>Flat No</th>';
         $html['thsource'] .= '<th>Amount</th>';
 
         foreach ($projectAddedAmounts as $key => $projectAddedAmount) {
 
             $flat_owner_name = User::find($projectAddedAmount->user_id);
+            $get_unit_name = Unit::where('user_id', $projectAddedAmount->user_id)->first();
             $html[$key]['tdsource'] = '<td>' . ($key + 1) . '</td>';
             $html[$key]['tdsource'] .= '<td>'. $flat_owner_name->name .'</td>';
+            $html[$key]['tdsource'] .= '<td>'. $get_unit_name->name .'</td>';
             $html[$key]['tdsource'] .= '<td>' . $projectAddedAmount->amount . '</td>';
             $incomes[] = (int)$projectAddedAmount->amount;
 
@@ -186,13 +194,55 @@ class ProjectController extends Controller
         }
 
         $html['balance'] = ((int) $income) - ((int) $outcome);
-
-
+        $get_bank = Bank::find(2);
+        $html['balance_in_bank'] = $get_bank->amount;
+        $html['bank_name'] = $get_bank->name;
+        $get_petty = ProjectPettyCash::where('project_id',$project_id)->first();
+        $html['balance_in_hand'] = $get_petty->balance;
         //$html = $projectAddedAmounts;
         return response()->json(@$html);
 
     }
 
+    public function ProjecDepositToBank( Request $request) {
+
+        $data = Bank::find($request->bank_id);
+        $preveious_balance = $data->amount;
+        $data->amount = $request->amount_to_deposit + $preveious_balance;
+        $data->save();
+
+        $cash_n_handle = ProjectPettyCash::all()->first();
+        $cash_in_handle = ProjectPettyCash::first()->balance;
+        $cash_n_handle->balance = ($cash_in_handle) - ($request->amount_to_deposit) ;
+        $cash_n_handle->save();
+
+        $notification = array(
+            'message' => 'Deposited to The Bank Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('project.banktransaction')->with($notification);
+    }
+
+    public function WithdrawFromBank( Request $request) {
+
+        $data = Bank::find($request->bank_id);
+        $preveious_balance = $data->amount;
+        $data->amount = $preveious_balance - $request->amount_to_withdraw;
+        $data->save();
+
+        $cash_n_handle = ProjectPettyCash::all()->first();
+        $cash_in_handle = ProjectPettyCash::first()->balance;
+        $cash_n_handle->balance = ($cash_in_handle) + ($request->amount_to_withdraw) ;
+        $cash_n_handle->save();
+
+        $notification = array(
+            'message' => 'Withdraw Successfully and Added to Petty Cash',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('project.banktransaction')->with($notification);
+    }
 
 
 }

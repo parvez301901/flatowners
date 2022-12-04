@@ -90,11 +90,10 @@
                                             <input name="project_amount_per_head" disabled type="number" class="form-control project_amount_per_head" required="required" placeholder="">
                                         </div>
                                     </div>
-
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-group has-success">
                                             <label>Amount wants to pay now</label>
-                                            <input name="amount" type="number" class="form-control" required="required" placeholder="Cost">
+                                            <input name="amount" type="number" class="form-control" required="required">
                                         </div>
                                     </div>
                                 </div>

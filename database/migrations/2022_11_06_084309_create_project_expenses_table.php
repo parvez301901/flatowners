@@ -19,6 +19,7 @@ class CreateProjectExpensesTable extends Migration
             $table->integer('project_id')->nullable();
             $table->integer('user_id')->nullable();
             $table->integer('utility_id')->nullable();
+            $table->integer('bank_id')->nullable();
             $table->date('project_cost_date')->nullable();
             $table->string('project_cost_note')->nullable();
             $table->string('project_cost_image')->nullable();

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\backend\Bank;
 use App\Models\backend\ProjectExpense;
+use App\Models\backend\ProjectPettyCash;
+use App\Models\backend\ProjectRemainingBalance;
 use App\Models\User;
 use App\Models\Utility;
 use Illuminate\Http\Request;
@@ -18,6 +21,11 @@ class Project_ExpenseController extends Controller
         $data->project_id = $request->project_id;
         $data->utility_id = $request->utilityId;
         $data->user_id = $request->userId;
+        if( $request->bank_id > 0 ) {
+            $data->bank_id = $request->bank_id;
+        } else {
+            $data->bank_id = 0;
+        }
         $data->project_cost_date = $request->project_cost_date;
         $data->project_cost_note = $request->project_cost_note;
 
@@ -31,7 +39,24 @@ class Project_ExpenseController extends Controller
 
         $data->save();
 
+        if( $request->bank_id > 0 ) {
+            $get_project_bank_balance_row = Bank::where('project_id',$request->project_id )->first();
+            $previous_bank_balance = Bank::where('project_id', $request->project_id)->value('balance');
+            $get_project_bank_balance_row->balance = ($previous_bank_balance) - ($request->amount);
+            $get_project_bank_balance_row->save();
+        } else {
+            /*Minus from the petty cash or bank */
+            $get_project_petty_balance_row = ProjectPettyCash::where('project_id',$request->project_id )->first();
+            $previous_petty_balance = ProjectPettyCash::where('project_id', $request->project_id)->value('balance');
+            $get_project_petty_balance_row->balance = ($previous_petty_balance) - ($request->amount);
+            $get_project_petty_balance_row->save();
+        }
 
+        /*Minus from Remaining Balance */
+        $get_project_balance_row = ProjectRemainingBalance::where('project_id',$request->project_id )->first();
+        $previous_balance = ProjectRemainingBalance::where('project_id', $request->project_id)->value('balance');
+        $get_project_balance_row->balance = ($previous_balance) - ($request->amount);
+        $get_project_balance_row->save();
 
         $notification = array(
             'message' => 'Expenses Inserted Successfully',
