@@ -33,7 +33,7 @@
                                 <div id="test_report">
 
                                 </div>
-{{$grouped}}
+{{$new_grouped}}
                                 <div id="test_report_2">
 
                                 </div>

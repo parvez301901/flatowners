@@ -69,7 +69,7 @@
                                 <div class="container mt-5">
                                     <div class="row">
                                         <div class="col-12 text-center">
-                                            @if($all_matched)
+                                            @if(!empty($all_matched[0]['amount']))
                                                 <a href="#" data-salary="" class="btn btn-success mr-2 ">Salary for This Month already Disbursed</a>
                                             @else
                                                 <a href="#" data-salary="" class="btn btn-success mr-2 insert-salary-expense">Disburse Salary</a>

@@ -22,26 +22,24 @@ class Report extends Controller
 
     public function reportYearlyBalancesheetView() {
 
-        //$data['grouped'] =  MaintenanceModel::select(DB::raw('YEAR(maintenanceCostDate) year, MONTH(maintenanceCostDate) month'))->groupby('year','month')->get();
-
-        $data['grouped'] = MaintenanceModel::select("id" , DB::raw("(sum(amount)) as total_click"),
-            DB::raw("(DATE_FORMAT(created_at, '%m-%Y')) as month_year")
-        )
-            ->orderBy('created_at')
-            ->groupBy(DB::raw("DATE_FORMAT(created_at, '%m-%Y')"))
-            ->get();
-
-        dd($data['grouped']);
-
 
 /*
-        $data['grouped'] = MaintenanceModel::selectRaw('year(created_at) year, monthname(created_at) month, count(*) data')
+        $data['new_grouped'] = MaintenanceModel::select('id',DB::raw("(sum(amount)) as total_taka"),DB::raw("(DATE_FORMAT(created_at, '%m-%Y')) as month_year"))->orderBy('created_at')->groupBy(DB::raw("DATE_FORMAT(created_at, '%m-%Y')"))->get();
+
+       */
+
+
+
+        $data['new_grouped'] = MaintenanceModel::selectRaw('year(maintenanceCostDate) year, monthname(maintenanceCostDate) month, utilityId , (sum(amount)) as total_taka', )
             ->groupBy('year', 'month')
-            ->orderBy('year', 'desc')
+            ->orderBy('maintenanceCostDate', 'asc')
             ->get();
-        dd($data['grouped']);
-        */
-        return view('backend.report.view_yearly_report'. $data);
+
+        //dd($data['grouped']);
+
+
+
+        return view('backend.report.view_yearly_report', $data);
     }
 
     public function reportMonthlyBalancesheetSearch(Request $request) {
@@ -231,7 +229,7 @@ class Report extends Controller
         */
 
         $html['test'] = $year_id;
-        $html['$grouped'] = $grouped;
+        $html['grouped'] = $grouped;
 
         return response()->json(@$html);
 
