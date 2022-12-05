@@ -33,6 +33,10 @@
                                 <div id="test_report">
 
                                 </div>
+{{$grouped}}
+                                <div id="test_report_2">
+
+                                </div>
                                 <!--  ////////////////// Registration Fee table /////////////  -->
 
                                 {{--

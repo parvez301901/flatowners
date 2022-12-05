@@ -217,6 +217,7 @@
             success: function (data) {
                 console.log(data);
                 $('#test_report').html(data.test);
+                $('#test_report_2').html(data.amount);
                 /*
                 $('#search_balance_btn').removeClass('disabled');
                 var source = $("#document-template").html();

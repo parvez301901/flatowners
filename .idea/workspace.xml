@@ -3,19 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="f269716a-cbf7-4370-9369-ffe3fe0a21a6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectAddAmountController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectAddAmountController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/Project_ExpenseController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/Project_ExpenseController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/Report.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/Report.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2022_11_06_084309_create_project_expenses_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2022_11_06_084309_create_project_expenses_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/admin/admin_master.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/admin_master.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/body/sidebar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/body/sidebar.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/project/add_sub_project.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/project/add_sub_project.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/project/deposit_money_project.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/project/deposit_money_project.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/project/detail_project.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/project/detail_project.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/project/tobank_servicecharge.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/servicecharge/tobank_servicecharge.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/servicecharge/tobank_servicecharge.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/backend/report/view_yearly_report.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/report/view_yearly_report.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -199,6 +189,7 @@
       <workItem from="1669995830512" duration="5377000" />
       <workItem from="1670060033158" duration="18883000" />
       <workItem from="1670182434259" duration="4127000" />
+      <workItem from="1670216997533" duration="4971000" />
     </task>
     <servers />
   </component>

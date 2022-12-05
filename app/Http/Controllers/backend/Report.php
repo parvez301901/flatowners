@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\Utility;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class Report extends Controller
 {
@@ -20,7 +21,27 @@ class Report extends Controller
     }
 
     public function reportYearlyBalancesheetView() {
-        return view('backend.report.view_yearly_report');
+
+        //$data['grouped'] =  MaintenanceModel::select(DB::raw('YEAR(maintenanceCostDate) year, MONTH(maintenanceCostDate) month'))->groupby('year','month')->get();
+
+        $data['grouped'] = MaintenanceModel::select("id" , DB::raw("(sum(amount)) as total_click"),
+            DB::raw("(DATE_FORMAT(created_at, '%m-%Y')) as month_year")
+        )
+            ->orderBy('created_at')
+            ->groupBy(DB::raw("DATE_FORMAT(created_at, '%m-%Y')"))
+            ->get();
+
+        dd($data['grouped']);
+
+
+/*
+        $data['grouped'] = MaintenanceModel::selectRaw('year(created_at) year, monthname(created_at) month, count(*) data')
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'desc')
+            ->get();
+        dd($data['grouped']);
+        */
+        return view('backend.report.view_yearly_report'. $data);
     }
 
     public function reportMonthlyBalancesheetSearch(Request $request) {
@@ -118,7 +139,10 @@ class Report extends Controller
     public function reportYearlyBalancesheetSearch(Request $request) {
 
         $year_id = $request->year_id;
-
+        $grouped = DB::table('maintenance_models')
+            ->selectRaw('SUM(amount) AS amount,')
+            ->groupByRaw('MONTH(maintenanceCostDate)')
+            ->get();
 /*
         $date = Carbon::createFromFormat('m/Y', Carbon::parse($year_id)->format('m/Y'));
 
@@ -207,6 +231,7 @@ class Report extends Controller
         */
 
         $html['test'] = $year_id;
+        $html['$grouped'] = $grouped;
 
         return response()->json(@$html);
 
