@@ -22,22 +22,24 @@ class Report extends Controller
 
     public function reportYearlyBalancesheetView() {
 
-
-/*
+        /*
         $data['new_grouped'] = MaintenanceModel::select('id',DB::raw("(sum(amount)) as total_taka"),DB::raw("(DATE_FORMAT(created_at, '%m-%Y')) as month_year"))->orderBy('created_at')->groupBy(DB::raw("DATE_FORMAT(created_at, '%m-%Y')"))->get();
-
        */
-
-
-
+        /*
         $data['new_grouped'] = MaintenanceModel::selectRaw('year(maintenanceCostDate) year, monthname(maintenanceCostDate) month, utilityId , (sum(amount)) as total_taka', )
             ->groupBy('year', 'month')
             ->orderBy('maintenanceCostDate', 'asc')
             ->get();
+        */
 
-        //dd($data['grouped']);
+        $year_id = '2022';
 
+        $date = Carbon::createFromFormat('Y', Carbon::parse($year_id)->format('Y'));
 
+        $data['new_grouped'] = MaintenanceModel::whereYear('maintenanceCostDate', $date->year)
+            ->groupBy($date->year)
+            ->orderBy('maintenanceCostDate', 'asc')
+            ->get();
 
         return view('backend.report.view_yearly_report', $data);
     }
