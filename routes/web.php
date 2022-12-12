@@ -117,7 +117,8 @@ Route::group(['middleware' => 'auth'],function() {
         Route::get('/tobank', [ServiceChargeController::class, 'ServiceChargeToBank'])->name('servicecharge.tobank');
         Route::post('/deposittobank', [ServiceChargeController::class, 'DepositToBank'])->name('servicecharge.deposittobank');
         Route::post('/withdrawfromBank', [ServiceChargeController::class, 'WithdrawFromBank'])->name('servicecharge.withdrawfrombank');
-        Route::post('/dueservicecharge', [ServiceChargeController::class, 'DueServiceCharge'])->name('servicecharge.dueservicecharge');
+        Route::get('/dueservicecharge', [ServiceChargeController::class, 'DueServiceCharge'])->name('servicecharge.dueservicecharge');
+        Route::get('/duesearch/', [ServiceChargeController::class, 'ServiceChargeDueSearch'])->name('servicecharge.dueservicechargesearch');
 
         //////////////------------------------------  Baki ache ------------ Edit - Update - Delete ------   /////////////////
     });

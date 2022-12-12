@@ -252,6 +252,29 @@
         });
     });
 
+
+    /*Search Service Charge*/
+    $(document).on('change','input[name="serviceChargeDueMonthYear"]',function(){
+        var year_id = $(this).val();
+        console.log(year_id);
+        $.ajax({
+            url: "{{ route('servicecharge.dueservicechargesearch')}}",
+            type: "get",
+            data: {'year_id':year_id},
+            beforeSend: function() {
+            },
+            success: function (data) {
+                console.log(data);
+                $('#search_serviceCharge').removeClass('disabled');
+                var source = $("#document-template").html();
+                var template = Handlebars.compile(source);
+                var html = template(data);
+                $('#DocumentResults').html(html);
+                //$('[data-toggle="tooltip"]').tooltip();
+            }
+        });
+    });
+
     /*on change - add user*/
     $(document).on('change','#on_select_floor',function(){
         var floor_id = $('#on_select_floor').val();

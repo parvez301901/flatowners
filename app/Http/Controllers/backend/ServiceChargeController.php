@@ -231,8 +231,6 @@ $c = Customer::leftJoin('orders', function($join) {
     ]);
 */
 
-
-
     public function ServiceChargeReceipt(Request $request){
 
         $serviceChargeId = $request->serviceChargeId;
@@ -344,9 +342,69 @@ $c = Customer::leftJoin('orders', function($join) {
     }
 
     public function DueServiceCharge() {
-
         return view('backend.servicecharge.due_servicecharge' );
+    }
 
+    public function ServiceChargeDueSearch( Request $request ){
+
+        $year_id = $request->year_id . '-02';
+
+        $date = Carbon::createFromFormat('m/Y', Carbon::parse($year_id)->format('m/Y'));
+
+        $month_year = Carbon::parse($year_id)->format('M Y');
+
+        //get all unit here
+        $allUnits = Unit::all();
+        $total_serviceCharge = Unit::all()->sum('serviceCharge');
+        // where user name is
+
+        $charges = array();
+        $due_count = array();
+
+        $html['thsource'] = '<th>SL</th>';
+        $html['thsource'] .= '<th>Flat Owner Name</th>';
+        $html['thsource'] .= '<th>Floor No.</th>';
+        $html['thsource'] .= '<th>Flat No.</th>';
+        $html['thsource'] .= '<th>Due</th>';
+        $html['thsource'] .= '<th>Action</th>';
+        $total_serviceCharge_received = array();
+
+        foreach ($allUnits as $key => $unitInfo) {
+
+            $saerviceChargeInfo = ServiceCharge::whereMonth('serviceChargeMonthYear', $date->month)
+                ->whereYear('serviceChargeMonthYear', $date->year)
+                ->where('unit_id' , $unitInfo->id)
+                ->where('user_id' , $unitInfo['get_user_name']['id'])
+                ->first();
+
+            if (!empty($saerviceChargeInfo)) {
+                $total_serviceCharge_received[] = $saerviceChargeInfo['serviceChargeAmount'];
+                if( $saerviceChargeInfo['serviceChargeDue'] > 0 ){
+                    $f = '<button type="button" class="btn btn-rounded btn-info m-5">Due:  ' . $saerviceChargeInfo['serviceChargeDue'] . '</button>';
+                    $reminder_button = '<a class="btn btn-rounded btn-info d-inline-flex due-money" data-text="Dear ' . $unitInfo['get_user_name']['name'] . ', Total due TK'. $saerviceChargeInfo['serviceChargeDue'] .' as Service Charge for '. $month_year .', for Flat '. $unitInfo->name .'. Please pay." data-phone="' . $unitInfo['get_user_name']['phone'] . '" id=""><i class="d-none ti-check"></i>Remind</a>';
+                } else {
+                    $f = '<button type="button" class="btn btn-rounded btn-success m-5">Paid</button>';
+                    $reminder_button = 'paid';
+                }
+            } else {
+                $f = '<button type="button" class="btn btn-rounded btn-danger m-5">Not Paid</button>';
+                $reminder_button = '<a class="btn btn-rounded btn-info d-inline-flex due-money" data-text="Dear ' . $unitInfo['get_user_name']['name'] . ', Total due TK'. $unitInfo->serviceCharge .' as Service Charge for '. $month_year .', for Flat '. $unitInfo->name .'. Please pay." data-phone="' . $unitInfo['get_user_name']['phone'] . '" id=""><i class="d-none ti-check"></i>Remind</a>';
+            }
+
+            $html[$key]['tdsource'] = '<td>' . ($key + 1) . '</td>';
+            $html[$key]['tdsource'] .= '<td>' . $unitInfo['get_user_name']['name'] . '</td>';
+            $html[$key]['tdsource'] .= '<td>' . $unitInfo['get_floor_name']['name'] . '</td>';
+            $html[$key]['tdsource'] .= '<td>' . $unitInfo->name. '</td>';
+            $html[$key]['tdsource'] .= '<td>' . $f . '</td>';
+            $html[$key]['tdsource'] .= '<td>' . $reminder_button . '<p class="smsmessage d-none">Message Sent</p></td>';
+
+        }
+
+        $d = $total_serviceCharge - array_sum($total_serviceCharge_received);
+
+        $html['tfsource'] = '<td colspan="9" class="text-center"><b>Total Service Charge Due: '. $d .'</b></td>';
+
+        return response()->json(@$html);
     }
 
 }

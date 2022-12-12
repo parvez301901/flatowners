@@ -7,7 +7,7 @@
         <div class="content-header">
             <div class="d-flex align-items-center">
                 <div class="mr-auto">
-                    <h3 class="page-title">Make SMS</h3>
+                    <h3 class="page-title">Save & Send SMS</h3>
                     <div class="d-inline-block align-items-center">
                         <nav>
                             <ol class="breadcrumb">
@@ -44,38 +44,26 @@
                                             <p class="count-word"></p>
                                         </div>
                                     </div>
+
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label>Flat No.</label>
-                                            <select name="religion" required="" class="form-control">
-                                                <option value="" selected="" disabled="">Select Who Will get SMS?</option>
-                                                {{-- <option value="islam" {{ ($editData->religion == "islam" ? "selected": "") }} >Islam</option> --}}
-                                                <option value="group">Group</option>
-                                                <option value="individual">Individual</option>
+                                            <label>Select Users</label>
+                                            <select class="form-control select2" multiple="multiple" data-placeholder="Select Users" style="width: 100%;">
+                                                @foreach( $allFlatOwners as $key => $flatOwner)
+                                                <option value="{{ $flatOwner->phone }}">{{ $flatOwner->name }} - {{ $flatOwner['get_unit_name']['name'] }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
+                                        <!-- /.form-group -->
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label>Rent Amount</label>
-                                            <input name="rent" type="number" class="form-control" required="required" placeholder="Rent">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label>Service Charge</label>
-                                            <input name="serviceCharge" type="number" class="form-control" required="required" placeholder="Service Charge">
-                                        </div>
-                                    </div>
+
                                 </div>
 
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer d-flex justify-content-between">
                                 <button type="submit" class="btn btn-rounded btn-danger">Reset</button>
-                                <input type="submit" class="btn btn-rounded btn-info" value="Add Flat">
+                                <input type="submit" class="btn btn-rounded btn-info" value="Send SMS">
                             </div>
                         </form>
                     </div>

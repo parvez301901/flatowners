@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 class SmsSystemController extends Controller {
 
     public function SmsAdd() {
-        $data['allUser'] = User::all();
-        $data['allFlatOwner'] = User::where('usertype','flatowner');
-        $data['allEmployee'] = User::where('usertype','employee');
+        $data['allUsers'] = User::all();
+        $data['allFlatOwners'] = User::where('usertype','flatowner');
+        $data['allEmployees'] = User::where('usertype','employee');
         return view('backend.sms.add_sms' , $data);
     }
 

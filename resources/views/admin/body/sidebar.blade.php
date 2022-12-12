@@ -224,7 +224,7 @@ $route = Route::current()->getName();
                 </a>
                 <ul class="treeview-menu">
                     <li><a href=""><i class="ti-more"></i>Email/SMS List</a></li>
-                    <li class="{{ ($route == 'notice.add')? 'active' : '' }}"><a href=""><i class="ti-more"></i>Add Email/SMS</a></li>
+                    <li class="{{ ($route == 'sms.add')? 'active' : '' }}"><a href="{{ route('sms.add') }}"><i class="ti-more"></i>Add Email/SMS</a></li>
                 </ul>
             </li>
 

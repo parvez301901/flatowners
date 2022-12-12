@@ -16,7 +16,7 @@
                                         <div class="form-group">
                                             <h5>Select Month Year</h5>
                                             <div class="controls">
-                                                <input class="form-control" id="serviceChargeMonthYear" name="serviceChargeMonthYear" type="month" value="">
+                                                <input class="form-control" id="serviceChargeDueMonthYear" name="serviceChargeDueMonthYear" type="month" value="">
                                             </div>
                                         </div>
                                     </div> <!-- End Col md 3 -->

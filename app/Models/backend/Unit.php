@@ -21,8 +21,12 @@ class Unit extends Model
         return $this->belongsTo(User::class,'user_id','id');
     }
 
-
     public function Floor(){
         return $this->belongsTo(Floor::class);
     }
+
+    public function getServiceCharge() {
+        //return $this->
+    }
+
 }
