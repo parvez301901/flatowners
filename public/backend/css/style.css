@@ -24088,3 +24088,20 @@ a.disabled {
 .big-padding {
     padding: 50px 0;
 }
+.w-100-percent {
+    width: 100%;
+}
+.onlyinprint { display: none; }
+
+.no-print, .no-print * {
+    display: none !important;
+}
+.color-black {
+    color: #ffffff;
+}
+@media print {
+    .no-print, .no-print * {
+        display: block !important;
+    }
+    .color-black { color: #000000; }
+}

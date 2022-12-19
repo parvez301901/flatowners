@@ -209,28 +209,6 @@ class ServiceChargeController extends Controller
 
     }// end method
 
-/*
-$c = Customer::leftJoin('orders', function($join) {
-      $join->on('customers.id', '=', 'orders.customer_id');
-    })
-    ->whereNull('orders.customer_id')
-    ->first([
-        'customers.id',
-        'customers.first_name',
-        'customers.last_name',
-        'customers.email',
-        'customers.phone',
-        'customers.address1',
-        'customers.address2',
-        'customers.city',
-        'customers.state',
-        'customers.county',
-        'customers.district',
-        'customers.postal_code',
-        'customers.country'
-    ]);
-*/
-
     public function ServiceChargeReceipt(Request $request){
 
         $serviceChargeId = $request->serviceChargeId;

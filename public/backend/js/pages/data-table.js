@@ -7,6 +7,10 @@ $(function () {
     "use strict";
 
     $('#example1').DataTable();
+    $('#unit_list').DataTable({
+        "pageLength": 33
+        }
+    );
     $('#example_project_deposit').DataTable();
     $('#example2').DataTable({
       'paging'      : true,
@@ -16,7 +20,6 @@ $(function () {
       'info'        : true,
       'autoWidth'   : false
     });
-
 
 	$('#example').DataTable( {
 		dom: 'Bfrtip',
@@ -43,7 +46,6 @@ $(function () {
 	  'autoWidth'   : false,
 	});
 
-
 	$('#complex_header').DataTable();
 
 	//--------Individual column searching
@@ -67,8 +69,8 @@ $(function () {
                     .search( this.value )
                     .draw();
             }
-        } );
-    } );
+        });
+    });
 
 
 	//---------------Form inputs

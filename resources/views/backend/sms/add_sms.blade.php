@@ -32,7 +32,7 @@
                         </div>
                         <!-- /.box-header -->
 
-                        <form class="form-horizontal" method="POST" action="">
+                        <form class="form-horizontal" method="POST" action="{{ route('sms.send') }}">
                             @csrf
                             <div class="box-body">
                                 <h4 class="mt-0 mb-20">1. SMS Info:</h4>
@@ -40,25 +40,26 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label>Write Message</label>
-                                            <textarea class="form-control"></textarea>
+                                            <textarea name="message" class="form-control"></textarea>
                                             <p class="count-word"></p>
                                         </div>
                                     </div>
-
-                                    <div class="col-md-6 col-12">
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
                                         <div class="form-group">
                                             <label>Select Users</label>
-                                            <select class="form-control select2" multiple="multiple" data-placeholder="Select Users" style="width: 100%;">
-                                                @foreach( $allFlatOwners as $key => $flatOwner)
-                                                <option value="{{ $flatOwner->phone }}">{{ $flatOwner->name }} - {{ $flatOwner['get_unit_name']['name'] }}</option>
+                                            <ul style="list-style: none; column-count: 3; padding: 0;">
+                                                @foreach ($allUnits as $key => $unitInfo)
+                                                <li>
+                                                    <input type="checkbox" id="md_checkbox_{{$unitInfo->id}}" name="phones[]" value="{{$unitInfo['get_user_name']['phone']}}" class="chk-col-success" />
+                                                    <label for="md_checkbox_{{$unitInfo->id}}">{{$unitInfo['get_user_name']['name']}} - {{$unitInfo->name}}</label>
+                                                </li>
                                                 @endforeach
-                                            </select>
+                                            </ul>
                                         </div>
-                                        <!-- /.form-group -->
                                     </div>
-
                                 </div>
-
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer d-flex justify-content-between">

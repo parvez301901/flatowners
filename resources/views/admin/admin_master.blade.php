@@ -50,9 +50,11 @@
 
 <script src="{{asset('assets/icons/feather-icons/feather.min.js')}}"></script>
 <script src="{{asset('assets/vendor_components/easypiechart/dist/jquery.easypiechart.js')}}"></script>
+<script src="{{asset('assets/vendor_plugins/input-mask/jquery.inputmask.js')}}"></script>
 
 <script src="{{asset('assets/vendor_components/datatable/datatables.min.js')}}"></script>
 <script src="{{asset('/backend/js/pages/data-table.js')}}"></script>
+
 
 <!-- Sunny Admin App -->
 <script src="{{asset('backend/js/template.js')}}"></script>
@@ -181,7 +183,34 @@
         });
     });
 
-    /*Search Service Charge*/
+    /*
+    * Monthly Income report
+    */
+    $(document).on('click','#search_income_btn',function(){
+        var year_id = $('#reportMonthYearIncome').val();
+        $('#search_income_btn').addClass('disabled');
+        console.log(year_id);
+        $.ajax({
+            url: "{{ route('report.monthly.income.search')}}",
+            type: "get",
+            data: {'year_id':year_id},
+            beforeSend: function() {
+            },
+            success: function (data) {
+                console.log(data);
+                $('#search_income_btn').removeClass('disabled');
+                var source = $("#document-template").html();
+                var template = Handlebars.compile(source);
+                var html = template(data);
+                $('#DocumentResults').html(html);
+                //$('[data-toggle="tooltip"]').tooltip();
+            }
+        });
+    });
+
+    /*
+    * Search Monthly report Charge
+    * */
     $(document).on('click','#search_balance_btn',function(){
         var year_id = $('#reportMonthYear').val();
         $('#search_balance_btn').addClass('disabled');
@@ -203,10 +232,10 @@
         });
     });
 
-    /*Search Service Charge*/
+    /*Search Yearly report Charge*/
     $(document).on('click','#search_yearly_balance_btn',function(){
         var year_id = $('#reportYear').val();
-        $('#search_balance_btn').addClass('disabled');
+        $('#search_yearly_balance_btn').addClass('disabled');
         console.log( 'get year: ' + year_id);
         $.ajax({
             url: "{{ route('report.yearly.balancesheet.search')}}",
@@ -216,8 +245,10 @@
             },
             success: function (data) {
                 console.log(data);
+                $('#search_yearly_balance_btn').removeClass('disabled');
                 $('#test_report').html(data.test);
                 $('#test_report_2').html(data.amount);
+
                 /*
                 $('#search_balance_btn').removeClass('disabled');
                 var source = $("#document-template").html();
@@ -619,6 +650,22 @@
         document.body.innerHTML = printContents;
         window.print();
         document.body.innerHTML = originalContents;
+    }
+
+    function printMonthlyReportDiv() {
+        var printContents2 = document.getElementById('reportMonthlyprintableArea').innerHTML;
+        var originalContents2 = document.body.innerHTML;
+        document.body.innerHTML = printContents2;
+        window.print();
+        document.body.innerHTML = originalContents2;
+    }
+
+    function printMonthlyIncomeReportDiv() {
+        var printContents3 = document.getElementById('reportMonthlyIncomeprintableArea').innerHTML;
+        var originalContents3 = document.body.innerHTML;
+        document.body.innerHTML = printContents3;
+        window.print();
+        document.body.innerHTML = originalContents3;
     }
 
 </script>

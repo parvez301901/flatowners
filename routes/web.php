@@ -145,6 +145,8 @@ Route::group(['middleware' => 'auth'],function() {
         Route::get('/monthly/balancesheet/search', [Report::class, 'reportMonthlyBalancesheetSearch'])->name('report.monthly.balancesheet.search');
         Route::get('/yearly/balancesheet', [Report::class, 'reportYearlyBalancesheetView'])->name('report.yearly.balancesheet');
         Route::get('/yearly/balancesheet/search', [Report::class, 'reportYearlyBalancesheetSearch'])->name('report.yearly.balancesheet.search');
+        Route::get('/monthly/income', [Report::class, 'reportMonthlyIncome'])->name('report.monthly.income');
+        Route::get('/monthly/income/search', [Report::class, 'reportMonthlyIncomeSearch'])->name('report.monthly.income.search');
     });
 
     Route::prefix('project')->group(function (){
@@ -180,8 +182,10 @@ Route::group(['middleware' => 'auth'],function() {
 
     Route::prefix('sms')->group(function (){
         Route::get('/add', [SmsSystemController::class, 'SmsAdd'])->name('sms.add');
+        Route::post('/send', [SmsSystemController::class, 'SmsSend'])->name('sms.send');
+
        /*
-        Route::post('/store', [ProjectController::class, 'ProjectStore'])->name('project.store');
+        *  Route::post('/store', [ProjectController::class, 'ProjectStore'])->name('sms.send');
         Route::get('/view', [ProjectController::class, 'ProjectView'])->name('project.view');
         Route::get('/detail/{id}', [ProjectController::class, 'ProjectDetail'])->name('project.detail');
         Route::get('/balance', [ProjectController::class, 'ProjectBalance'])->name('project.balance');

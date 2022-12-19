@@ -67,6 +67,8 @@ class DefaultController extends Controller
         $p = explode("|",$smsresult);
         $sendstatus = $p[0];
         return response()->json($sendstatus);
+
+
     }
 
     public function SMSDueRemind(Request $request) {
