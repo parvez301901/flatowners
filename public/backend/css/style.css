@@ -77,17 +77,13 @@ Waves
 /*---reset---*/
 /*Body*/
 @import url(color_theme.css);
-@import url(style_rtl.css);
 @import url(../../assets/icons/font-awesome/css/font-awesome.css);
 @import url(../../assets/icons/Ionicons/css/ionicons.css);
 @import url(../../assets/icons/themify-icons/themify-icons.css);
 @import url(../../assets/icons/linea-icons/linea.css);
 @import url(../../assets/icons/glyphicons/glyphicon.css);
-@import url(../../assets/icons/flag-icon-css/css/flag-icon.css);
 @import url(../../assets/icons/material-design-iconic-font/css/materialdesignicons.css);
 @import url(../../assets/icons/simple-line-icons/css/simple-line-icons.css);
-@import url(../../assets/icons/cryptocoins-master/cryptocoins.css);
-@import url(../../assets/icons/weather-icons/css/weather-icons.min.css);
 @import url(../../assets/icons/iconsmind/style.css);
 @import url(../../assets/vendor_components/animate/animate.css);
 html {
@@ -24099,9 +24095,23 @@ a.disabled {
 .color-black {
     color: #ffffff;
 }
+.hide-in-print {
+    display: block;
+}
+.border-right-color-white {
+    border-right-color: #ffffff !important;
+    border-right-width: 2px;
+}
 @media print {
     .no-print, .no-print * {
         display: block !important;
     }
     .color-black { color: #000000; }
+    .hide-in-print {
+        display: none;
+    }
+    .border-right-color-white {
+        border-right-color: #000000 !important;
+        border-right-width: 3px;
+    }
 }

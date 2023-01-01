@@ -30,73 +30,50 @@
                                     </div> <!-- End Col md 3 -->
                                 </div><!--  end row -->
 
-                                <div id="test_report">
-
-                                </div>
-{{$new_grouped}}
                                 <div id="test_report_2">
 
                                 </div>
-                                <!--  ////////////////// Registration Fee table /////////////  -->
+                                <!--  ////////////////// Yearly Report /////////////  -->
 
-                                {{--
-
-                                    <script id="document-template" type="text/x-handlebars-template">
-
-                                        <div class="col-md-5 col-12 border-danger">
-                                            <div class="text-center"><h4><b>Deposit</b></h4></div>
-                                            <table class="table table-bordered table-striped" style="width: 100%">
-                                                <thead>
-                                                <tr>
-                                                    @{{{thsource}}}
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                @{{#each this}}
-                                                <tr>
-                                                    @{{{tdsource}}}
-                                                </tr>
-                                                @{{/each}}
-
-                                                </tbody>
-                                                <tfoot>
-                                                    <tr>
-                                                        @{{{tfsource}}}
-                                                    </tr>
-                                                    <tr><td colspan="2"><h5>Total Balance in @{{{bank_name}}} : @{{{balance_in_bank}}}</h5></td><td colspan="2"><h5>Remaining Balance in Hand : @{{{balance_in_hand}}}</h5></td></tr>
-                                                </tfoot>
-                                            </table>
+                                <script id="document-yearly-template" type="text/x-handlebars-template">
+                                    <div class="w-100-percent col-12" id="reportMonthlyprintableArea">
+                                        <div class="no-print text-center">
+                                            <h2 class="color-black" style="color:#000000">Krishnochura Heights Flat Malick Kalyan Samity</h2>
+                                            <h3 class="color-black" style="color:#000000">House # 64, Avenue # 5, Block # A, <br>Section # 6, Mirpur, Dhaka -1216</h3>
+                                            <h4 class="color-black" style="color:#000000">Monthly Statement of Income & Expenditure</h4><br>
+                                            <h4 class="color-black" style="color:#000000">For the Year of @{{{test}}}</h4><br>
                                         </div>
-
-                                        <div class="col-md-7 col-12">
-                                            <div class="text-center"><h4><b>Expense</b></h4></div>
-                                            <table class="table table-bordered table-striped" style="width: 100%">
-                                                <thead>
-                                                <tr>
-                                                    @{{{th2source}}}
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                @{{#each this}}
-                                                <tr>
-                                                    @{{{td2source}}}
-                                                </tr>
-                                                @{{/each}}
-
-                                                </tbody>
-                                                <tfoot>
-                                                    <tr>
-                                                        @{{{tf2source}}}
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
+                                        <div class="text-center hide-in-print" style="color: #ffffff; margin-bottom: 30px;" >
+                                            <h2 class="" style="color:#ffffff">For the Year of @{{{test}}}</h2>
                                         </div>
-                                        <div class="col-12 text-center"><h3>Total Balance Remaining : @{{{balance}}}</h3></div>
-                                        </script>
-                                        <div class="row" id="DocumentResults" style="margin-top: 40px;">
-                                        </div>
+                                        <style type="text/css">
+                                            .tg  {border-collapse:collapse;border-spacing:0;}
+                                            .tg td{border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+                                                overflow:hidden;padding:10px 5px;word-break:normal;}
+                                            .tg th{border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+                                                font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+                                            .tg .tg-0pky{border-color:inherit;text-align:center;vertical-align:top}
+                                        </style>
+                                        <table class="tg w-100-percent">
+                                            <thead>
+                                            <tr>
+                                                @{{{thsource}}}
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @{{#each this}}
+                                            <tr>
+                                                @{{{tdsource}}}
+                                            </tr>
+                                            @{{/each}}
+                                            </tbody>
+                                        </table>
+                                    </div>
 
-                                --}}
+                                    <button target="_blank" onclick="printMonthlyReportDiv()" value="print Report" class="btn btn-rounded btn-primary my-3"><i class="fa fa-print"></i> Print Report</button>
+                                </script>
+                                <div class="row w-100-percent" id="DocumentYearlyResults" style="margin-top: 40px;">
+                                </div>
 
                                 </div>
                             </div>

@@ -35,7 +35,7 @@
                         <!-- /.box-header -->
                         <div class="box-body">
                             <div class="table-responsive">
-                                <table id="example1" class="table table-bordered table-striped">
+                                <table id="unit_list" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
                                         <th>SL</th>
@@ -49,18 +49,18 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach( $alluserdarta as $key => $user)
-                                        <tr>
-                                            <td>{{ $key+1 }}</td>
-                                            <td>{{ $user->usertype }}</td>
-                                            <td>{{ $user->name }}</td>
-                                            <td>{{ $user->email }}</td>
-                                            <td>@foreach( ($user->units) as $key => $units){{ $units->floor->name }}@endforeach</td>
-                                            <td>@foreach( ($user->units) as $key => $units){{ $units->name }}@endforeach</td>
-                                            <td>{{ $user->phone }}</td>
+                                    @foreach( $allUnitData as $key => $unit)
+                                        <tr @if($key == 0) style="display: none" @endif>
+                                            <td>{{ $key }}</td>
+                                            <td>Flat Owner</td>
+                                            <td>{{ $unit['get_user_name']['name'] }}</td>
+                                            <td>{{ $unit['get_user_name']['email'] }}</td>
+                                            <td>{{ $unit['get_floor_name']['name'] }}</td>
+                                            <td>{{ $unit->name }}</td>
+                                            <td>{{ $unit['get_user_name']['phone'] }}</td>
                                             <td>
-                                                <a href="{{ route('user.detail' , $user->id) }}" class="btn btn-success mr-2">Details</a>
-                                                <a href="{{ route('user.detail' , $user->id) }}" class="btn btn-info mr-2">Edit</a>
+                                                <a href="{{ route('user.detail' , $unit['get_user_name']['id']) }}" class="btn btn-success mr-2">Details</a>
+                                                <a href="{{ route('user.detail' , $unit['get_user_name']['id']) }}" class="btn btn-info mr-2">Edit</a>
                                             </td>
                                         </tr>
                                     @endforeach

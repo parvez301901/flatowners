@@ -119,8 +119,12 @@ Route::group(['middleware' => 'auth'],function() {
         Route::post('/withdrawfromBank', [ServiceChargeController::class, 'WithdrawFromBank'])->name('servicecharge.withdrawfrombank');
         Route::get('/dueservicecharge', [ServiceChargeController::class, 'DueServiceCharge'])->name('servicecharge.dueservicecharge');
         Route::get('/duesearch/', [ServiceChargeController::class, 'ServiceChargeDueSearch'])->name('servicecharge.dueservicechargesearch');
+        Route::get('/detail/{id}', [ServiceChargeController::class, 'ServiceChargeDetail'])->name('servicecharge.detail');
+        Route::post('/update/{id}', [ServiceChargeController::class, 'ServiceChargeUpdate'])->name('servicecharge.update');
 
         //////////////------------------------------  Baki ache ------------ Edit - Update - Delete ------   /////////////////
+
+
     });
 
     Route::prefix('maintenance')->group( function(){
@@ -131,6 +135,8 @@ Route::group(['middleware' => 'auth'],function() {
         //////////////------------------------------  Baki ache ------------ Edit - Update - Delete ------   /////////////////
         Route::get('/salary', [MaintenanceController::class, 'MaintenanceSalary'])->name('maintenance.salary');
         Route::get('/salary/disburse', [MaintenanceController::class, 'MaintenanceSalaryDisburse'])->name('salary.disburse');
+
+
     });
 
     Route::prefix('notice')->group(function (){

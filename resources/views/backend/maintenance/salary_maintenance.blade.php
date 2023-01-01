@@ -66,14 +66,23 @@
                                     </tbody>
                                 </table>
                                 <div class="text-center"><h1>Total Salary: <Span class="final-salary"></Span></h1></div>
+
                                 <div class="container mt-5">
-                                    <div class="row">
+                                    <div class="row d-flex justify-content-center">
+                                        <div class="col-3 mb-4 text-center">
+                                            <label>Select Date for the Salary</label>
+                                            <input class="form-control" required="required" name="salaryMonthName" type="date" value="" id="example-date-input">
+                                        </div>
+                                        <div class="col-3 mb-4 text-center">
+                                            <label>Note for the salary</label>
+                                            <input class="form-control" required="required" name="salaryNote" type="text" value="" id="example-date-input">
+                                        </div>
                                         <div class="col-12 text-center">
-                                            @if(!empty($all_matched[0]['amount']))
-                                                <a href="#" data-salary="" class="btn btn-success mr-2 ">Salary for This Month already Disbursed</a>
-                                            @else
+                                            {{-- @if(!empty($all_matched[0]['amount'])) --}}
+                                                {{-- <a href="#" data-salary="" class="btn btn-success mr-2 ">Salary for This Month already Disbursed</a> --}}
+                                            {{-- @else --}}
                                                 <a href="#" data-salary="" class="btn btn-success mr-2 insert-salary-expense">Disburse Salary</a>
-                                            @endif
+                                            {{-- @endif --}}
                                         </div>
                                     </div>
                                 </div>

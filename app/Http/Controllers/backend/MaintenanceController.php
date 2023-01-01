@@ -4,6 +4,7 @@ namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\backend\Bank;
+use App\Models\backend\BankTransaction;
 use App\Models\backend\Floor;
 use App\Models\backend\MaintenanceModel;
 use App\Models\backend\PettyCash;
@@ -38,12 +39,14 @@ class MaintenanceController extends Controller
         //Please validation here
         $data = new MaintenanceModel();
         $data->amount = $request->amount;
-        $data->unitId = $request->unitId;
-        $data->floorId = $request->floorId;
+
+        if ( !empty($request->floorId)) { $data->floorId = $request->floorId; } else { $data->floorId = 1; }
+        if ( !empty($request->unitId)) { $data->unitId = $request->unitId; } else { $data->unitId = 1; }
+        if ( !empty($request->userId)) { $data->userId = $request->userId; } else { $data->userId = 1; }
         $data->utilityId = $request->utilityId;
-        $data->userId = $request->userId;
+
         $data->maintenanceCostDate = $request->maintenanceCostDate;
-        $data->maintenanceNote = $request->maintenanceNote;
+        $data->maintenanceNote = $request->maintenancenote;
 
         if ($request->file('maintenanceImage')) {
             $file = $request->file('maintenanceImage');
@@ -55,36 +58,87 @@ class MaintenanceController extends Controller
 
         $data->save();
 
-        $date = Carbon::createFromFormat('m/Y', Carbon::parse($request->maintenanceCostDate)->format('m/Y'));
-        $is_in_month_year = RemainingBalance::whereMonth('month_year', $date->month)
-            ->whereYear('month_year', $date->year)
-            ->first();
-
-        if (empty($is_in_month_year)) {
-            $data2 = new RemainingBalance();
-            $data2->balance = -($request->amount);
-            $data2->month_year = $request->maintenanceCostDate;
-            $data2->save();
-        } else {
-            $data2 = RemainingBalance::find($is_in_month_year->id);
-            $data2->balance = ($is_in_month_year->balance) - ($request->amount);
-            $data2->month_year = $request->maintenanceCostDate;
-            $data2->save();
-        }
-
         // if bank - reduce from bank
         if (!empty($request->bank_id)){
+
             $data3 = Bank::find($request->bank_id);
             $data3->amount = ($data3->amount) - ($request->amount);
             $data3->save();
+
+            //Transaction from bank
+            $make_month = intval(mb_substr($request->maintenanceCostDate , 5 , 8));
+            $make_year = intval(mb_substr($request->maintenanceCostDate , 0 , 4));
+
+            $find_transaction = BankTransaction::whereMonth('transaction_date', $make_month)
+                ->whereYear('transaction_date', $make_year)
+                ->where('bank_id', $request->bank_id)
+                ->first();
+
+            if (!empty($find_transaction)) {
+                $transaction = BankTransaction::find($find_transaction->id);
+                $previous_balance = $transaction->balance;
+                $transaction->balance = $previous_balance - $request->amount;
+                $transaction->transaction_date = $request->maintenanceCostDate;
+                $transaction->save();
+            } else {
+                $creat_transaction = new BankTransaction();
+                $creat_transaction->transaction_date = $request->maintenanceCostDate;
+                $creat_transaction->bank_id = $request->bank_id;
+                $creat_transaction->balance = $request->amount;
+                $creat_transaction->save();
+            }
+
         }
 
         // if petty cash - reduce from petty cash
         if (empty($request->bank_id)){
-            $data4 = PettyCash::find(1);
-            $data4->balance = ($data4->balance) - ($request->amount);
-            $data4->save();
+
+            $previous_pretty_cash_month = intval((mb_substr($request->maintenanceCostDate , 5 , 8))) - 1;
+            $previous_pretty_cash_year = intval(mb_substr($request->maintenanceCostDate , 0 , 4));
+
+            //dd($previous_pretty_cash_month . $previous_pretty_cash_year);
+
+            $prev_petty_cash_balance = PettyCash::whereMonth('month_year', $previous_pretty_cash_month)
+                ->whereYear('month_year', $previous_pretty_cash_year)
+                ->first();
+
+            //dd($prev_petty_cash_balance);
+
+            $now_pretty_cash_month = intval(mb_substr($request->maintenanceCostDate , 5 , 8));
+            $now_pretty_cash_year = intval(mb_substr($request->maintenanceCostDate , 0 , 4));
+
+            $now_petty_cash = PettyCash::whereMonth('month_year', $now_pretty_cash_month)
+                ->whereYear('month_year', $now_pretty_cash_year)
+                ->first();
+
+            //dd($now_petty_cash);
+
+            if (empty($now_petty_cash)) {
+                if (!empty($prev_petty_cash_balance)) {
+                    $data3 = new PettyCash();
+                    $data3->balance = ($prev_petty_cash_balance->balance) - ($request->amount) ;
+                    $data3->month_year = $request->maintenanceCostDate;
+                    $data3->save();
+                } else {
+                    $data3 = new PettyCash();
+                    $data3->balance = -($request->amount);
+                    $data3->month_year = $request->maintenanceCostDate;
+                    $data3->save();
+                }
+            } else {
+                $data3 = PettyCash::find($now_petty_cash->id);
+                $data3->balance = ($now_petty_cash->balance) - ($request->amount) ;
+                $data3->month_year = $request->maintenanceCostDate;
+                $data3->save();
+            }
         }
+
+        $prev_remaining_balance = RemainingBalance::find(2)->balance;
+
+        $data2 = RemainingBalance::find(2);
+        $data2->balance = $prev_remaining_balance - ($request->amount) ;
+        $data2->month_year = $request->maintenanceCostDate;
+        $data2->save();
 
         $notification = array(
             'message' => 'Expense Added Successfully',
@@ -124,7 +178,7 @@ class MaintenanceController extends Controller
             $utility = Utility::find($expense->utilityId);
 
             if( !empty( $expense->maintenanceImage) ) {
-               $imgURL = 'http://127.0.0.1:8000/upload/maintenance_images/' . $expense->maintenanceImage;
+               $imgURL = 'https://krishnochuraheights.com/upload/maintenance_images/' . $expense->maintenanceImage;
             } else {
                $imgURL = '';
             }
@@ -158,7 +212,7 @@ class MaintenanceController extends Controller
 
         $now_monthyear = date("Y-m");
         $date = Carbon::createFromFormat('m/Y', Carbon::parse($now_monthyear)->format('m/Y'));
-        $data['allEmployee'] = User::where('usertype','employee')->get();
+        $data['allEmployee'] = User::where('usertype','employee')->where('status','active')->get();
         $data['total_salary'] = User::where('usertype','employee')->sum('salary');
         $data['all_matched'] = MaintenanceModel::whereMonth('maintenanceCostDate', $date->month)
             ->whereYear('maintenanceCostDate', $date->year)
@@ -169,15 +223,15 @@ class MaintenanceController extends Controller
 
     public function MaintenanceSalaryDisburse(Request $request){
 
-        $date = Carbon::now()->format('Y-m-d');
-        $monthyear = Carbon::now()->format('m-Y');
-
         /*$find_previous_data = MaintenanceModel::whereMonth('maintenanceCostDate', $monthyear->month)
             ->whereYear('maintenanceCostDate', $monthyear->year)
             ->first();
         if (empty($find_previous_data)) {*/
 
             $total_salary = $request->total_salary;
+
+            $date = Carbon::createFromFormat('Y-m-d', Carbon::parse($request->salaryMonthName)->format('Y-m-d'));
+
             // build date
             $data = new MaintenanceModel();
             $data->amount = $total_salary;
@@ -186,15 +240,69 @@ class MaintenanceController extends Controller
             $data->floorId = 1;
             $data->utilityId = 12;
             $data->maintenanceCostDate = $date;
-            $data->maintenanceNote = 'Salary For ' . $monthyear;
+            $data->maintenanceNote = $request->salaryNote;
 
             $data->save();
 
             if (true == ($data->save())) {
+
+                // if petty cash - reduce from petty cash
+                if (empty($request->bank_id)){
+
+                    $previous_pretty_cash_month = intval((mb_substr($date , 5 , 8))) - 1;
+                    $previous_pretty_cash_year = intval(mb_substr($date , 0 , 4));
+
+                    //dd($previous_pretty_cash_month . $previous_pretty_cash_year);
+
+                    $prev_petty_cash_balance = PettyCash::whereMonth('month_year', $previous_pretty_cash_month)
+                        ->whereYear('month_year', $previous_pretty_cash_year)
+                        ->first();
+
+                    //dd($prev_petty_cash_balance);
+
+                    $now_pretty_cash_month = intval(mb_substr($date , 5 , 8));
+                    $now_pretty_cash_year = intval(mb_substr($date , 0 , 4));
+
+                    $now_petty_cash = PettyCash::whereMonth('month_year', $now_pretty_cash_month)
+                        ->whereYear('month_year', $now_pretty_cash_year)
+                        ->first();
+
+                    //dd($now_petty_cash);
+
+                    if (empty($now_petty_cash)) {
+                        if (!empty($prev_petty_cash_balance)) {
+                            $data3 = new PettyCash();
+                            $data3->balance = ($prev_petty_cash_balance->balance) - ($total_salary);
+                            $data3->month_year = $date;
+                            $data3->save();
+                        } else {
+                            $data3 = new PettyCash();
+                            $data3->balance = -($total_salary);
+                            $data3->month_year = $date;
+                            $data3->save();
+                        }
+                    } else {
+                        $data3 = PettyCash::find($now_petty_cash->id);
+                        $data3->balance = ($now_petty_cash->balance) - ($total_salary) ;
+                        $data3->month_year = $date;
+                        $data3->save();
+                    }
+
+                }
+
+                $prev_remaining_balance = RemainingBalance::find(2)->balance;
+
+                $data2 = RemainingBalance::find(2);
+                $data2->balance = $prev_remaining_balance - ($total_salary) ;
+                $data2->month_year = $date;
+                $data2->save();
+
                 $html = 'Salary Disbursed Successfully ';
             } else {
                 $html = 'Some Problem Happened';
             }
+
+
         /*} else {
             $html = 'Salary already disbursed for ' . $monthyear;
         }*/

@@ -1,5 +1,4 @@
 @extends('admin.admin_master');
-
 @section('admin');
 <div class="content-wrapper">
     <div class="container-full">
@@ -29,7 +28,7 @@
                                                     @foreach($allFloorlist as $floor)
                                                         <option value="{{$floor->id}}" selected="">{{$floor->name}}</option>
                                                     @endforeach
-                                                        <option selected="selected" disabled="" value="">Select Floor</option>
+                                                    <option selected="selected" disabled="" value="">Select Floor</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -58,7 +57,7 @@
                                     <div class="col-md-1 col-12">
                                         <div class="form-group">
                                             <label>Deposit Money</label>
-                                            <input name="serviceChargeAmount" class="form-control" type="number" value="">
+                                            <input name="serviceChargeAmount" class="form-control" type="number" value="4000">
                                         </div>
                                     </div>
                                     <div class="col-md-2 col-12">
@@ -79,7 +78,11 @@
                 </div>
             </div>
         </section>
-
+        <div class="row">
+            <div class="col-12">
+                <div class="receipt-holder"></div>
+            </div>
+        </div>
         <section class="content">
             <div class="row">
                 <div class="col-12">
@@ -87,37 +90,33 @@
                         <div class="box-header">
                             <h4 class="box-title">Service Charge List</h4>
                         </div>
-
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-12">
                                     <script id="document-template" type="text/x-handlebars-template">
-
                                         <table class="table table-bordered table-striped" style="width: 100%">
                                             <thead>
-                                            <tr>
-                                                @{{{thsource}}}
-                                            </tr>
+                                                <tr>
+                                                    @{{{thsource}}}
+                                                </tr>
                                             </thead>
                                             <tbody>
                                             @{{#each this}}
-                                            <tr>
-                                                @{{{tdsource}}}
-                                            </tr>
+                                                <tr>
+                                                    @{{{tdsource}}}
+                                                </tr>
                                             @{{/each}}
-
                                             </tbody>
                                             <tfoot>
-                                            <tr>
-                                                @{{{tfsource}}}
-                                            </tr>
+                                                <tr>
+                                                    @{{{tfsource}}}
+                                                </tr>
                                             </tfoot>
                                         </table>
                                     </script>
                                     <div id="DocumentResults">
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <!-- /.col -->
@@ -125,9 +124,8 @@
                 </div>
             </div>
         </section>
-
-
     </div>
 </div>
 
 @endsection
+

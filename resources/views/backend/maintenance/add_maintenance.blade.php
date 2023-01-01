@@ -1,7 +1,5 @@
 @extends('admin.admin_master');
-
 @section('admin');
-
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <div class="container-full">
@@ -21,10 +19,8 @@
                 </div>
             </div>
         </div>
-
         <!-- Main content -->
         <section class="content">
-
             <div class="row">
                 <div class="col-lg-8 col-12">
                     <!-- Basic Forms -->
@@ -32,6 +28,7 @@
                         <div class="box-header with-border">
                             <h4 class="box-title">Entry Maintenance Cost</h4>
                         </div>
+
                         <!-- /.box-header -->
                         <form class="form-horizontal" method="POST" action="{{route('maintenance.store')}}" enctype="multipart/form-data">
                             @csrf
@@ -76,9 +73,7 @@
                                             </select>
                                         </div>
                                     </div>
-
                                 </div>
-
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -122,7 +117,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -138,12 +132,10 @@
                                         <div class="form-group">
                                             <div class="controls">
                                                 <img id="showImage" src="{{ (!empty($user->image))? url('upload/user_images/'.$user->image):url('upload/no_image.jpg') }}" style="width: 100px; width: 100px; border: 1px solid #000000;">
-
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer d-flex justify-content-between">
@@ -155,12 +147,7 @@
                     <!-- /.box -->
                 </div>
             </div>
-
         </section>
     </div>
 </div>
-
-<script type="text/javascript">
-
-</script>
 @endsection

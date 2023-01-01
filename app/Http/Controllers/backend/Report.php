@@ -4,6 +4,7 @@ namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\backend\Bank;
+use App\Models\backend\BankTransaction;
 use App\Models\backend\MaintenanceModel;
 use App\Models\backend\PettyCash;
 use App\Models\backend\RemainingBalance;
@@ -25,52 +26,204 @@ class Report extends Controller
     }
 
     public function reportYearlyBalancesheetView() {
-
-        /*
-        $data['new_grouped'] = MaintenanceModel::select('id',DB::raw("(sum(amount)) as total_taka"),DB::raw("(DATE_FORMAT(created_at, '%m-%Y')) as month_year"))->orderBy('created_at')->groupBy(DB::raw("DATE_FORMAT(created_at, '%m-%Y')"))->get();
-       */
-        /*
-        $data['new_grouped'] = MaintenanceModel::selectRaw('year(maintenanceCostDate) year, monthname(maintenanceCostDate) month, utilityId , (sum(amount)) as total_taka', )
-            ->groupBy('year', 'month')
-            ->orderBy('maintenanceCostDate', 'asc')
-            ->get();
+        /*$data['incomes'] = ServiceCharge::whereMonth('serviceChargeDate', '4')
+            ->whereYear('serviceChargeDate', '2022')
+            ->sum('serviceChargeAmount');
         */
 
-        $year_id = '2022';
-
-        $date = Carbon::createFromFormat('Y', Carbon::parse($year_id)->format('Y'));
-
-        $data['new_grouped'] = MaintenanceModel::whereYear('maintenanceCostDate', $date->year)
-            ->groupBy($date->year)
-            ->orderBy('maintenanceCostDate', 'asc')
+        $data['incomes'] = ServiceCharge::selectRaw('COUNT(*) as count, YEAR(serviceChargeDate) year, MONTH(serviceChargeDate) month')
+            ->groupBy('year', 'month')
             ->get();
 
         return view('backend.report.view_yearly_report', $data);
     }
 
+    public function reportYearlyBalancesheetSearch(Request $request) {
+
+        $year_id = $request->year_id;
+
+        $html['thsource'] = '<th>SL</th>';
+        $html['thsource'] .= '<th class="tg-0pky">Month\'s</th>';
+        $html['thsource'] .= '<th class="tg-0pky border-right-color-white">S. Charge</th>';
+        $html['thsource'] .= '<th class="tg-0pky">Sal./Bon.</th>';
+        $html['thsource'] .= '<th class="tg-0pky">Lift</th>';
+        $html['thsource'] .= '<th class="tg-0pky">Electricity</th>';
+        $html['thsource'] .= '<th class="tg-0pky">Wasa</th>';
+        $html['thsource'] .= '<th class="tg-0pky">Gas</th>';
+        $html['thsource'] .= '<th class="tg-0pky">Others</th>';
+        $html['thsource'] .= '<th class="tg-0pky">Extin.</th>';
+        $html['thsource'] .= '<th class="tg-0pky">Gen. Fuel</th>';
+        $html['thsource'] .= '<th class="tg-0pky">Gen.M</th>';
+        $html['thsource'] .= '<th class="tg-0pky">PABX/CCTV</th>';
+        $html['thsource'] .= '<th class="tg-0pky">G.Total</th>';
+
+
+        for ($month_number = 1; $month_number <= 12; $month_number++) {
+
+            $incomes = ServiceCharge::whereMonth('serviceChargeDate', $month_number)
+                ->whereYear('serviceChargeDate', $year_id)
+                ->sum('serviceChargeAmount');
+            $expenses = MaintenanceModel::whereMonth('maintenanceCostDate', $month_number)
+                ->whereYear('maintenanceCostDate', $year_id)
+                ->get();
+
+            $salary_expense = $lift = $electricity = $wasa = $gas = $fire = $fuel = $genmain = $pabx = $others = array();
+
+            if ( !empty($expenses) ) {
+                foreach ($expenses as $expense) {
+                    if (($expense->utilityId) == 12) { $salary_expense[] = $expense->amount; } else { $salary_expense[] = 0; }
+                    if (($expense->utilityId) == 15) { $lift[] = $expense->amount; } else { $lift[] = 0; }
+                    if (($expense->utilityId) == 9) { $electricity[] = $expense->amount; } else { $electricity[] = 0; }
+                    if (($expense->utilityId) == 1) { $gas[] = $expense->amount; } else { $gas[] = 0; }
+                    if (($expense->utilityId) == 10) { $wasa[] = $expense->amount; } else { $wasa[] = 0; }
+                    if (($expense->utilityId) == 17) { $others[] = $expense->amount; } else { $others[] = 0; }
+                    if (($expense->utilityId) == 21) { $fire[] = $expense->amount; } else { $fire[] = 0; }
+                    if (($expense->utilityId) == 16) { $fuel[] = $expense->amount; } else { $fuel[] = 0; }
+                    if (($expense->utilityId) == 22) { $genmain[] = $expense->amount; } else { $genmain[] = 0; }
+                    if (($expense->utilityId) == 18) { $pabx[] = $expense->amount; } else { $pabx[] = 0; }
+                }
+            } else {
+                $salary_expense[] = 0; $lift[] = 0; $electricity[] = 0; $wasa[] = 0; $others[] = 0; $fire[] = 0; $fuel[] = 0; $genmain[] = 0; $pabx[] = 0;
+            }
+
+            if ( $incomes > 0 ) {
+                if (($month_number == 3) && ($year_id == 2022)) {
+                    $previous_month_balance_final = RemainingBalance::get()->first()->balance;
+                } else {
+
+                    $previous_pretty_cash_month = $month_number;
+                    $previous_pretty_cash_year = $year_id;
+
+                    $prev_petty_cash_balance = PettyCash::whereMonth('month_year', $previous_pretty_cash_month)
+                        ->whereYear('month_year', $previous_pretty_cash_year)
+                        ->first();
+
+                    $find_transaction = BankTransaction::whereMonth('transaction_date', $previous_pretty_cash_month)
+                        ->whereYear('transaction_date', $previous_pretty_cash_year)
+                        ->where('bank_id', 1)
+                        ->first();
+
+                    if (!empty($find_transaction)) {
+                        $balance_in_bank = $find_transaction->balance;
+                    } else {
+                        $balance_in_bank = 0;
+                    }
+
+                    if (!empty($prev_petty_cash_balance)) {
+                        $previous_month_balance_final = ($prev_petty_cash_balance->balance) + $balance_in_bank;
+                    } else {
+                        $find = PettyCash::all();
+                        $got_that = collect($find)->last();
+                        $find_petty_cash = $got_that->balance;
+
+                        $find_bank_cash = BankTransaction::all();
+                        $got_bank_cash = collect($find_bank_cash)->last();
+                        $last_balance_in_bank = $got_bank_cash->balance;
+                        $previous_month_balance_final = $find_petty_cash + $last_balance_in_bank;
+                    }
+                }
+            } else {
+                $previous_month_balance_final = 0;
+            }
+
+            $monthName = date('F', mktime(0, 0, 0, $month_number, 10));
+
+            $html[$month_number + 1]['tdsource'] = '<td class="tg-0pky">' . $month_number  . '. </td>';
+            $html[$month_number + 1]['tdsource'] .= '<td class="tg-0pky">' . $monthName . ' \''.  substr( $year_id, -2) .'</td>';
+            $html[$month_number + 1]['tdsource'] .= '<td class="tg-0pky border-right-color-white"> '. $incomes .' </td>';
+            $html[$month_number + 1]['tdsource'] .= '<td class="tg-0pky">'. array_sum($salary_expense) .'</td>';
+            $html[$month_number + 1]['tdsource'] .= '<td class="tg-0pky">'. array_sum($lift) .'</td>';
+            $html[$month_number + 1]['tdsource'] .= '<td class="tg-0pky">'. array_sum($electricity) .'</td>';
+            $html[$month_number + 1]['tdsource'] .= '<td class="tg-0pky">'. array_sum($wasa) .'</td>';
+            $html[$month_number + 1]['tdsource'] .= '<td class="tg-0pky">'. array_sum($gas) .'</td>';
+            $html[$month_number + 1]['tdsource'] .= '<td class="tg-0pky">'. array_sum($others) .'</td>';
+            $html[$month_number + 1]['tdsource'] .= '<td class="tg-0pky">'. array_sum($fire) .'</td>';
+            $html[$month_number + 1]['tdsource'] .= '<td class="tg-0pky">'. array_sum($fuel) .'</td>';
+            $html[$month_number + 1]['tdsource'] .= '<td class="tg-0pky">'. array_sum($genmain) .'</td>';
+            $html[$month_number + 1]['tdsource'] .= '<td class="tg-0pky">'. array_sum($pabx) .'</td>';
+            $html[$month_number + 1]['tdsource'] .= '<td class="tg-0pky">'. $previous_month_balance_final .'</td>';
+        }
+        $html['test'] = $year_id;
+        return response()->json(@$html);
+
+    }
+
     public function reportMonthlyBalancesheetSearch(Request $request) {
 
-        $year_id = $request->year_id . '-01';
+        $year_id = $request->year_id;
 
-        $date = Carbon::createFromFormat('m/Y', Carbon::parse($year_id)->format('m/Y'));
+        $pure_month = mb_substr($request->year_id , 6);
+        $pure_year = mb_substr($request->year_id , 0, 4);
+
+       //$formated_date = Carbon::createFromFormat('m/Y', Carbon::parse($year_id)->format('m/Y'));
+        $f = date('F, Y', strtotime($year_id." -1 month"));
+
         $this_month_date = date('F, Y', strtotime($year_id));
 
-        /*service charge listing*/
+        $previous_pure_month = $pure_month - 1;
 
-        /*$empsalaries = ServiceCharge::whereMonth('serviceChargeMonthYear', $date->month)
-            ->whereYear('serviceChargeMonthYear', $date->year)
-            ->get();*/
-
-        $empsalaries = ServiceCharge::whereMonth('serviceChargeDate', $date->month)
-            ->whereYear('serviceChargeDate', $date->year)
+        $empsalaries = ServiceCharge::whereMonth('serviceChargeDate', $pure_month)
+            ->whereYear('serviceChargeDate', $pure_year)
             ->get();
-
-        $f = date('F, Y', strtotime($year_id." -1 month"));
-        $prev_date = Carbon::createFromFormat('m/Y', Carbon::parse($f)->format('m/Y'));
-        $is_in_month_year = RemainingBalance::get()->first();
 
         $incomes = array();
         $servicecharge = array();
+
+        if( ($pure_month == 4) && ($pure_year == 2022) ) {
+            $previous_month_balance_final = RemainingBalance::get()->first()->balance;
+        } else {
+            /* GET PREVIOUS MONTH (INCOME) & (EXPENSE) */
+
+            /*
+
+            $previous_month_income = ServiceCharge::whereMonth('serviceChargeDate', $previous_pure_month)
+                ->whereYear('serviceChargeDate', $pure_year)
+                ->sum('serviceChargeAmount');
+
+            $previous_month_expense = MaintenanceModel::whereMonth('maintenanceCostDate', $previous_pure_month)
+                ->whereYear('maintenanceCostDate', $pure_year)
+                ->sum('amount');
+
+            $starting_balance = RemainingBalance::get()->first()->balance;
+            $previous_month_balance_final = ($starting_balance + $previous_month_income) - $previous_month_expense;
+
+            */
+
+            /* GET BANK BALANCE & PREVIOUS MONTH PETTY CASH */
+
+            $previous_pretty_cash_month = $pure_month - 1;
+            $previous_pretty_cash_year = $pure_year;
+
+            $prev_petty_cash_balance = PettyCash::whereMonth('month_year', $previous_pretty_cash_month)
+                ->whereYear('month_year', $previous_pretty_cash_year)
+                ->first();
+
+            $find_transaction = BankTransaction::whereMonth('transaction_date', $previous_pretty_cash_month)
+                ->whereYear('transaction_date', $previous_pretty_cash_year)
+                ->where('bank_id', 1)
+                ->first();
+
+            if (!empty($find_transaction)) {
+                $balance_in_bank = $find_transaction->balance;
+            } else {
+                $balance_in_bank = 0;
+            }
+
+            if ( !empty($prev_petty_cash_balance) ) {
+                $previous_month_balance_final = ($prev_petty_cash_balance->balance) + $balance_in_bank;
+            } else {
+                $find = PettyCash::all();
+                $got_that = collect($find)->last();
+                $find_petty_cash = $got_that->balance;
+
+                $find_bank_cash = BankTransaction::all();
+                $got_bank_cash = collect($find_bank_cash)->last();
+                $last_balance_in_bank = $got_bank_cash->balance;
+                $previous_month_balance_final = $find_petty_cash + $last_balance_in_bank;
+            }
+        }
+
+        $incomes[] = (int)$previous_month_balance_final;
 
         $html['thsource'] = '<th class="tg-0lax text-center tg-bold">Category</th>';
         $html['thsource'] .= '<th class="tg-0lax text-center tg-bold">SL no</th>';
@@ -83,12 +236,8 @@ class Report extends Controller
         $html['previousBalance'] .= '<td class="tg-0lax"></td>';
         $html['previousBalance'] .= '<td class="tg-0lax">'. $f .'</td>';
         $html['previousBalance'] .= '<td class="tg-0lax">Previous Month Balance</td>';
-        $html['previousBalance'] .= '<td class="tg-0lax">' . $is_in_month_year->balance . '</td>';
+        $html['previousBalance'] .= '<td class="tg-0lax">'. $previous_month_balance_final . '</td>';
         $html['previousBalance'] .= '<td class="tg-0lax"></td>';
-
-        if (!empty( $is_in_month_year ) ) {
-            $incomes[] = (int)$is_in_month_year->balance;
-        }
 
         foreach ($empsalaries as $key => $empsalarie) {
 
@@ -128,16 +277,14 @@ class Report extends Controller
 
         /*Expense Listing*/
 
-        $expenses = MaintenanceModel::whereMonth('maintenanceCostDate', $date->month)
-            ->whereYear('maintenanceCostDate', $date->year)
+        $expenses = MaintenanceModel::whereMonth('maintenanceCostDate', $pure_month)
+            ->whereYear('maintenanceCostDate', $pure_year)
             ->get();
 
         $outcomes = array();
 
         $count_of_expenditure_list = count($expenses);
 
-        //$html['expen'] = $expenses;
-        //$html['count_of_expenditure_list'] = $count_of_expenditure_list;
         foreach ($expenses as $key => $expense) {
 
             $utility = Utility::find($expense->utilityId);
@@ -151,7 +298,7 @@ class Report extends Controller
                 $html[$key + 1]['td2source'] = '<td class="tg-0lax">' . ($key + 1) . '.</td>';
             }
             $html[$key + 1]['td2source'] .= '<td class="tg-0lax">' . $expense->maintenanceCostDate . '</td>';
-            $html[$key + 1]['td2source'] .= '<td class="tg-0lax">' . $utility->name . ' ('. date('F, Y', strtotime($expense->maintenanceCostDate)) .')</td>';
+            $html[$key + 1]['td2source'] .= '<td class="tg-0lax">' . $utility->name . ' ( ' . $expense->maintenanceNote .' ) </td>';
             $html[$key + 1]['td2source'] .= '<td class="tg-0lax">'. $expense->amount .'</td>';
             $html[$key + 1]['td2source'] .= '<td class="tg-0lax"></td>';
 
@@ -163,7 +310,7 @@ class Report extends Controller
         $html['total_expen'] .= '<td class="tg-0lax"></td>';
         $html['total_expen'] .= '<td class="tg-0lax">Total Expenditure ( '. $this_month_date .' )</td>';
         $html['total_expen'] .= '<td class="tg-0lax color-black" style="background:linear-gradient(45deg, #0F5EF7, #7a15f7);"><b>Sub Total</b></td>';
-        $html['total_expen'] .= '<td class="tg-0lax"> - <b>'. array_sum($outcomes) .'</b></td>';
+        $html['total_expen'] .= '<td class="tg-0lax"> <b>'. array_sum($outcomes) .'</b></td>';
 
         if ( 0 != (array_sum($outcomes)) ) {
             $outcome = array_sum($outcomes);
@@ -178,14 +325,36 @@ class Report extends Controller
 
         $html['total_remaining'] = '<td class="tg-0lax" colspan="2"></td>';
         $html['total_remaining'] .= '<td class="tg-0lax color-black" style="background:linear-gradient(45deg, #0F5EF7, #7a15f7);"><b>Total Remaining</b></td>';
-        $html['total_remaining'] .= '<td class="tg-0lax" colspan="2"></td>';
+        $html['total_remaining'] .= '<td class="tg-0lax" colspan="2">Total Income - Total Expenditure </td>';
         $html['total_remaining'] .= '<td class="tg-0lax"><b>'. (((int)$income) - ((int)$outcome)) .'</b></td>';
 
-        $get_bank = Bank::find(1);
-        $html['balance_in_bank'] = $get_bank->amount;
-        $html['bank_name'] = $get_bank->name;
-        $get_petty = PettyCash::find(1);
-        $html['balance_in_hand'] = $get_petty->balance;
+
+        $pure_month = mb_substr($request->year_id , 6);
+        $pure_year = mb_substr($request->year_id , 0, 4);
+
+        $find_this_month_bank_cash = BankTransaction::whereMonth('transaction_date', $pure_month)
+            ->whereYear('transaction_date', $pure_year)
+            ->where('bank_id', 1)
+            ->first();
+
+        if (!empty($find_this_month_bank_cash)) {
+            $html['balance_in_bank'] = $find_this_month_bank_cash->balance;
+        } else {
+            $html['balance_in_bank'] = 0;
+        }
+        $html['bank_name'] = Bank::find(1)->name;
+
+        $now_petty_cash = PettyCash::whereMonth('month_year', $pure_month)
+            ->whereYear('month_year', $pure_year)
+            ->first();
+
+        if (!empty($now_petty_cash)) {
+            $html['balance_in_hand'] = $now_petty_cash->balance;
+        } else {
+            $f = PettyCash::all();
+            $g = collect($f)->last();
+            $html['balance_in_hand'] = $g->balance;
+        }
 
         $html['report_of_month'] = $this_month_date;
 
@@ -193,117 +362,21 @@ class Report extends Controller
 
     }
 
-
-    public function reportYearlyBalancesheetSearch(Request $request) {
-
-        $year_id = $request->year_id;
-        $grouped = DB::table('maintenance_models')
-            ->selectRaw('SUM(amount) AS amount,')
-            ->groupByRaw('MONTH(maintenanceCostDate)')
-            ->get();
-/*
-        $date = Carbon::createFromFormat('m/Y', Carbon::parse($year_id)->format('m/Y'));
-
-        //service charge listing
-
-        $empsalaries = ServiceCharge::whereMonth('serviceChargeMonthYear', $date->month)
-            ->whereYear('serviceChargeMonthYear', $date->year)
-            ->get();
-
-        $f = date('Y-m-d', strtotime($year_id." -1 month"));
-        $prev_date = Carbon::createFromFormat('m/Y', Carbon::parse($f)->format('m/Y'));
-        $is_in_month_year = RemainingBalance::get()->first();
-
-        $incomes = array();
-
-        $html['thsource'] = '<th>SL</th>';
-        $html['thsource'] .= '<th>Flat Owner Name</th>';
-        $html['thsource'] .= '<th>Date</th>';
-        $html['thsource'] .= '<th>Amount(TK)</th>';
-        if (!empty( $is_in_month_year ) ) {
-            $html[0]['tdsource'] = '<td>1</td>';
-            $html[0]['tdsource'] .= '<td colspan="2">Previous Month Balance</td>';
-            $html[0]['tdsource'] .= '<td>' . $is_in_month_year->balance . '</td>';
-            $incomes[] = (int)$is_in_month_year->balance;
-        }
-        foreach ($empsalaries as $key => $empsalarie) {
-
-            $html[$key + 1]['tdsource'] = '<td>' . ($key + 2) . '</td>';
-            $html[$key + 1]['tdsource'] .= '<td>'. $empsalarie['get_user']['name'] .'</td>';
-            $html[$key + 1]['tdsource'] .= '<td>'. $empsalarie->serviceChargeDate .'</td>';
-            $html[$key + 1]['tdsource'] .= '<td>' . $empsalarie->serviceChargeAmount . '</td>';
-            $incomes[] = (int)$empsalarie->serviceChargeAmount;
-
-        }
-        if ( 0 != (array_sum($incomes)) ) {
-            $income = array_sum($incomes);
-            $html['tfsource'] = '<td colspan="3" class="text-right"><b>Total</b></td>';
-            $html['tfsource'] .= '<td>' . $income . '</td>';
-
-        } else {
-            $income = 0;
-            $html['tfsource'] = '<td colspan="3" class="text-center"><b>No Data Found</b></td>';
-        }
-
-        //Expense Listing
-
-        $expenses = MaintenanceModel::whereMonth('maintenanceCostDate', $date->month)
-            ->whereYear('maintenanceCostDate', $date->year)
-            ->get();
-
-        $outcomes = array();
-
-        $html['th2source'] = '<th>SL</th>';
-        $html['th2source'] .= '<th>Utility</th>';
-        $html['th2source'] .= '<th>Date</th>';
-        $html['th2source'] .= '<th>Description</th>';
-        $html['th2source'] .= '<th>Amount(TK)</th>';
-
-        foreach ($expenses as $key => $expense) {
-
-            $utility = Utility::find($expense->utilityId);
-
-            $html[$key]['td2source'] = '<td>' . ($key + 1) . '</td>';
-            $html[$key]['td2source'] .= '<td>' . $utility->name . '</td>';
-            $html[$key]['td2source'] .= '<td>' . $expense->maintenanceCostDate . '</td>';
-            $html[$key]['td2source'] .= '<td>' . $expense->maintenanceNote . '</td>';
-            $html[$key]['td2source'] .= '<td>' . $expense->amount . '</td>';
-            $outcomes[] = (int)$expense->amount;
-        }
-
-        if ( 0 != (array_sum($outcomes)) ) {
-            $outcome = array_sum($outcomes);
-            $html['tf2source'] = '<td colspan="3" class="text-right"><b>Total</b></td>';
-            $html['tf2source'] .= '<td>' . $outcome . '</td>';
-        } else {
-            $outcome = 0;
-            $html['tf2source'] = '<td colspan="3" class="text-center"><b>No Data Found</b></td>';
-        }
-
-        $html['balance'] = ((int)$income) - ((int)$outcome);
-        $get_bank = Bank::find(1);
-        $html['balance_in_bank'] = $get_bank->amount;
-        $html['bank_name'] = $get_bank->name;
-        $get_petty = PettyCash::find(1);
-        $html['balance_in_hand'] = $get_petty->balance;
-        */
-
-        $html['test'] = $year_id;
-        $html['grouped'] = $grouped;
-        return response()->json(@$html);
-
-    }
-
     public function reportMonthlyIncomeSearch(Request $request) {
 
-        $year_id = $request->year_id . '-02';
+        $year_id = $request->year_id;
+
+        //dd($year_id);
+
+        $pure_month = mb_substr($request->year_id , 6);
+        $pure_year = mb_substr($request->year_id , 0, 4);
 
         $date = Carbon::createFromFormat('m/Y', Carbon::parse($year_id)->format('m/Y'));
 
         $month_year = Carbon::parse($year_id)->format('M Y');
 
-        $empsalaries = ServiceCharge::whereMonth('serviceChargeDate', $date->month)
-            ->whereYear('serviceChargeDate', $date->year)
+        $empsalaries = ServiceCharge::whereMonth('serviceChargeDate', $pure_month)
+            ->whereYear('serviceChargeDate', $pure_year)
             ->get();
         $this_month_date = date('F, Y', strtotime($year_id));
 

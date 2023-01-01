@@ -29,68 +29,6 @@
 
                                     </div> <!-- End Col md 3 -->
                                 </div><!--  end row -->
-
-                                <!--  ////////////////// Registration Fee table /////////////  -->
-                                {{--
-
-                                    <script id="document-template" type="text/x-handlebars-template">
-
-                                        <div class="col-md-5 col-12 border-danger">
-                                            <div class="text-center"><h4><b>Deposit</b></h4></div>
-                                            <table class="table table-bordered table-striped" style="width: 100%">
-                                                <thead>
-                                                <tr>
-                                                    @{{{thsource}}}
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                @{{#each this}}
-                                                <tr>
-                                                    @{{{tdsource}}}
-                                                </tr>
-                                                @{{/each}}
-
-                                                </tbody>
-                                                <tfoot>
-                                                    <tr>
-                                                        @{{{tfsource}}}
-                                                    </tr>
-                                                    <tr><td colspan="2"><h5>Total Balance in @{{{bank_name}}} : @{{{balance_in_bank}}}</h5></td><td colspan="2"><h5>Remaining Balance in Hand : @{{{balance_in_hand}}}</h5></td></tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
-
-                                        <div class="col-md-7 col-12">
-                                            <div class="text-center"><h4><b>Expense</b></h4></div>
-                                            <table class="table table-bordered table-striped" style="width: 100%">
-                                                <thead>
-                                                <tr>
-                                                    @{{{th2source}}}
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                @{{#each this}}
-                                                <tr>
-                                                    @{{{td2source}}}
-                                                </tr>
-                                                @{{/each}}
-
-                                                </tbody>
-                                                <tfoot>
-                                                    <tr>
-                                                        @{{{tf2source}}}
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
-                                        <div class="col-12 text-center">
-                                            <h3>Total Balance Remaining : @{{{balance}}}</h3>
-                                        </div>
-                                        </script>
-                                        <div class="row" id="DocumentResults" style="margin-top: 40px;">
-                                        </div>
-
-                                --}}
                                     <script id="document-template" type="text/x-handlebars-template">
                                         <div class="w-100-percent col-12" id="reportMonthlyprintableArea">
                                             <div class="no-print text-center">
@@ -99,6 +37,10 @@
                                                 <h4 class="color-black" style="color:#000000">Monthly Statement of Income & Expenditure</h4><br>
                                                 <h4 class="color-black" style="color:#000000">For the Month of @{{{report_of_month}}}</h4><br>
                                             </div>
+                                            <div class="text-center" style="color: #ffffff; margin-bottom: 30px;" >
+                                            <h2 class="" style="color:#ffffff">For the Month of @{{{report_of_month}}}</h2>
+                                            </div>
+
                                             <style type="text/css">
                                                 .tg  {border-collapse:collapse;border-spacing:0;}
                                                 .tg td{border:1px solid #8b8a8a;font-family:Arial, sans-serif;font-size:14px;
@@ -156,8 +98,7 @@
 
                                                 </tbody>
                                             </table>
-                                            @{{{expen}}}
-                                            @{{{count_of_expenditure_list}}}
+
                                         </div>
 
                                         <button target="_blank" onclick="printMonthlyReportDiv()" value="print Report" class="btn btn-rounded btn-primary my-3"><i class="fa fa-print"></i> Print Report</button>

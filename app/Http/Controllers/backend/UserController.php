@@ -15,6 +15,8 @@ class UserController extends Controller
     public function UserView() {
 
         $data['alluserdarta'] = User::where('usertype','flatowner')->with(['units.floor'])->get();
+        $data['allUnitData'] = Unit::all();
+        $data['allFloorData'] = Floor::all();
         //dd($data);
         return view('backend.user.view_user' , $data);
 

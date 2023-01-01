@@ -27,14 +27,14 @@
 
 <div class="wrapper">
 
-    @include('admin.body.header');
+    @include('admin.body.header')
 
     <!-- Left side column. contains the logo and sidebar -->
-    @include('admin.body.sidebar');
+    @include('admin.body.sidebar')
 
-    @yield('admin');
+    @yield('admin')
 
-    @include('admin.body.footer');
+    @include('admin.body.footer')
 
     <!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
     <div class="control-sidebar-bg"></div>
@@ -246,16 +246,11 @@
             success: function (data) {
                 console.log(data);
                 $('#search_yearly_balance_btn').removeClass('disabled');
-                $('#test_report').html(data.test);
-                $('#test_report_2').html(data.amount);
-
-                /*
-                $('#search_balance_btn').removeClass('disabled');
-                var source = $("#document-template").html();
+                var source = $("#document-yearly-template").html();
                 var template = Handlebars.compile(source);
                 var html = template(data);
-                $('#DocumentResults').html(html);
-                 */
+                $('#DocumentYearlyResults').html(html);
+
                 //$('[data-toggle="tooltip"]').tooltip();
             }
         });
@@ -434,12 +429,16 @@
         e.preventDefault();
         $(this).addClass('disabled-link ');
         var total_salary = $('.final-salary').text();
+        var salaryMonthName = $('input[name="salaryMonthName"]').val();
+        var salaryNote = $('input[name="salaryNote"]').val();
+
         console.log(total_salary);
+        console.log(salaryMonthName);
 
         $.ajax({
             url:"{{ route('salary.disburse') }}",
             type:"GET",
-            data:{total_salary:total_salary},
+            data:{total_salary:total_salary, salaryMonthName:salaryMonthName, salaryNote:salaryNote},
             success:function(data){
                 console.log(data);
                 if ( data.length > 0 ) {
@@ -449,6 +448,7 @@
                 }
             }
         });
+
     });
 
     $(document).on('click','.due-money',function(e){
