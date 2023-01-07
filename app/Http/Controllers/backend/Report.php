@@ -44,7 +44,7 @@ class Report extends Controller
 
         $html['thsource'] = '<th>SL</th>';
         $html['thsource'] .= '<th class="tg-0pky">Month\'s</th>';
-        $html['thsource'] .= '<th class="tg-0pky border-right-color-white">S. Charge</th>';
+        $html['thsource'] .= '<th class="tg-0pky border-right-color-white" style="background:linear-gradient(45deg, #0F5EF7, #7a15f7);">S. Charge</th>';
         $html['thsource'] .= '<th class="tg-0pky">Sal./Bon.</th>';
         $html['thsource'] .= '<th class="tg-0pky">Lift</th>';
         $html['thsource'] .= '<th class="tg-0pky">Electricity</th>';
@@ -55,7 +55,10 @@ class Report extends Controller
         $html['thsource'] .= '<th class="tg-0pky">Gen. Fuel</th>';
         $html['thsource'] .= '<th class="tg-0pky">Gen.M</th>';
         $html['thsource'] .= '<th class="tg-0pky">PABX/CCTV</th>';
-        $html['thsource'] .= '<th class="tg-0pky">G.Total</th>';
+        $html['thsource'] .= '<th class="tg-0pky" style="background:linear-gradient(45deg, #f70f0f, #4415f7);">- Total Exp.</th>';
+        $html['thsource'] .= '<th class="tg-0pky" style="background:linear-gradient(45deg, #0F5EF7, #7a15f7);">+ Petty Cash</th>';
+        $html['thsource'] .= '<th class="tg-0pky" style="background:linear-gradient(45deg, #0F5EF7, #7a15f7);">+ In Bank</th>';
+        $html['thsource'] .= '<th class="tg-0pky" style="background:linear-gradient(45deg, #0F5EF7, #7a15f7);">G.Total</th>';
 
 
         for ($month_number = 1; $month_number <= 12; $month_number++) {
@@ -67,7 +70,7 @@ class Report extends Controller
                 ->whereYear('maintenanceCostDate', $year_id)
                 ->get();
 
-            $salary_expense = $lift = $electricity = $wasa = $gas = $fire = $fuel = $genmain = $pabx = $others = array();
+            $salary_expense = $lift = $electricity = $wasa = $gas = $fire = $fuel = $genmain = $pabx = $total_expense = $others = array();
 
             if ( !empty($expenses) ) {
                 foreach ($expenses as $expense) {
@@ -81,6 +84,7 @@ class Report extends Controller
                     if (($expense->utilityId) == 16) { $fuel[] = $expense->amount; } else { $fuel[] = 0; }
                     if (($expense->utilityId) == 22) { $genmain[] = $expense->amount; } else { $genmain[] = 0; }
                     if (($expense->utilityId) == 18) { $pabx[] = $expense->amount; } else { $pabx[] = 0; }
+                    $total_expense[] = $expense->amount;
                 }
             } else {
                 $salary_expense[] = 0; $lift[] = 0; $electricity[] = 0; $wasa[] = 0; $others[] = 0; $fire[] = 0; $fuel[] = 0; $genmain[] = 0; $pabx[] = 0;
@@ -89,10 +93,13 @@ class Report extends Controller
             if ( $incomes > 0 ) {
                 if (($month_number == 3) && ($year_id == 2022)) {
                     $previous_month_balance_final = RemainingBalance::get()->first()->balance;
+                    $only_petty_cash = RemainingBalance::get()->first()->balance;
                 } else {
 
                     $previous_pretty_cash_month = $month_number;
                     $previous_pretty_cash_year = $year_id;
+                    $make_full_date = $year_id.'-'.$month_number.'-02';
+
 
                     $prev_petty_cash_balance = PettyCash::whereMonth('month_year', $previous_pretty_cash_month)
                         ->whereYear('month_year', $previous_pretty_cash_year)
@@ -106,11 +113,25 @@ class Report extends Controller
                     if (!empty($find_transaction)) {
                         $balance_in_bank = $find_transaction->balance;
                     } else {
-                        $balance_in_bank = 0;
+                        $find_bank_cash = BankTransaction::all();
+                        $got_bank_cash = collect($find_bank_cash)->last();
+                        $find_transaction_1 = $got_bank_cash->balance;
+                        $find_transaction_1_date = $got_bank_cash->transaction_date;
+
+                        $date1  = strtotime($make_full_date);
+                        $date2  = strtotime($find_transaction_1_date);
+                        if($date1 > ($date2) ) {
+                            $balance_in_bank = $find_transaction_1;
+                        } else {
+                            $balance_in_bank = 0;
+                        }
+
                     }
 
                     if (!empty($prev_petty_cash_balance)) {
                         $previous_month_balance_final = ($prev_petty_cash_balance->balance) + $balance_in_bank;
+                        $only_petty_cash = $prev_petty_cash_balance->balance;
+
                     } else {
                         $find = PettyCash::all();
                         $got_that = collect($find)->last();
@@ -119,13 +140,43 @@ class Report extends Controller
                         $find_bank_cash = BankTransaction::all();
                         $got_bank_cash = collect($find_bank_cash)->last();
                         $last_balance_in_bank = $got_bank_cash->balance;
+                        $only_petty_cash = $find_petty_cash;
                         $previous_month_balance_final = $find_petty_cash + $last_balance_in_bank;
                     }
                 }
-            } else {
-                $previous_month_balance_final = 0;
-            }
 
+            } else {
+                if (($month_number == 3) && ($year_id == 2022)) {
+                    $previous_month_balance_final = RemainingBalance::get()->first()->balance;
+                    $only_petty_cash = RemainingBalance::get()->first()->balance;
+                } else {
+                    $previous_month_balance_final = $only_petty_cash = 0;
+                }
+                $balance_in_bank = 0;
+            }
+            /*
+            $previous_pretty_cash_month = $month_number;
+            $previous_pretty_cash_year = $year_id;
+            $find_transaction = BankTransaction::whereMonth('transaction_date', $previous_pretty_cash_month)
+                ->whereYear('transaction_date', $previous_pretty_cash_year)
+                ->where('bank_id', 1)
+                ->first();
+
+            if (!empty($find_transaction)) {
+                $balance_in_bank = $find_transaction->balance;
+            } else {
+
+                $find_bank_cash = BankTransaction::all();
+                $got_bank_cash = collect($find_bank_cash)->last();
+                $find_transaction_1 = $got_bank_cash->balance;
+                if (!empty($find_transaction_1)) {
+                    $balance_in_bank = $find_transaction_1;
+                } else {
+                    $balance_in_bank = 0;
+                }
+
+            }
+            */
             $monthName = date('F', mktime(0, 0, 0, $month_number, 10));
 
             $html[$month_number + 1]['tdsource'] = '<td class="tg-0pky">' . $month_number  . '. </td>';
@@ -141,6 +192,9 @@ class Report extends Controller
             $html[$month_number + 1]['tdsource'] .= '<td class="tg-0pky">'. array_sum($fuel) .'</td>';
             $html[$month_number + 1]['tdsource'] .= '<td class="tg-0pky">'. array_sum($genmain) .'</td>';
             $html[$month_number + 1]['tdsource'] .= '<td class="tg-0pky">'. array_sum($pabx) .'</td>';
+            $html[$month_number + 1]['tdsource'] .= '<td class="tg-0pky">'. array_sum($total_expense) .'</td>';
+            $html[$month_number + 1]['tdsource'] .= '<td class="tg-0pky">'. $only_petty_cash .'</td>';
+            $html[$month_number + 1]['tdsource'] .= '<td class="tg-0pky">'. $balance_in_bank .'</td>';
             $html[$month_number + 1]['tdsource'] .= '<td class="tg-0pky">'. $previous_month_balance_final .'</td>';
         }
         $html['test'] = $year_id;
@@ -152,8 +206,10 @@ class Report extends Controller
 
         $year_id = $request->year_id;
 
-        $pure_month = mb_substr($request->year_id , 6);
+        $pure_month = mb_substr($request->year_id , 5);
         $pure_year = mb_substr($request->year_id , 0, 4);
+
+        //dd($pure_month . ' - ' . $pure_year);
 
        //$formated_date = Carbon::createFromFormat('m/Y', Carbon::parse($year_id)->format('m/Y'));
         $f = date('F, Y', strtotime($year_id." -1 month"));
@@ -321,14 +377,36 @@ class Report extends Controller
             $html['tf2source'] = '<td colspan="3" class="text-center"><b>No Data Found</b></td>';
         }
 
+        $previous_pretty_cash_month = $pure_month;
+        $previous_pretty_cash_year = $pure_year;
+        $find_transaction = BankTransaction::whereMonth('transaction_date', $previous_pretty_cash_month)
+            ->whereYear('transaction_date', $previous_pretty_cash_year)
+            ->where('bank_id', 1)
+            ->first();
+
+        if (!empty($find_transaction)) {
+            $html['balance_in_bank'] = $find_transaction->balance;
+        } else {
+
+            $find_bank_cash = BankTransaction::all();
+            $got_bank_cash = collect($find_bank_cash)->last();
+            $last_balance_in_bank = $got_bank_cash->balance;
+
+            if (!empty($last_balance_in_bank)) {
+                $html['balance_in_bank'] = $last_balance_in_bank;
+            } else {
+                $html['balance_in_bank'] = 0;
+            }
+        }
+
         $html['balance'] = ((int)$income) - ((int)$outcome);
 
         $html['total_remaining'] = '<td class="tg-0lax" colspan="2"></td>';
         $html['total_remaining'] .= '<td class="tg-0lax color-black" style="background:linear-gradient(45deg, #0F5EF7, #7a15f7);"><b>Total Remaining</b></td>';
-        $html['total_remaining'] .= '<td class="tg-0lax" colspan="2">Total Income - Total Expenditure </td>';
-        $html['total_remaining'] .= '<td class="tg-0lax"><b>'. (((int)$income) - ((int)$outcome)) .'</b></td>';
+        $html['total_remaining'] .= '<td class="tg-0lax" colspan="2">( Total Income - Total Expenditure ) + Bank </td>';
+        $html['total_remaining'] .= '<td class="tg-0lax"><b>'. (((int)$income) - ((int)$outcome) ) .'</b></td>';
 
-
+/*
         $pure_month = mb_substr($request->year_id , 6);
         $pure_year = mb_substr($request->year_id , 0, 4);
 
@@ -342,6 +420,7 @@ class Report extends Controller
         } else {
             $html['balance_in_bank'] = 0;
         }
+        */
         $html['bank_name'] = Bank::find(1)->name;
 
         $now_petty_cash = PettyCash::whereMonth('month_year', $pure_month)

@@ -169,6 +169,7 @@ class MaintenanceController extends Controller
         $html['thsource'] .= '<th>Receipt Image</th>';
         $html['thsource'] .= '<th>Note</th>';
         $html['thsource'] .= '<th>Amount</th>';
+        $html['thsource'] .= '<th>Action</th>';
 
         foreach ($expenses as $key => $expense) {
 
@@ -192,7 +193,7 @@ class MaintenanceController extends Controller
             $html[$key]['tdsource'] .= '<td><img id="showImage" src="'. $imgURL .'" style="width: 100px; width: 100px; border: 1px solid #000000;"></td>';
             $html[$key]['tdsource'] .= '<td>' . $expense->maintenanceNote . '</td>';
             $html[$key]['tdsource'] .= '<td>' . $expense->amount . '</td>';
-
+            $html[$key]['tdsource'] .= '<td><a href="' . url("/maintenance/detail/{$expense->id}") . '" class="btn btn-success mr-2">Details</a><a href="' . url("/maintenance/detail/{$expense->id}") . '" class="btn btn-info mr-2">Edit</a><a href="' . url("/maintenance/detail/{$expense->id}") . '" class="btn btn-danger mr-2">delete</a></td>';
             $charges[] = (int)$expense->amount;
 
         }
@@ -309,6 +310,131 @@ class MaintenanceController extends Controller
 
         return response()->json(@$html);
 
+    }
+
+    public function MaintenanceDetail( Request $request , $id ) {
+
+        $data['thatMaintenanceDetail'] = MaintenanceModel::find( $id );
+        $data['users'] = User::where('usertype','employee')->get();
+        $data['allFloorlist'] = Floor::all();
+        $data['allUnitlist'] = Unit::all();
+        $data['allUtilitylist'] = Utility::all();
+        $data['allBanklist'] = Bank::all();
+
+        return view('backend.maintenance.detail_maintenance' , $data);
+    }
+
+
+    public function MaintenanceUpdate( Request $request , $id ) {
+
+        //Please validation here
+        $data = MaintenanceModel::find( $id );
+        $previous_amount = $data->amount;
+        $previous_date = $data->maintenanceCostDate;
+        $data->amount = $request->amount;
+
+        //dd($previous_date);
+
+        if ( !empty($request->floorId)) { $data->floorId = $request->floorId; } else { $data->floorId = 1; }
+        if ( !empty($request->unitId)) { $data->unitId = $request->unitId; } else { $data->unitId = 1; }
+        if ( !empty($request->userId)) { $data->userId = $request->userId; } else { $data->userId = 1; }
+        $data->utilityId = $request->utilityId;
+
+        $data->maintenanceCostDate = $request->maintenanceCostDate;
+        $data->maintenanceNote = $request->maintenancenote;
+
+        if ($request->file('maintenanceImage')) {
+            $file = $request->file('maintenanceImage');
+            @unlink(public_path('upload/maintenance_images/'.$data->image));
+            $filename = date('YmdHi').$file->getClientOriginalName();
+            $file->move(public_path('upload/maintenance_images'),$filename);
+            $data['maintenanceImage'] = $filename;
+        }
+
+        $data->save();
+
+        // if petty cash - reduce from petty cash
+
+        $now_pretty_cash_month = intval(mb_substr($previous_date , 5 , 8));
+        $now_pretty_cash_year = intval(mb_substr($previous_date , 0 , 4));
+
+        $now_petty_cash = PettyCash::whereMonth('month_year', $now_pretty_cash_month)
+            ->whereYear('month_year', $now_pretty_cash_year)
+            ->first();
+
+        $next_petty_cash = PettyCash::where( 'id' , '>=' , $now_petty_cash->id )->get();
+
+        //dd($next_petty_cash);
+        $final_update = $previous_amount - $request->amount;
+        foreach ($next_petty_cash as $next_petty_single) {
+            $data3 = PettyCash::find($next_petty_single->id);
+            $data3->balance = $data3->balance + $final_update ;
+            $data3->save();
+        }
+
+        $prev_remaining_balance = RemainingBalance::find(2)->balance;
+
+        $data2 = RemainingBalance::find(2);
+        $data2->balance = $prev_remaining_balance + $final_update ;
+        $data2->month_year = $request->maintenanceCostDate;
+        $data2->save();
+
+
+        $notification = array(
+            'message' => 'Expense Update Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('maintenance.view')->with($notification);
+    }
+
+    public function MaintenanceDelete( Request $request , $id ) {
+
+        //Please validation here
+        $data = MaintenanceModel::find( $id );
+        $previous_amount = $data->amount;
+        $previous_date = $data->maintenanceCostDate;
+        $data->delete();
+
+        //dd($previous_date);
+
+        // if petty cash - reduce from petty cash
+        if (empty($request->bank_id)){
+
+            $now_pretty_cash_month = intval(mb_substr($previous_date , 5 , 8));
+            $now_pretty_cash_year = intval(mb_substr($previous_date , 0 , 4));
+
+            $now_petty_cash = PettyCash::whereMonth('month_year', $now_pretty_cash_month)
+                ->whereYear('month_year', $now_pretty_cash_year)
+                ->first();
+
+            $final_update = $previous_amount;
+
+            //dd($now_petty_cash);
+
+            $next_petty_cash = PettyCash::where( 'id' , '>=' , $now_petty_cash->id )->get();
+
+            //dd($next_petty_cash);
+            foreach ($next_petty_cash as $next_petty_single) {
+                $data3 = PettyCash::find($next_petty_single->id);
+                $data3->balance = $data3->balance + $final_update ;
+                $data3->save();
+            }
+
+
+            $prev_remaining_balance = RemainingBalance::find(2)->balance;
+            $data2 = RemainingBalance::find(2);
+            $data2->balance = $prev_remaining_balance + $final_update ;
+            $data2->month_year = $data->maintenanceCostDate;
+            $data2->save();
+        }
+
+        $notification = array(
+            'message' => 'Expense Deleted Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('maintenance.view')->with($notification);
     }
 
 }

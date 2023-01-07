@@ -28,24 +28,23 @@
                         <div class="box-header with-border">
                             <h4 class="box-title">Entry Maintenance Cost</h4>
                         </div>
-
                         <!-- /.box-header -->
-                        <form class="form-horizontal" method="POST" action="{{route('maintenance.store')}}" enctype="multipart/form-data">
+                        <form class="form-horizontal" method="POST" action="{{ route('maintenance.update', $thatMaintenanceDetail->id) }}" enctype="multipart/form-data">
                             @csrf
                             <div class="box-body">
                                 <h4 class="mt-0 mb-20">1. Cost Information:</h4>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-2">
                                         <div class="form-group">
                                             <label>Amount</label>
-                                            <input name="amount" type="number" class="form-control" required="required" placeholder="Cost">
+                                            <input name="amount" type="number" value="{{$thatMaintenanceDetail->amount}}" class="form-control" required="required" placeholder="Cost">
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>From which account to spend?</label>
                                             <select name="from_where_to_spend" required class="form-control select2 from-where-to-spend">
-                                                <option value="petty_cash">From Petty Cash</option>
+                                                <option selected="selected" value="petty_cash">From Petty Cash</option>
                                             </select>
                                         </div>
                                     </div>
@@ -55,18 +54,25 @@
                                             <select name="floorId" class="form-control select2 required">
                                                 <option value="">Select Floor</option>
                                                 @foreach( $allFloorlist as $floor )
+                                                    @if( ($floor->id) == $thatMaintenanceDetail->floorId )
+                                                        <option selected="selected" value="{{ $floor->id }}">{{ $floor->name }}</option>
+                                                    @endif
                                                     <option value="{{ $floor->id }}">{{ $floor->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 banklist d-none">
+
+                                    <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Select Bank</label>
-                                            <select name="bank_id" class="form-control select2" style="width:100%">
-                                                <option value="">Select Back</option>
-                                                @foreach( $allBanklist as $bank )
-                                                    <option value="{{ $bank->id }}">{{ $bank->name }}</option>
+                                            <label>Utility</label>
+                                            <select name="utilityId" class="form-control select2">
+                                                <option value="">Select Utility</option>
+                                                @foreach( $allUtilitylist as $utility )
+                                                    @if( ($utility->id) == $thatMaintenanceDetail->utilityId )
+                                                        <option selected="selected" value="{{ $utility->id }}">{{ $utility->name }}</option>
+                                                    @endif
+                                                    <option value="{{ $utility->id }}">{{ $utility->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -79,54 +85,45 @@
                                             <select name="unitId" class="form-control select2">
                                                 <option value="">Select Unit</option>
                                                 @foreach( $allUnitlist as $unit )
+                                                    @if( ($unit->id) == $thatMaintenanceDetail->unitId )
+                                                        <option selected="selected" value="{{ $unit->id }}">{{ $unit->name }}</option>
+                                                    @endif
                                                     <option value="{{ $unit->id }}">{{ $unit->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
-
-                                    <div class="col-md-6 ">
-                                        <div class="form-group">
-                                            <label>Utility</label>
-                                            <select name="utilityId" class="form-control select2">
-                                                <option value="">Select Utility</option>
-                                                @foreach( $allUtilitylist as $utility )
-                                                    <option value="{{ $utility->id }}">{{ $utility->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-
+                                </div>
+                                <div class="row">
                                     <div class="col-md-6 d-none">
                                         <div class="form-group">
                                             <label>Responsible User</label>
+                                            {{$thatMaintenanceDetail->userId}}
                                             <select name="userId" class="form-control select2">
                                                 <option value="">Select User</option>
                                                 @foreach( $users as $user )
+                                                    @if( ($user->id) == $thatMaintenanceDetail->userId )
+                                                        <option selected="selected" value="{{ $user->id }}">{{ $user->name }}</option>
+                                                    @endif
                                                     <option value="{{ $user->id }}">{{ $user->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
-
-
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Maintenance Cost added Date</label>
-                                            <input class="form-control" name="maintenanceCostDate" type="date" value="">
+                                            <input class="form-control" name="maintenanceCostDate" type="date" value="{{$thatMaintenanceDetail->maintenanceCostDate}}">
                                         </div>
                                     </div>
-
-                                </div>
-                                <div class="row">
-                                </div>
-                                <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Note</label>
-                                            <textarea rows="5" class="form-control" name="maintenancenote" placeholder="Write note"></textarea>
+                                            <textarea rows="5" class="form-control" name="maintenancenote" placeholder="Write note">{{$thatMaintenanceDetail->maintenanceNote}}</textarea>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Slips/Receipt</label>
@@ -143,7 +140,8 @@
                             <!-- /.box-body -->
                             <div class="box-footer d-flex justify-content-between">
                                 <button type="submit" class="btn btn-rounded btn-danger">Reset</button>
-                                <input type="submit" class="btn btn-rounded btn-info" value="Add Maintenance">
+                                <a class="btn btn-rounded btn-danger" href="{{ route('maintenance.delete' , $thatMaintenanceDetail->id) }}">Delete</a>
+                                <input type="submit" class="btn btn-rounded btn-info" value="Update Maintenance">
                             </div>
                         </form>
                     </div>

@@ -47,7 +47,6 @@ class ServiceChargeController extends Controller {
         $month_year = Carbon::parse($request->serviceChargeMonthYear)->format('M Y');
         $data = new ServiceCharge();
         $data->serviceChargeMonthYear = $request->serviceChargeMonthYear . '-02';
-        //$data->serviceChargeAmount = $request->serviceChargeAmount;
         $data->serviceChargeAmount = $request->serviceChargeAmount;
         $data->serviceChargeDue =  $find_due;
         $data->user_id = $request->user_id;
@@ -56,34 +55,35 @@ class ServiceChargeController extends Controller {
         $data->serviceChargeDate = $request->serviceChargeDate;
 
         $saved = $data->save();
-        //$saved = 0;
 
-        if($saved == 1){
+        if($saved == 1) {
             $get_user = User::find($request->user_id);
             $get_unit = Unit::find($request->unit_id);
-            $number = $get_user->phone;
-            if ($find_due > 0){
-                $text = "Dear $get_user->name, Received Service Charge TK $request->serviceChargeAmount Total due TK $find_due of $month_year, for Flat $get_unit->name. Thank You.";
-            } else {
-                $text = "Dear $get_user->name, Received Service Charge TK $request->serviceChargeAmount of $month_year, for Flat $get_unit->name. Thank You.";
+            if ( $get_user->sms_nofication == 'on' ) {
+                $number = $get_user->phone;
+                if ($find_due > 0) {
+                    $text = "Dear $get_user->name, Received Service Charge TK $request->serviceChargeAmount Total due TK $find_due of $month_year, for Flat $get_unit->name. Thank You.";
+                } else {
+                    $text = "Dear $get_user->name, Received Service Charge TK $request->serviceChargeAmount of $month_year, for Flat $get_unit->name. Thank You.";
+                }
+
+                $url = "http://66.45.237.70/api.php";
+                $data = array(
+                    'username' => "01673950496",
+                    'password' => "7RWNC9T8",
+                    'number' => "$number",
+                    'message' => "$text"
+                );
+
+                $ch = curl_init(); // Initialize cURL
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $smsresult = curl_exec($ch);
+                $p = explode("|", $smsresult);
+                $sendstatus = $p[0];
+
             }
-
-            $url = "http://66.45.237.70/api.php";
-            $data= array(
-                'username'=>"01673950496",
-                'password'=>"7RWNC9T8",
-                'number'=>"$number",
-                'message'=>"$text"
-            );
-
-            $ch = curl_init(); // Initialize cURL
-            curl_setopt($ch, CURLOPT_URL,$url);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $smsresult = curl_exec($ch);
-            $p = explode("|",$smsresult);
-            $sendstatus = $p[0];
-
         }
 
         //Add balance to the PETTY CASH
@@ -115,6 +115,7 @@ class ServiceChargeController extends Controller {
                 $data3->balance = ($request->serviceChargeAmount) + $prev_petty_cash_balance->balance;
                 $data3->month_year = $request->serviceChargeDate;
                 $data3->save();
+
             } else {
                 $data3 = new PettyCash();
                 $data3->balance = ($request->serviceChargeAmount);
@@ -126,6 +127,23 @@ class ServiceChargeController extends Controller {
             $data3->balance = ($request->serviceChargeAmount) + $now_petty_cash->balance ;
             $data3->month_year = $request->serviceChargeDate;
             $data3->save();
+
+            $next_petty_cash = PettyCash::where( 'id' , '>' , $now_petty_cash->id )->get();
+
+            //dd($next_petty_cash);
+            if (!empty($next_petty_cash)) {
+                foreach ($next_petty_cash as $next_petty_single) {
+                    $data4 = PettyCash::find($next_petty_single->id);
+                    $data4->balance = $data4->balance + $request->serviceChargeAmount;
+                    $data4->save();
+                }
+            }
+            $prev_remaining_balance = RemainingBalance::find(2)->balance;
+
+            $data2 = RemainingBalance::find(2);
+            $data2->balance = ($request->serviceChargeAmount) + $prev_remaining_balance;
+            $data2->month_year = $request->serviceChargeDate;
+            $data2->save();
         }
 
         // Checking -- if remaining balance is Blank

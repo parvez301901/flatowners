@@ -32,7 +32,6 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-
     return view('admin.index');
 })->name('dashboard');
 
@@ -132,6 +131,9 @@ Route::group(['middleware' => 'auth'],function() {
         Route::post('/store', [MaintenanceController::class, 'MaintenanceStore'])->name('maintenance.store');
         Route::get('/view', [MaintenanceController::class, 'MaintenanceView'])->name('maintenance.view');
         Route::get('/search/maintenance', [MaintenanceController::class, 'MaintenanceSearch'])->name('maintenance.search');
+        Route::get('/detail/{id}', [MaintenanceController::class, 'MaintenanceDetail'])->name('maintenance.detail');
+        Route::post('/update/{id}', [MaintenanceController::class, 'MaintenanceUpdate'])->name('maintenance.update');
+        Route::get('/delete/{id}', [MaintenanceController::class, 'MaintenanceDelete'])->name('maintenance.delete');
         //////////////------------------------------  Baki ache ------------ Edit - Update - Delete ------   /////////////////
         Route::get('/salary', [MaintenanceController::class, 'MaintenanceSalary'])->name('maintenance.salary');
         Route::get('/salary/disburse', [MaintenanceController::class, 'MaintenanceSalaryDisburse'])->name('salary.disburse');
