@@ -332,6 +332,7 @@ class MaintenanceController extends Controller
         $previous_amount = $data->amount;
         $previous_date = $data->maintenanceCostDate;
         $data->amount = $request->amount;
+        $data->maintenanceNote = $request->maintenancenote;
 
         //dd($previous_date);
 
@@ -340,8 +341,16 @@ class MaintenanceController extends Controller
         if ( !empty($request->userId)) { $data->userId = $request->userId; } else { $data->userId = 1; }
         $data->utilityId = $request->utilityId;
 
+        // কোন মাসে নতুন expenditure add হচ্ছে
         $data->maintenanceCostDate = $request->maintenanceCostDate;
-        $data->maintenanceNote = $request->maintenancenote;
+
+
+        // ফাইন্ড the নতুন date + year , কারন বের করতে হবে নতুন date কি বর্তমান date থেকে বড় নাকি ছোট , তাতে কোথা থেকে petty cash database change হবে তা বের করা হবে।
+        $new_month_to_move = intval(mb_substr($request->maintenanceCostDate , 5 , 8));
+        $new_year_to_move = intval(mb_substr($request->maintenanceCostDate , 0 , 4));
+        $total_number_of_new_year_month = $new_month_to_move + $new_year_to_move;
+
+        //dd($new_month_to_move);
 
         if ($request->file('maintenanceImage')) {
             $file = $request->file('maintenanceImage');
@@ -357,21 +366,125 @@ class MaintenanceController extends Controller
 
         $now_pretty_cash_month = intval(mb_substr($previous_date , 5 , 8));
         $now_pretty_cash_year = intval(mb_substr($previous_date , 0 , 4));
+        $total_number_of_old_year_month = $now_pretty_cash_month + $now_pretty_cash_year;
 
+        // এইখানে চলতি মাসের Petty Cash বের করা হয়েছে - row এর সব data
         $now_petty_cash = PettyCash::whereMonth('month_year', $now_pretty_cash_month)
             ->whereYear('month_year', $now_pretty_cash_year)
             ->first();
 
-        $next_petty_cash = PettyCash::where( 'id' , '>=' , $now_petty_cash->id )->get();
+        // বের করতে হবে নতুন মাসের ID -- done
+        $new_petty_cash_month_all_data = PettyCash::whereMonth('month_year', $new_month_to_move)
+            ->whereYear('month_year', $new_year_to_move)
+            ->first();
 
-        //dd($next_petty_cash);
-        $final_update = $previous_amount - $request->amount;
-        foreach ($next_petty_cash as $next_petty_single) {
-            $data3 = PettyCash::find($next_petty_single->id);
-            $data3->balance = $data3->balance + $final_update ;
-            $data3->save();
+        // query কিভাবে চলবে তা জন্য if else
+        // যদি নতুন date পুরাতন date হতে বড় হয় - মানে উপর থেকে নিচে পাঠানো হল
+        if ( $total_number_of_new_year_month > $total_number_of_old_year_month ) {
+            // MOST CRITICAL PART - যদি পরিবর্তন করা মাসের পরে বা আগে কোন মাসের Petty থাকে সেগুলো array তে আনার জন্য QUERY
+            // -- কারন তাহলে ঐ মাসগুলোতেও balance পরিবর্তন করতে হবে
+
+            // বর্তমান মাসের petty cash এর ID
+            $old_petty_cash_month_id = $now_petty_cash->id;
+            // নতুন মাসের ID
+
+            // বের করতে হবে নেক্সট কতো গুলা মাস আছে ( বা id আছে ) -- done
+            $next_petty_cash_months_list = PettyCash::where( 'id' , '>=' , $now_petty_cash->id )->get();
+
+            // আগের amount এবং এখনকার input amount এর পার্থক্য কত, বের করা হলো
+            $final_update = $previous_amount - $request->amount;
+
+            foreach ($next_petty_cash_months_list as $next_petty_single) {
+
+                if (($next_petty_single->id) == $old_petty_cash_month_id ) {
+                    // যদি পুরাতন মাসের সমান হয় - তাহলে তা বাড়বে মানে যোগ হবে ------------ লজিক এর মায়েরে বাপ
+                    $data3 = PettyCash::find($next_petty_single->id);
+                    $data3->balance = $data3->balance + $request->amount;
+                    $data3->save();
+                } else if ((($next_petty_single->id) > ($old_petty_cash_month_id)) && (($next_petty_single->id) < ($new_petty_cash_month_all_data->id)) ) {
+
+                    $data3 = PettyCash::find($next_petty_single->id);
+                    $data3->balance = $data3->balance + $request->amount;
+                    $data3->save();
+                } else if ((($next_petty_single->id) == ($new_petty_cash_month_all_data->id)) ) {
+
+                    $data3 = PettyCash::find($next_petty_single->id);
+                    $data3->balance = $data3->balance - $request->amount;
+                    $data3->save();
+
+                } else {
+                    // নতুন মাসের petty cash থেকে বিয়োগ
+                    // পরবর্তী মাস গুলো হতে বিয়োগ
+                    $data3 = PettyCash::find($next_petty_single->id);
+                    $data3->balance = $data3->balance - $request->amount ;
+                    $data3->save();
+                }
+
+            }
+
+        // যদি নতুন date পুরাতন date হতে বড় হয় - মানে নিচের থেকে উপরে পাঠানো হল
+        } else if ( $total_number_of_new_year_month < $total_number_of_old_year_month ) {
+
+            // বের করতে হবে পুরাতন মাসের ID -- done
+            $old_petty_cash_month_id = $now_petty_cash->id;
+
+            // বের করতে হবে নেক্সট কতো গুলা মাস আছে ( বা id আছে ) -- done
+            $next_petty_cash_months_list = PettyCash::where( 'id' , '>=' , $new_petty_cash_month_all_data->id )->get();
+
+            // আগের amount এবং এখনকার input amount এর পার্থক্য কত, বের করা হলো
+            $final_update = $previous_amount - $request->amount;
+
+            foreach ($next_petty_cash_months_list as $next_petty_single) {
+
+                if (($next_petty_single->id) == $old_petty_cash_month_id ) {
+                    // এবং শুধুমাত্র চলতি মাসেরটা যা আছে তাই থাকবে, তবে যদি কম বেশি হয় তাহলে পার্থক্য বের করে নিতে হবে
+                    $data3 = PettyCash::find($next_petty_single->id);
+                    $data3->balance = $data3->balance + $final_update;
+                    $data3->save();
+                } else {
+                    // নতুন মাসের petty cash থেকে বিয়োগ
+                    // পরবর্তী মাস গুলো হতে বিয়োগ
+                    $data3 = PettyCash::find($next_petty_single->id);
+                    $data3->balance = $data3->balance - $request->amount ;
+                    $data3->save();
+                }
+
+            }
+
+        // যদি নতুন date পুরাতন date সমান হয়
+        } else if ( $total_number_of_new_year_month == $total_number_of_old_year_month ) {
+
+            // যদি same মাসের change হয় দেখতে হবে amount বেশি না কম then if else use করতে হবে
+            if ( ($request->amount) > $previous_amount ) {
+
+                $now_petty_cash_months_list = PettyCash::where( 'id' , '>=' , $now_petty_cash->id )->get();
+
+                $final_update = $previous_amount - $request->amount;
+                foreach ($now_petty_cash_months_list as $next_petty_single) {
+                    $data3 = PettyCash::find($next_petty_single->id);
+                    $data3->balance = $data3->balance + $final_update;
+                    $data3->save();
+                }
+
+            } else if ( ($request->amount) < $previous_amount ) {
+                $now_petty_cash_months_list = PettyCash::where( 'id' , '>=' , $now_petty_cash->id )->get();
+
+                $final_update = $previous_amount - $request->amount;
+                foreach ($now_petty_cash_months_list as $next_petty_single) {
+                    $data3 = PettyCash::find($next_petty_single->id);
+                    $data3->balance = $data3->balance + $final_update;
+                    $data3->save();
+                }
+
+            } else if ( ($request->amount) == $previous_amount ) {
+                $message_ready = 'Nothing To Change';
+            }
+
         }
 
+
+        $final_update = $previous_amount - $request->amount;
+        // Main Remaining Balance এ Change -
         $prev_remaining_balance = RemainingBalance::find(2)->balance;
 
         $data2 = RemainingBalance::find(2);

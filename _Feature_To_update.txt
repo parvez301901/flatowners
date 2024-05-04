@@ -1,8 +1,11 @@
 01. Employee Role in Database --  like Manager, House Guard, Night Guard
 03. Show Image of the owner and Employee
+
 04. Defend dulplicate Entry for the Service charge
 05. Salary - edit update
 06. Prevent insret blank data all form  - in Service Charge Add form - add button
+07. Project Expense -- edit - update
+08. Edit Service charge
 
 Bugs to fix:
 ------------------

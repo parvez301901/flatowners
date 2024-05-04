@@ -114,8 +114,23 @@
                 <div class="col-md-12">
                     <script id="document-template-project" type="text/x-handlebars-template">
                         <div class="col-md-6 border-danger">
-                            <div class="text-center"><h4><b>Deposit</b></h4></div>
-                            <table class="table table-bordered table-striped" style="width: 100%">
+                            <div class="text-center" style="text-align: center"><h4><b>Deposit</b></h4></div>
+                            <div id="reportPrintProjectDepositPrintableArea">
+                                <div class="no-print text-center" style="text-align: center">
+                                    <h3 class="color-black" style="color:#000000; text-align: center;">Krishnochura Heights Flat Malick Kalyan Samity</h3>
+                                    <h4 class="color-black" style="color:#000000; text-align: center;">House # 64, Avenue # 5, Block # A, <br>Section # 6, Mirpur, Dhaka -1216</h4>
+                                    <div class="text-center" style="text-align: center"><h4><b>Deposit</b></h4></div>
+                                </div>
+                                <style type="text/css">
+                                    .tg  {border-collapse:collapse;border-spacing:0;}
+                                    .tg td{border:1px solid #8b8a8a;font-family:Arial, sans-serif;font-size:14px;
+                                        overflow:hidden;padding:10px 5px;word-break:normal;}
+                                    .tg th{border:1px solid #8b8a8a;font-family:Arial, sans-serif;font-size:14px;
+                                        font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+                                    .tg .tg-0lax{text-align:left;vertical-align:top; font-size: 16px;}
+                                    .tg .tg-bold { font-weight: bold; } .w-100-percent { width: 100%; }
+                                </style>
+                            <table class="table table-bordered table-striped tg w-100-percent color-black" style="width: 100%">
                                 <thead>
                                 <tr>
                                     @{{{thsource}}}
@@ -134,30 +149,56 @@
                                 </tr>
                                 </tfoot>
                             </table>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="text-center"><h4><b>Expense</b></h4></div>
-                            <table class="table table-bordered table-striped" style="width: 100%">
-                                <thead>
-                                <tr>
-                                    @{{{th2source}}}
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @{{#each this}}
-                                <tr>
-                                    @{{{td2source}}}
-                                </tr>
-                                @{{/each}}
 
-                                </tbody>
-                                <tfoot>
-                                <tr>
-                                    @{{{tf2source}}}
-                                </tr>
-                                </tfoot>
-                            </table>
+                                <div class="col-12">
+                                    <button target="_blank" onclick="printProjectDeposit()" value="print Report" class="btn btn-rounded btn-primary my-3"><i class="fa fa-print"></i> Print Report</button>
+                                </div>
+                            </div>
                         </div>
+
+                        <div class="col-md-6">
+                            <div class="text-center" style="text-align: center;"><h4><b>Expense</b></h4></div>
+                            <div id="reportPrintProjectExpenditurePrintableArea">
+                                <div class="no-print text-center" style="text-align: center;">
+                                    <h3 class="color-black" style="color:#000000; text-align: center;">Krishnochura Heights Flat Malick Kalyan Samity</h3>
+                                    <h4 class="color-black" style="color:#000000; text-align: center;">House # 64, Avenue # 5, Block # A, <br>Section # 6, Mirpur, Dhaka -1216</h4>
+                                    <div class="text-center" style="text-align: center;"><h4><b>Expense</b></h4></div>
+                                </div>
+                                <style type="text/css">
+                                    .tg  {border-collapse:collapse;border-spacing:0;}
+                                    .tg td{border:1px solid #8b8a8a;font-family:Arial, sans-serif;font-size:14px;
+                                        overflow:hidden;padding:10px 5px;word-break:normal;}
+                                    .tg th{border:1px solid #8b8a8a;font-family:Arial, sans-serif;font-size:14px;
+                                        font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+                                    .tg .tg-0lax{text-align:left;vertical-align:top; font-size: 16px;}
+                                    .tg .tg-bold { font-weight: bold; } .w-100-percent { width: 100%; }
+                                </style>
+                                <table class="table table-bordered table-striped tg w-100-percent color-black" style="width: 100%">
+                                    <thead>
+                                    <tr>
+                                        @{{{th2source}}}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @{{#each this}}
+                                    <tr>
+                                        @{{{td2source}}}
+                                    </tr>
+                                    @{{/each}}
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        @{{{tf2source}}}
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                                <div class="col-12">
+                                    <button target="_blank" onclick="printProjectExpenditure()" value="print Report" class="btn btn-rounded btn-primary my-3"><i class="fa fa-print"></i> Print Report</button>
+                                </div>
+                            </div>
+                        </div>
+
+
                         <table>
                             <tr><td><h5>Total Balance in @{{{bank_name}}} </h5></td><td>@{{{balance_in_bank}}}</td></tr>
                             <tr><td><h5>Remaining Balance in Hand </h5></td><td>@{{{balance_in_hand}}}</td></tr>
@@ -167,7 +208,7 @@
                     <div class="row" id="projectDetail">
                     </div>
                 </div>
-                <div class="col-lg-6 col-12">
+                <div class="col-lg-12 col-12">
                     <!-- Basic Forms -->
                     <div class="box">
                         <div class="box-header with-border">
@@ -190,7 +231,7 @@
                                     @foreach( $allexpensedata as $key => $expense)
                                         <tr>
                                             <td>{{ $key+1 }}</td>
-                                            <td>{{ $expense['get_utility_name']['name'] }}</td>
+                                            <td>{{ $expense->project_cost_note }}</td>
                                             <td>{{ $expense->amount }}</td>
                                             <td>{{ $expense->project_cost_date }}</td>
                                             <td>
@@ -207,7 +248,7 @@
                     <!-- /.box -->
                 </div>
 
-                <div class="col-lg-6 col-12">
+                <div class="col-lg-12 col-12">
                     <!-- Basic Forms -->
                     <div class="box">
                         <div class="box-header with-border">
@@ -220,6 +261,7 @@
                                     <tr>
                                         <th>SL</th>
                                         <th>Name</th>
+                                        <th>Flat No.</th>
                                         <th>Amount</th>
                                         <th>Due</th>
                                         <th width="30%">Action</th>
@@ -230,6 +272,7 @@
                                         <tr>
                                             <td>{{ $key+1 }}</td>
                                             <td>{{ $deposit['get_user_name']['name'] }}</td>
+                                            <td>{{ $deposit['get_unit_name']['name'] }}</td>
                                             <td>{{ $deposit->amount }}</td>
                                             <td>{{ $deposit->due }}</td>
                                             <td>
@@ -272,7 +315,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Expense From</label>
-                                            <select name="expense_from" class="form-control select2 expense_from">
+                                            <select name="expense_from" required="required" class="form-control select2 expense_from">
                                                 <option value="select_expense_from">Select from where to expense</option>
                                                 <option value="from_petty_cash">From Petty Cash</option>
                                                 <option value="from_bank">From Bank</option>
@@ -282,7 +325,7 @@
                                     <div class="col-md-4 select-bank d-none">
                                         <div class="form-group">
                                             <h5>Select Bank</h5>
-                                            <select name="bank_id" class="form-control select2 w-auto">
+                                            <select name="bank_id"  class="form-control select2 w-auto">
                                                 <option value="">Select Bank Name</option>
                                                 @foreach($allBank as $bank )
                                                     <option value="{{$bank->id}}">{{$bank->name}}</option>
@@ -295,7 +338,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Utility</label>
-                                            <select name="utilityId" class="form-control select2">
+                                            <select name="utilityId" required="required" class="form-control select2">
                                                 <option value="">Select Utility</option>
                                                 @foreach( $allUtilitylist as $utility )
                                                     <option value="{{ $utility->id }}">{{ $utility->name }}</option>
@@ -317,7 +360,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Maintenance Cost added Date</label>
-                                            <input class="form-control" name="project_cost_date" type="date" value="">
+                                            <input class="form-control" name="project_cost_date" required="required" type="date" value="">
                                         </div>
                                     </div>
                                 </div>

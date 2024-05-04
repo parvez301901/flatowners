@@ -61,6 +61,7 @@ $route = Route::current()->getName();
 
                         </ul>
                     </li>
+
                     <li class="treeview {{( $prefix == '/floor' )? 'active' : '' }}">
                         <a href="#">
                             <i data-feather="home"></i>
@@ -72,6 +73,7 @@ $route = Route::current()->getName();
                             <li><a href="{{ route('floor.add') }}"><i class="ti-more"></i>Add Floor</a></li>
                         </ul>
                     </li>
+
                     <li class="treeview {{( $prefix == '/unit' )? 'active' : '' }}">
                         <a href="#">
                             <i data-feather="home"></i>
@@ -129,10 +131,7 @@ $route = Route::current()->getName();
                             <li class="{{ ($route == 'bank.add')?'active':'' }}"><a href="{{route('bank.add')}}"><i class="ti-more"></i>Add Bank</a></li>
                         </ul>
                     </li>
-
                 </ul>
-
-
             </li>
 
             <li class="header nav-small-cap">Accounting Information</li>
@@ -145,7 +144,9 @@ $route = Route::current()->getName();
                 </a>
                 <ul class="treeview-menu">
                     <li class="{{ ($route == 'servicecharge.view')?'active':'' }}"><a href="{{route('servicecharge.view')}}"><i class="ti-more"></i>All Service charge</a></li>
+                    <li class="{{ ($route == 'servicecharge.view_by_month')?'active':'' }}"><a href="{{route('servicecharge.view_by_month')}}"><i class="ti-more"></i>Service charge by Monthly</a></li>
                     <li class="{{ ($route == 'servicecharge.add')?'active':'' }}"><a href="{{route('servicecharge.add')}}"><i class="ti-more"></i>Add Service charge</a></li>
+                    <li class="{{ ($route == 'otherincome.add')?'active':'' }}"><a href="{{route('otherincome.add')}}"><i class="ti-more"></i>Add Other Income</a></li>
                     <li class="{{ ($route == 'servicecharge.tobank')?'active':'' }}"><a href="{{route('servicecharge.tobank')}}"><i class="ti-more"></i>Deposit To Bank</a></li>
                     <li class="{{ ($route == 'servicecharge.dueservicecharge')?'active':'' }}"><a href="{{route('servicecharge.dueservicecharge')}}"><i class="ti-more"></i>Due Service Charge</a></li>
                 </ul>

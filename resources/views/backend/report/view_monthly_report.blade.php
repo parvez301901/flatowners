@@ -64,6 +64,9 @@
                                                         @{{{serviceChargeIncome}}}
                                                     </tr>
                                                     <tr>
+                                                        @{{{otherIncome}}}
+                                                    </tr>
+                                                    <tr>
                                                         @{{{ total_income}}}
                                                     </tr>
 
@@ -100,8 +103,9 @@
                                             </table>
 
                                         </div>
-
+                                        <div class="col-12">
                                         <button target="_blank" onclick="printMonthlyReportDiv()" value="print Report" class="btn btn-rounded btn-primary my-3"><i class="fa fa-print"></i> Print Report</button>
+                                        </div>
                                     </script>
                                     <div class="row w-100-percent" id="DocumentResults" style="margin-top: 40px;">
                                     </div>

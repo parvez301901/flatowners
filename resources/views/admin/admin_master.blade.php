@@ -85,6 +85,7 @@
     @endif
     /*for select2 active */
     jQuery('.select2').select2();
+
     /*image upload*/
     $(document).ready(function(){
         $('#image').change(function(e){
@@ -158,29 +159,6 @@
             }
         });
 
-    });
-
-    /*Search Service Charge*/
-    $(document).on('click','#search_serviceCharge',function(){
-        var year_id = $('#serviceChargeMonthYear').val();
-        $('#search_serviceCharge').addClass('disabled');
-        console.log(year_id);
-        $.ajax({
-            url: "{{ route('servicecharge.search')}}",
-            type: "get",
-            data: {'year_id':year_id},
-            beforeSend: function() {
-            },
-            success: function (data) {
-                console.log(data);
-                $('#search_serviceCharge').removeClass('disabled');
-                var source = $("#document-template").html();
-                var template = Handlebars.compile(source);
-                var html = template(data);
-                $('#DocumentResults').html(html);
-                //$('[data-toggle="tooltip"]').tooltip();
-            }
-        });
     });
 
     /*
@@ -278,6 +256,27 @@
         });
     });
 
+    /*Search Service Charge by month*/
+    $(document).on('change','input[name="serviceChargeMonthYear_by_month"]',function(){
+        var year_id = $(this).val();
+        console.log(year_id);
+        $.ajax({
+            url: "{{ route('servicecharge.search_by_month')}}",
+            type: "get",
+            data: {'year_id':year_id},
+            beforeSend: function() {
+            },
+            success: function (data) {
+                console.log(data);
+                $('#search_serviceCharge').removeClass('disabled');
+                var source = $("#document-template").html();
+                var template = Handlebars.compile(source);
+                var html = template(data);
+                $('#DocumentResults').html(html);
+                //$('[data-toggle="tooltip"]').tooltip();
+            }
+        });
+    });
 
     /*Search Service Charge*/
     $(document).on('change','input[name="serviceChargeDueMonthYear"]',function(){
@@ -344,6 +343,7 @@
     $(document).on('change','.find_user_by_unit',function(){
         var floor_id = $('#on_select_floor').val();
         var unit_id = $('.find_user_by_unit').val();
+        $('.project_due_amount').val();
         var get_project_due_amount =  $('input[name="project_due_amount"]').length;
         if( get_project_due_amount > 0 ){
             var project_id = $('.project_id').val();
@@ -356,8 +356,8 @@
                     console.log(data);
                     let html = '<option value="' + data.findFlatowner.id + '">' + data.findFlatowner.name + '</option>';
                     $('#flatowner_info').html(html);
-                    $('.project_due_amount').val(data.findProjectDue.due);
-                    $('.project_amount_per_head').val((data.findProjectDue.due) + (data.findProjectDue.amount));
+                    $('.project_due_amount').val(parseInt(data.findProjectDue.due));
+                    $('.project_amount_per_head').val(+(data.findProjectDue.due) + +(data.findProjectDue.amount));
                 }
             });
         } else {
@@ -666,6 +666,22 @@
         document.body.innerHTML = printContents3;
         window.print();
         document.body.innerHTML = originalContents3;
+    }
+
+    function printProjectExpenditure() {
+        var printContents4 = document.getElementById('reportPrintProjectExpenditurePrintableArea').innerHTML;
+        var originalContents4 = document.body.innerHTML;
+        document.body.innerHTML = printContents4;
+        window.print();
+        document.body.innerHTML = originalContents4;
+    }
+
+    function printProjectDeposit() {
+        var printContents5 = document.getElementById('reportPrintProjectDepositPrintableArea').innerHTML;
+        var originalContents5 = document.body.innerHTML;
+        document.body.innerHTML = printContents5;
+        window.print();
+        document.body.innerHTML = originalContents5;
     }
 
 </script>

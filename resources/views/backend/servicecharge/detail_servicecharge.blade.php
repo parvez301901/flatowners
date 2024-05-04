@@ -10,8 +10,8 @@
                         <div class="box-header with-border">
                             <h4 class="box-title">Deposit Service Charge</h4>
                         </div>
-                        {{$thatServiceCharge}}
-                        {{$thatServiceCharge->serviceChargeMonthYear}}
+                        {{--$thatServiceCharge--}}
+                        {{--$thatServiceCharge->serviceChargeMonthYear--}}
                         <div class="box-body">
                             <h4 class="mt-0 mb-20">Previous Data</h4>
                             <div class="row">

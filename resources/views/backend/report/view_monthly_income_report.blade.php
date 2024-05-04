@@ -61,7 +61,9 @@
                                                     </tfoot>
                                                 </table>
                                                 </div>
+                                                <div class="col-12">
                                                 <button target="_blank" onclick="printMonthlyIncomeReportDiv()" value="print Report" class="btn btn-rounded btn-primary my-3"><i class="fa fa-print"></i> Print Report</button>
+                                                </div>
                                             </script>
                                             <div class="row w-100-percent" id="DocumentResults">
                                             </div>

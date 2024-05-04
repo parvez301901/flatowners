@@ -853,7 +853,6 @@ body.dark-skin {
   color: #bdd1f8; }
 .dark-skin .btn {
   color: #ffffff; }
-
 /*# sourceMappingURL=skin_color.css.map */
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
@@ -865,4 +864,11 @@ body.dark-skin {
 }
 ::-ms-input-placeholder { /* Microsoft Edge */
     color: #8a99b5;
+}
+.dark-skin .table {
+    color: #ffffff;
+}
+.select2-results__option {
+    color: #040404;
+    font-size: 16px;
 }

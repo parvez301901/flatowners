@@ -57,7 +57,7 @@
                                     <div class="col-md-1 col-12">
                                         <div class="form-group">
                                             <label>Deposit Money</label>
-                                            <input name="serviceChargeAmount" class="form-control" type="number" value="4000">
+                                            <input name="serviceChargeAmount" class="form-control" type="number" value="">
                                         </div>
                                     </div>
                                     <div class="col-md-2 col-12">

@@ -24,16 +24,21 @@ class ServiceChargeController extends Controller {
         return view('backend.servicecharge.view_servicecharge', $data );
     }
 
+    public function ServiceChargeViewByMonth() {
+        $data['allUserData'] = User::where('usertype','flatowner')->get();
+        return view('backend.servicecharge.view_servicechargebymonth', $data );
+    }
+
     public function ServiceChargeAdd() {
         $data['allFloorlist'] = Floor::all();
         $data['allUnitLis'] = Unit::all();
         $data['allFlatOwnerlist'] = User::where('usertype','flatowner')->get();
 
-
-        $data['prev_is_in_month_year_petty_cash'] = PettyCash::whereMonth('month_year', 4)
-            ->whereYear('month_year',2022)
-            ->first()
-        ->balance;
+        /*
+                $data['prev_is_in_month_year_petty_cash'] = PettyCash::whereMonth('month_year', 4)
+                    ->whereYear('month_year',2022)
+                    ->first()
+                ->balance;*/
 
 
         return view('backend.servicecharge.add_servicecharge', $data );
@@ -41,9 +46,12 @@ class ServiceChargeController extends Controller {
 
     public function ServiceChargeStore( Request $request ) {
 
+        //saving data in service charge TABLE -- number 1
+
         $service_charges_to_pay = Unit::where('id', $request->unit_id)->first();
 
         $find_due = ($service_charges_to_pay->serviceCharge) - ($request->serviceChargeAmount);
+
         $month_year = Carbon::parse($request->serviceChargeMonthYear)->format('M Y');
         $data = new ServiceCharge();
         $data->serviceChargeMonthYear = $request->serviceChargeMonthYear . '-02';
@@ -55,6 +63,8 @@ class ServiceChargeController extends Controller {
         $data->serviceChargeDate = $request->serviceChargeDate;
 
         $saved = $data->save();
+
+        //Sending SMS
 
         if($saved == 1) {
             $get_user = User::find($request->user_id);
@@ -86,7 +96,9 @@ class ServiceChargeController extends Controller {
             }
         }
 
-        //Add balance to the PETTY CASH
+        //Add balance to the PETTY CASH TABLE  - number 2
+
+
         // Checking -- if Petty Cash is Blank
 
         $previous_pretty_cash_month = intval((mb_substr($request->serviceChargeDate , 5 , 8))) - 1;
@@ -138,6 +150,9 @@ class ServiceChargeController extends Controller {
                     $data4->save();
                 }
             }
+
+            //Action on Remaining Balance TABLE --- Number 3
+
             $prev_remaining_balance = RemainingBalance::find(2)->balance;
 
             $data2 = RemainingBalance::find(2);
@@ -173,6 +188,7 @@ class ServiceChargeController extends Controller {
 
         $data = ServiceCharge::find($id);
         $data->serviceChargeMonthYear = $request->serviceChargeMonthYear . '-02';
+        $hold_previous_service_charge_amount = $data->serviceChargeAmount;
         $data->serviceChargeAmount = $request->serviceChargeAmount;
         $data->serviceChargeDue =  $find_due;
         $data->user_id = $request->user_id;
@@ -208,7 +224,10 @@ class ServiceChargeController extends Controller {
             }
         } else {
             $data3 = PettyCash::find($is_in_month_year_petty_cash->id);
-            $data3->balance = ($request->serviceChargeAmount) + ($is_in_month_year_petty_cash->balance) ;
+
+            //make a MINUS from previous Service charge Then ADD new Service charge
+
+            $data3->balance = ($request->serviceChargeAmount) + ($is_in_month_year_petty_cash->balance) - ($hold_previous_service_charge_amount);
             $data3->month_year = $request->serviceChargeDate;
             $data3->save();
         }
@@ -240,7 +259,7 @@ class ServiceChargeController extends Controller {
             }
         } else {
             $data2 = RemainingBalance::find($is_in_month_year->id);
-            $data2->balance = ($request->serviceChargeAmount) + ($is_in_month_year->balance) ;
+            $data2->balance = ($request->serviceChargeAmount) + ($is_in_month_year->balance) - ($hold_previous_service_charge_amount) ;
             $data2->month_year = $request->serviceChargeDate;
             $data2->save();
         }
@@ -256,7 +275,7 @@ class ServiceChargeController extends Controller {
 
     public function ServiceChargeSearch(Request $request){
 
-        $year_id = $request->year_id . '-02';
+        $year_id = $request->year_id . '-01';
 
         $date = Carbon::createFromFormat('m/Y', Carbon::parse($year_id)->format('m/Y'));
 
@@ -316,6 +335,74 @@ class ServiceChargeController extends Controller {
 
     }// end method
 
+    public function ServiceChargeSearchByMonth(Request $request){
+
+        $year_id = $request->year_id . '-01';
+
+        $date = Carbon::createFromFormat('m/Y', Carbon::parse($year_id)->format('m/Y'));
+
+        $month_year = Carbon::parse($year_id)->format('M Y');
+
+        $empsalaries = ServiceCharge::whereMonth('serviceChargeDate', $date->month)
+            ->whereYear('serviceChargeDate', $date->year)
+            ->get();
+
+        $charges = array();
+        $due_count = array();
+
+        $html['thsource'] = '<th>SL</th>';
+        $html['thsource'] .= '<th>Flat Owner Name</th>';
+        $html['thsource'] .= '<th>Floor No.</th>';
+        $html['thsource'] .= '<th>Flat No.</th>';
+        $html['thsource'] .= '<th>Paid Date</th>';
+        $html['thsource'] .= '<th>Month of S. Charge</th>';
+        //$html['thsource'] .= '<th>Amount to Pay</th>';
+        $html['thsource'] .= '<th>Paid Amount</th>';
+        $html['thsource'] .= '<th class="hide-in-print">Action</th>';
+
+        foreach ($empsalaries as $key => $empsalarie) {
+
+            $due = ($empsalarie['get_unit']['serviceCharge']) - ($empsalarie->serviceChargeAmount);
+
+            if ($empsalarie->serviceChargeDue > 0 ){
+                $reminder_button = '<a class="btn btn-rounded btn-info d-inline-flex due-money" data-text="Dear ' . $empsalarie['get_user']['name'] . ', Total due TK'. $empsalarie->serviceChargeDue .' as Service Charge for '. $month_year .', for Flat '. $empsalarie['get_unit']['name'] .'. Please pay." data-phone="' . $empsalarie['get_user']['phone'] . '" id=""><i class="d-none ti-check"></i>Remind</a>';
+            } else {
+                $reminder_button = '';
+            }
+            // Create a Carbon instance from the date string
+            $carbonDate = Carbon::parse($empsalarie->serviceChargeMonthYear);
+
+            // Format the date to display only the month name
+            $monthName = $carbonDate->format('F , Y');
+
+            $html[$key]['tdsource'] = '<td>' . ($key + 1) . '</td>';
+            $html[$key]['tdsource'] .= '<td>' . $empsalarie['get_user']['name'] . '</td>';
+            $html[$key]['tdsource'] .= '<td>' . $empsalarie['get_floor']['name'] . '</td>';
+            $html[$key]['tdsource'] .= '<td>' . $empsalarie['get_unit']['name'] . '</td>';
+            $html[$key]['tdsource'] .= '<td>' . $empsalarie->serviceChargeDate . '</td>';
+            $html[$key]['tdsource'] .= '<td>' . $monthName . '</td>';
+            //$html[$key]['tdsource'] .= '<td>' . $empsalarie['get_unit']['serviceCharge'] . '</td>';
+            $html[$key]['tdsource'] .= '<td>' . $empsalarie->serviceChargeAmount . '</td>';
+            //$html[$key]['tdsource'] .= '<td>' . $empsalarie->serviceChargeDue . '</td>';
+            $html[$key]['tdsource'] .= '<td class="hide-in-print">' . $reminder_button . '<a class="btn btn-rounded btn-primary show_receipt ml-2" data-servicechargeId="'. $empsalarie->id .'">Show Recipt</a><a class="btn btn-rounded btn-success ml-2" href="/servicecharge/detail/'. $empsalarie->id .'" ><i class="ti-pencil-alt"></i></a> <p class="smsmessage d-none">Message Sent</p></td>';
+
+            $charges[] = (int)$empsalarie->serviceChargeAmount;
+            $due_count[] = (int)$empsalarie->serviceChargeDue;
+
+        }
+        if ( 0 != (array_sum($charges)) ) {
+            //$other_cost = AccountOtherCost::whereBetween('date',[$sdate,$edate])->sum('amount');
+            $html['tfsource'] = '<td colspan="6" class="text-right"><b>Total</b></td>';
+            $html['tfsource'] .= '<td>' . array_sum($charges) . '</td>';
+            $html['tfsource'] .= '<td colspan="2" class="hide-in-print">Total Due: ' . array_sum($due_count) . '</td>';
+        } else {
+            $html['tfsource'] = '<td colspan="9" class="text-center"><b>No Data Found</b></td>';
+        }
+
+        return response()->json(@$html);
+
+    }// end method
+
     public function ServiceChargeReceipt(Request $request){
 
         $serviceChargeId = $request->serviceChargeId;
@@ -354,7 +441,7 @@ class ServiceChargeController extends Controller {
                                         </div>
                                         <div class="two-sections">
                                             <div class="first-section">মোবাইল নং/Mobile Number:<span class="first-space"><b>'. $serviceCharges['get_user']['phone']. '</b></span></div>
-                                            <div class="second-section">বাবদ/Purpose:<span class="second-space"><b>Service Charge</b></span></div>
+                                            <div class="second-section">বাবদ/Purpose:<span class="second-space"><b>Service Charge - '. date_format(date_create($serviceCharges['serviceChargeMonthYear']), "F, Y") .'</b></span></div>
                                         </div>
                                         <div class="two-sections amount">
                                             <div class="first-section amount">পরিমান/Amount: <span class="first-space"><b>' . $serviceCharges->serviceChargeAmount . '</b>/=</span></div>

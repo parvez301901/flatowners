@@ -37,6 +37,7 @@ class ProjectController extends Controller
         //$data['getBalance'] = ProjectRemainingBalance::where('project_id', 5)->value('balance');
         return view('backend.project.deposit_money_project' , $data );
     }
+
     public function ProjectBankTransaction() {
         $data['allBank'] = Bank::all();
         $data['find_petty_cash'] = ProjectPettyCash::first()->balance;
@@ -141,11 +142,13 @@ class ProjectController extends Controller
         $projectAddedAmounts = ProjectAddAmount::where('project_id',$project_id)->get();
 
         $incomes = array();
+        $dues = array();
 
         $html['thsource'] = '<th>SL</th>';
         $html['thsource'] .= '<th>Flat Owner Name</th>';
         $html['thsource'] .= '<th>Flat No</th>';
         $html['thsource'] .= '<th>Amount</th>';
+        $html['thsource'] .= '<th>Due</th>';
 
         foreach ($projectAddedAmounts as $key => $projectAddedAmount) {
 
@@ -155,13 +158,17 @@ class ProjectController extends Controller
             $html[$key]['tdsource'] .= '<td>'. $flat_owner_name->name .'</td>';
             $html[$key]['tdsource'] .= '<td>'. $get_unit_name->name .'</td>';
             $html[$key]['tdsource'] .= '<td>' . $projectAddedAmount->amount . '</td>';
+            $html[$key]['tdsource'] .= '<td>' . $projectAddedAmount->due . '</td>';
             $incomes[] = (int)$projectAddedAmount->amount;
+            $dues[] = (int)$projectAddedAmount->due;
 
         }
         if ( 0 != (array_sum($incomes)) ) {
             $income = array_sum($incomes);
-            $html['tfsource'] = '<td colspan="2" class="text-right"><b>Total</b></td>';
+            $due = array_sum($dues);
+            $html['tfsource'] = '<td colspan="3" class="text-right"><b>Total</b></td>';
             $html['tfsource'] .= '<td>' . $income . '</td>';
+            $html['tfsource'] .= '<td>'. $due .'</td>';
         } else {
             $html['tfsource'] = '<td colspan="3" class="text-center"><b>No Data Found</b></td>';
         }
@@ -180,7 +187,7 @@ class ProjectController extends Controller
             $utility = Utility::find($expense->utility_id);
 
             $html[$key]['td2source'] = '<td>' . ($key + 1) . '</td>';
-            $html[$key]['td2source'] .= '<td>' . $utility->name . '</td>';
+            $html[$key]['td2source'] .= '<td>' . $utility->project_cost_note . '</td>';
             $html[$key]['td2source'] .= '<td>' . $expense->amount . '</td>';
             $outcomes[] = (int)$expense->amount;
         }

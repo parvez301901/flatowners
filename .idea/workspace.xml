@@ -2,20 +2,70 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f269716a-cbf7-4370-9369-ffe3fe0a21a6" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/_Feature_To_update.txt" beforeDir="false" afterPath="$PROJECT_DIR$/_Feature_To_update.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/FloorController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/FloorController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/MaintenanceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/MaintenanceController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectAddAmountController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectAddAmountController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/ProjectController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/Project_ExpenseController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/Project_ExpenseController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/Report.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/Report.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/ServiceChargeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/ServiceChargeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/backend/UtilityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/backend/UtilityController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/maintenance/add_maintenance.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/maintenance/add_maintenance.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/maintenance/view_maintenance.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/maintenance/view_maintenance.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/ServiceCharge.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/ServiceCharge.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/backend/Bank.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/backend/Bank.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/backend/Floor.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/backend/Floor.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/backend/MaintenanceModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/backend/MaintenanceModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/backend/Notice.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/backend/Notice.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/backend/PettyCash.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/backend/PettyCash.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/backend/Project.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/backend/Project.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/backend/ProjectAddAmount.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/backend/ProjectAddAmount.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/backend/ProjectExpense.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/backend/ProjectExpense.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/backend/ProjectPettyCash.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/backend/ProjectPettyCash.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/backend/ProjectRemainingBalance.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/backend/ProjectRemainingBalance.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/backend/RemainingBalance.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/backend/RemainingBalance.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/backend/SubProject.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/backend/SubProject.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/backend/Unit.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/backend/Unit.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/backend/UserModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/backend/UserModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/backend/css/skin_color.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/backend/css/skin_color.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/admin_master.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/admin_master.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/body/sidebar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/body/sidebar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/backend/floor/add_floor.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/floor/add_floor.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/backend/floor/view_floor.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/floor/view_floor.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/backend/project/deposit_money_project.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/project/deposit_money_project.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/backend/project/detail_project.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/project/detail_project.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/utility/detail_utility.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/utility/detail_utility.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/backend/utility/view_utility.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/utility/view_utility.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/backend/report/view_monthly_income_report.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/report/view_monthly_income_report.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/backend/report/view_monthly_report.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/report/view_monthly_report.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/backend/report/view_yearly_report.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/report/view_yearly_report.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/backend/servicecharge/add_servicecharge.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/servicecharge/add_servicecharge.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/backend/servicecharge/detail_servicecharge.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/servicecharge/detail_servicecharge.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/backend/servicecharge/view_servicecharge.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/backend/servicecharge/view_servicecharge.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/CreatesApplication.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/ApiTokenPermissionsTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/Auth/AuthenticationTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/Auth/EmailVerificationTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/Auth/PasswordConfirmationTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/Auth/PasswordResetTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/Auth/RegistrationTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/AuthenticationTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/BrowserSessionsTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/CreateApiTokenTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/DeleteAccountTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/DeleteApiTokenTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/EmailVerificationTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/ExampleTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/PasswordConfirmationTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/PasswordResetTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/ProfileInformationTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/RegistrationTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/TwoFactorAuthenticationSettingsTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/UpdatePasswordTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/TestCase.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Unit/ExampleTest.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_static.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_static.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -223,7 +273,88 @@
       <workItem from="1672316052825" duration="12000" />
       <workItem from="1672337120154" duration="68534000" />
       <workItem from="1673011127764" duration="22935000" />
-      <workItem from="1673085754219" duration="14184000" />
+      <workItem from="1673085754219" duration="17337000" />
+      <workItem from="1673296350785" duration="1186000" />
+      <workItem from="1673360582302" duration="8566000" />
+      <workItem from="1674288808541" duration="23000" />
+      <workItem from="1674290196840" duration="2057000" />
+      <workItem from="1674336516885" duration="56000" />
+      <workItem from="1674504332267" duration="6764000" />
+      <workItem from="1674559375192" duration="3652000" />
+      <workItem from="1674944651812" duration="112000" />
+      <workItem from="1676672246151" duration="607000" />
+      <workItem from="1676996085234" duration="595000" />
+      <workItem from="1680286993604" duration="455000" />
+      <workItem from="1680348148139" duration="624000" />
+      <workItem from="1680373831374" duration="4364000" />
+      <workItem from="1680533898555" duration="594000" />
+      <workItem from="1680945003321" duration="1270000" />
+      <workItem from="1680997315218" duration="1184000" />
+      <workItem from="1681030617035" duration="1316000" />
+      <workItem from="1681075988144" duration="1380000" />
+      <workItem from="1681206142149" duration="591000" />
+      <workItem from="1683213463041" duration="1219000" />
+      <workItem from="1683530677794" duration="1188000" />
+      <workItem from="1684259390574" duration="1117000" />
+      <workItem from="1685660308836" duration="687000" />
+      <workItem from="1685711020345" duration="1196000" />
+      <workItem from="1689616656197" duration="1818000" />
+      <workItem from="1690008974847" duration="1280000" />
+      <workItem from="1691009414088" duration="3322000" />
+      <workItem from="1691310436619" duration="13000" />
+      <workItem from="1691310534688" duration="20000" />
+      <workItem from="1691759022689" duration="15000" />
+      <workItem from="1691759067447" duration="113000" />
+      <workItem from="1692736268882" duration="882000" />
+      <workItem from="1693745163742" duration="2248000" />
+      <workItem from="1693799948065" duration="32000" />
+      <workItem from="1693931523851" duration="382000" />
+      <workItem from="1694075374132" duration="29000" />
+      <workItem from="1694249810583" duration="8988000" />
+      <workItem from="1694314929438" duration="33000" />
+      <workItem from="1694993484967" duration="7132000" />
+      <workItem from="1695071183522" duration="12923000" />
+      <workItem from="1695183217947" duration="10130000" />
+      <workItem from="1695255774026" duration="595000" />
+      <workItem from="1695447524126" duration="25000" />
+      <workItem from="1695492822887" duration="30000" />
+      <workItem from="1695608885141" duration="708000" />
+      <workItem from="1695615210566" duration="629000" />
+      <workItem from="1695703246356" duration="168000" />
+      <workItem from="1696025781909" duration="6732000" />
+      <workItem from="1696061525460" duration="4417000" />
+      <workItem from="1696110979550" duration="3190000" />
+      <workItem from="1696466295701" duration="9338000" />
+      <workItem from="1696555187237" duration="245000" />
+      <workItem from="1696572767017" duration="92000" />
+      <workItem from="1696643734667" duration="22000" />
+      <workItem from="1696643771547" duration="597000" />
+      <workItem from="1696992097427" duration="13000" />
+      <workItem from="1697077979415" duration="168000" />
+      <workItem from="1697342911657" duration="766000" />
+      <workItem from="1697423349723" duration="35000" />
+      <workItem from="1697682011774" duration="20000" />
+      <workItem from="1697692244935" duration="13000" />
+      <workItem from="1697702746747" duration="2404000" />
+      <workItem from="1697956814126" duration="704000" />
+      <workItem from="1697958290817" duration="1046000" />
+      <workItem from="1697982302107" duration="98000" />
+      <workItem from="1698742312100" duration="618000" />
+      <workItem from="1698816715321" duration="34000" />
+      <workItem from="1698834442751" duration="1734000" />
+      <workItem from="1698892041254" duration="3092000" />
+      <workItem from="1698899522060" duration="688000" />
+      <workItem from="1699217285891" duration="3565000" />
+      <workItem from="1699237026257" duration="47000" />
+      <workItem from="1700374437534" duration="595000" />
+      <workItem from="1700654281439" duration="596000" />
+      <workItem from="1700736329221" duration="6000" />
+      <workItem from="1700967072257" duration="705000" />
+      <workItem from="1701358971096" duration="1876000" />
+      <workItem from="1703481877079" duration="11308000" />
+      <workItem from="1703645146585" duration="3000" />
+      <workItem from="1704465959344" duration="23000" />
+      <workItem from="1714798012800" duration="625000" />
     </task>
     <servers />
   </component>

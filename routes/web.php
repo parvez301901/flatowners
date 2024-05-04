@@ -4,6 +4,7 @@ use App\Http\Controllers\backend\BankController;
 use App\Http\Controllers\backend\DefaultController;
 use App\Http\Controllers\backend\EmployeeController;
 use App\Http\Controllers\backend\NoticeController;
+use App\Http\Controllers\backend\OtherIncomeController;
 use App\Http\Controllers\backend\Project_ExpenseController;
 use App\Http\Controllers\backend\ProjectAddAmountController;
 use App\Http\Controllers\backend\ProjectController;
@@ -96,6 +97,7 @@ Route::group(['middleware' => 'auth'],function() {
         Route::post('/store', [UnitController::class, 'UnitStore'])->name('unit.store');
         Route::get('/detail/{id}', [UnitController::class, 'UnitDetail'])->name('unit.detail');
         Route::post('/update/{id}', [UnitController::class, 'UnitUpdate'])->name('unit.update');
+
     });
 
     Route::prefix('utility')->group(function (){
@@ -107,9 +109,20 @@ Route::group(['middleware' => 'auth'],function() {
         Route::get('/delete/{id}', [UtilityController::class, 'UtilityDelete'])->name('utility.delete');
     });
 
+    Route::prefix('otherincome')->group(function (){
+        Route::get('/add', [OtherIncomeController::class, 'add_other_income'])->name('otherincome.add');
+        Route::post('/store', [OtherIncomeController::class, 'store_other_income'])->name('otherincome.store');
+        /*Route::get('/view', [UtilityController::class, 'UtilityView'])->name('utility.view');
+        Route::get('/detail/{id}', [UtilityController::class, 'UtilityDetail'])->name('utility.detail');
+        Route::post('/update/{id}', [UtilityController::class, 'UtilityUpdate'])->name('utility.update');
+        Route::get('/delete/{id}', [UtilityController::class, 'UtilityDelete'])->name('utility.delete'); */
+    });
+
     Route::prefix('servicecharge')->group( function(){
         Route::get('/search/', [ServiceChargeController::class, 'ServiceChargeSearch'])->name('servicecharge.search');
+        Route::get('/search_by_month/', [ServiceChargeController::class, 'ServiceChargeSearchByMonth'])->name('servicecharge.search_by_month');
         Route::get('/view', [ServiceChargeController::class, 'ServiceChargeView'])->name('servicecharge.view');
+        Route::get('/view_by_month', [ServiceChargeController::class, 'ServiceChargeViewByMonth'])->name('servicecharge.view_by_month');
         Route::get('/add', [ServiceChargeController::class, 'ServiceChargeAdd'])->name('servicecharge.add');
         Route::post('/store', [ServiceChargeController::class, 'ServiceChargeStore'])->name('servicecharge.store');
         Route::get('/receipt', [ServiceChargeController::class, 'ServiceChargeReceipt'])->name('servicecharge.receipt');
@@ -120,10 +133,6 @@ Route::group(['middleware' => 'auth'],function() {
         Route::get('/duesearch/', [ServiceChargeController::class, 'ServiceChargeDueSearch'])->name('servicecharge.dueservicechargesearch');
         Route::get('/detail/{id}', [ServiceChargeController::class, 'ServiceChargeDetail'])->name('servicecharge.detail');
         Route::post('/update/{id}', [ServiceChargeController::class, 'ServiceChargeUpdate'])->name('servicecharge.update');
-
-        //////////////------------------------------  Baki ache ------------ Edit - Update - Delete ------   /////////////////
-
-
     });
 
     Route::prefix('maintenance')->group( function(){
@@ -191,14 +200,6 @@ Route::group(['middleware' => 'auth'],function() {
     Route::prefix('sms')->group(function (){
         Route::get('/add', [SmsSystemController::class, 'SmsAdd'])->name('sms.add');
         Route::post('/send', [SmsSystemController::class, 'SmsSend'])->name('sms.send');
-
-       /*
-        *  Route::post('/store', [ProjectController::class, 'ProjectStore'])->name('sms.send');
-        Route::get('/view', [ProjectController::class, 'ProjectView'])->name('project.view');
-        Route::get('/detail/{id}', [ProjectController::class, 'ProjectDetail'])->name('project.detail');
-        Route::get('/balance', [ProjectController::class, 'ProjectBalance'])->name('project.balance');
-        Route::post('/update/{id}', [UnitController::class, 'UnitUpdate'])->name('unit.update');
-        */
     });
 
     Route::prefix('bank')->group(function (){
